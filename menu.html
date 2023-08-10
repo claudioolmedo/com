@@ -1,0 +1,87 @@
+<div id="options">
+                <div id="options-content">
+                    <h3>Add element by clicking map below</h3>
+                    <img class="projection" src="resources/point_picker.png" width= "280px"/>
+                    <ul id = "add-element">
+                        <li id="add-pin" class="button selected">Drop Pin</li>
+                        <li id="add-marker" class="button">Marker</li>
+                        <li id="add-satellite" class="button">Focus</li>
+                    </ul>
+                    <h3>Configure Globe</h3>
+
+                    <div>
+                        <label>
+                            Color Palette
+                        </label>
+                        <ul id="color-options">
+                            <li title="Globe Color"><input type="text" id="globe-color" value="#ffcc00"></li>
+                            <li title="Pin Color"><input type="text" id="pin-color" value="#8FD8D8"></li>
+                            <li title="Marker Color"><input type="text" id="marker-color" value="#ffcc00"></li>
+                            <li title="Satellite Core Color"><input type="text" id="satellite-color" value="#ff0000"></li>
+                        </ul>
+
+                        <label>
+                            Globe Scale
+                        </label>
+                        <input type="text" id="globe-scale" data-slider="true" data-slider-range=".1, 3.0" data-slider-step=".01" data-slider-highlight="true" value="1.0"/>
+
+                        <label>
+                            View Angle
+                        </label>
+                        <input type="text" id="globe-va" data-slider="true" data-slider-range="-1.57, 1.57" data-slider-step=".01" data-slider-highlight="true" value=".1"/>
+
+                        <label>
+                            Seconds per Rotation
+                        </label>
+                        <input type="text" id="globe-spr" data-slider="true" data-slider-range="1, 120" data-slider-step="1" data-slider-highlight="true" value="28"/>
+
+                        <!--
+                        <label>
+                            Points per Degree
+                        </label>
+                        <input type="text" id="globe-ppd" data-slider="true" data-slider-range=".5,4" data-slider-step=".1" data-slider-highlight="true" value="1.1"/>
+
+                        <label>
+                            Point Size
+                        </label>
+                        <input type="text" id="globe-ps" data-slider="true" data-slider-range=".1,1.0" data-slider-step=".1" data-slider-highlight="true" value=".6"/>
+                        -->
+
+                        <label>
+                            Intro Duration (ms)
+                        </label>
+                        <input type="text" id="globe-id" data-slider="true" data-slider-range="500,5000" data-slider-step="100" data-slider-highlight="true" value="2000"/>
+
+                        <label>
+                            Max Pins
+                        </label>
+                        <input type="text" id="globe-mp" data-slider="true" data-slider-range="10,1000" data-slider-step="10" data-slider-highlight="true" value="500"/>
+
+                        <label>
+                            Max Markers
+                        </label>
+                        <input type="text" id="globe-mm" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-highlight="true" value="4"/>
+
+                        <label>
+                            Focus Altitude
+                        </label>
+                        <input type="text" id="globe-sa" data-slider="true" data-slider-range="1.0,3.0" data-slider-step=".01" data-slider-highlight="true" value="1.3"/>
+
+                        <label>
+                            Focus Intensity
+                        </label>
+                        <input type="text" id="globe-si" data-slider="true" data-slider-range="3,12" data-slider-step="1" data-slider-highlight="true" value="8"/>
+
+                        <label>
+                            Load Dummy Data
+                        </label>
+                        <div class="switch">
+                            <input type="checkbox" id="globe-dd" value="1" checked>
+                        </div>
+                    </div>
+
+                    <div id="apply-button" class="button">Reload</div>
+
+                    
+                </div>
+            </div>
