@@ -1,7 +1,8 @@
 svg {
   display: block;
-  margin: 0 auto;
-  border: solid 50px black;
+  margin: auto; /* Centraliza o SVG no contêiner div */
+  max-width: 100%;
+  max-height: 100vh;
 }
 
 h1 {

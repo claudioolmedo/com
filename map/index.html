@@ -7,7 +7,7 @@
         <script src="//d3js.org/d3.v3.min.js"></script>
         <script src="//d3js.org/d3.geo.projection.v0.min.js"></script>
         <script src="//d3js.org/topojson.v1.min.js"></script>
-        <h1>Large Meteorites on a Peirce Quincuncial Projection</h1>
+        <h1></h1>
         <div></div>
       </body>
 <script>
@@ -1130,12 +1130,12 @@ data.map(function(each){
   each.mass < 50000 ? each.rad = 1 : each.mass < 100000 ? each.rad = 2 : each.mass < 250000 ? each.rad = 3 : each.mass < 500000 ? each.rad = 5 : each.mass < 1000000 ? each.rad = 7 : each.mass < 1500000 ? each.rad = 9 : each.mass < 2000000 ? each.rad = 12 : each.mass < 3000000 ? each.rad = 18 : each.mass < 4000000 ? each.rad = 24 : each.mass < 5000000 ? each.rad = 30 : each.rad = 36 ;
 })
 
-var width = 1000,
-    height = 1000;
+var width = window.innerWidth,
+    height = window.innerHeight;
 
 var projection = d3.geo.peirceQuincuncial()
     .rotate([-70, -90, 45])
-    .scale(215)
+    .scale(width / 6.5)
     .translate([width / 2, height / 2])
     .precision(.1);
 
@@ -1182,7 +1182,29 @@ svg.append("path")
   
   });;
 
+function updateSize() {
+  width = window.innerWidth;
+  height = window.innerHeight;
 
+  projection
+    .translate([width / 2, height / 2])
+    .scale(width / 6.5);
+
+  svg
+    .attr("width", width)
+    .attr("height", height);
+
+  svg.selectAll("path")
+    .attr("d", path);
+
+  svg.selectAll("circle")
+    .attr("cx", function (d) { return projection(d.coordinates)[0]; })
+    .attr("cy", function (d) { return projection(d.coordinates)[1]; });
+}
+
+updateSize();
+
+window.addEventListener('resize', updateSize);
 
 d3.json("https://gist.githubusercontent.com/mbostock/4090846/raw/d534aba169207548a8a3d670c9c2cc719ff05c47/world-50m.json", function(error, world) {
   if (error) throw error;
