@@ -14,47 +14,6 @@
         <h1></h1>
         <div></div>
       </body>
-      <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-analytics.js";
-        // TODO: Add SDKs for Firebase products that you want to use
-        // https://firebase.google.com/docs/web/setup#available-libraries
-      
-        // Your web app's Firebase configuration
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-        const firebaseConfig = {
-          apiKey: "AIzaSyAHbhUXbXFSkXWfaV9OXqhX3Ob_CJ4Eklg",
-          authDomain: "world-a872e.firebaseapp.com",
-          databaseURL: "https://world-a872e-default-rtdb.firebaseio.com",
-          projectId: "world-a872e",
-          storageBucket: "world-a872e.appspot.com",
-          messagingSenderId: "593660676477",
-          appId: "1:593660676477:web:7f8554721d14fee275e414",
-          measurementId: "G-X72BNFQ8NJ"
-        };
-      
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-      </script>
-<script>
-  // Reference to your database
-  const dbRef = firebase.database().ref();
-
-  // Function to list the content of the database
-  function listDatabaseContent() {
-    dbRef.once('value', (snapshot) => {
-      const data = snapshot.val();
-      console.log('Database content:', data);
-    }).catch((error) => {
-      console.error('Error listing database content:', error);
-    });
-  }
-
-  // Call the function to list the content of the database for testing
-  listDatabaseContent();
-</script>
 <script>
     var data = [
   {
@@ -221,4 +180,3 @@ d3.json("https://gist.githubusercontent.com/mbostock/4090846/raw/d534aba16920754
 d3.select(self.frameElement).style("height", height + "px");
 </script>
 </html>
-
