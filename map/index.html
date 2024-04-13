@@ -1,224 +1,120 @@
 <!DOCTYPE html>
+<html>
 <head>
     <link rel="stylesheet" href="style.css">
     <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
-<link rel="manifest" href="images/site.webmanifest">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <link rel="manifest" href="images/site.webmanifest">
 </head>
-<html>
-    <body>
-        <script src="//d3js.org/d3.v3.min.js"></script>
-        <script src="//d3js.org/d3.geo.projection.v0.min.js"></script>
-        <script src="//d3js.org/topojson.v1.min.js"></script>
-        <h1></h1>
-        <div></div>
-      </body>
-      <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-analytics.js";
-        // TODO: Add SDKs for Firebase products that you want to use
-        // https://firebase.google.com/docs/web/setup#available-libraries
-      
-        // Your web app's Firebase configuration
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-        const firebaseConfig = {
-          apiKey: "AIzaSyAHbhUXbXFSkXWfaV9OXqhX3Ob_CJ4Eklg",
-          authDomain: "world-a872e.firebaseapp.com",
-          databaseURL: "https://world-a872e-default-rtdb.firebaseio.com",
-          projectId: "world-a872e",
-          storageBucket: "world-a872e.appspot.com",
-          messagingSenderId: "593660676477",
-          appId: "1:593660676477:web:7f8554721d14fee275e414",
-          measurementId: "G-X72BNFQ8NJ"
-        };
-      
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-      </script>
-<script>
-  // Reference to your database
-  const dbRef = firebase.database().ref();
+<body>
+    <h1></h1>
+    <div></div>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="https://d3js.org/d3.geo.projection.v0.min.js"></script>
+    <script src="https://d3js.org/topojson.v1.min.js"></script>
+    <script type="module">
+      import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js';
+      import { getDatabase, ref, onValue } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js';
 
-  // Function to list the content of the database
-  function listDatabaseContent() {
-    dbRef.once('value', (snapshot) => {
-      const data = snapshot.val();
-      console.log('Database content:', data);
-    }).catch((error) => {
-      console.error('Error listing database content:', error);
-    });
-  }
+      const firebaseConfig = {
+        apiKey: "AIzaSyAHbhUXbXFSkXWfaV9OXqhX3Ob_CJ4Eklg",
+        authDomain: "world-a872e.firebaseapp.com",
+        databaseURL: "https://world-a872e-default-rtdb.firebaseio.com",
+        projectId: "world-a872e",
+        storageBucket: "world-a872e.appspot.com",
+        messagingSenderId: "593660676477",
+        appId: "1:593660676477:web:7f8554721d14fee275e414",
+        measurementId: "G-X72BNFQ8NJ"
+      };
 
-  // Call the function to list the content of the database for testing
-  listDatabaseContent();
-</script>
-<script>
-    var data = [
-  {
-    "coordinates": [
-    -46.6361,
-    -23.5475
-    ],
-    "mass": 100070,
-    "name": "r"
-  },
-  {
-    "coordinates": [
-    -50.1619, -25.0950
-    ],
-    "mass": 130070,
-    "name": "r"
-  },
-  {
-    "coordinates": [
-    47.5361, -18.9137
-    ],
-    "mass": 200070,
-    "name": "r"
-  },
-  {
-    "coordinates": [
-    139.6917, 35.6895
-    ],
-    "mass": 180070,
-    "name": "r"
-  },
-  {
-    "coordinates": [
-    -71.1833, 42.3341
-    ],
-    "mass": 300070,
-    "name": "r"
-  },
-  {
-    "coordinates": [
-    -71.2356, 42.3765
-    ],
-    "mass": 200070,
-    "name": "r"
-  },
-  {
-    "coordinates": [
-    -71.0598, 42.3584
-    ],
-    "mass": 180070,
-    "name": "r"
-  },
-  {
-    "coordinates": [
-    -54.6111, -25.5097
-    ],
-    "mass": 150070,
-    "name": "r"
-  },
-  {
-    "coordinates": [
-    -54.6111, -25.5097
-    ],
-    "mass": 120070,
-    "name": "r"
-  }
-];
+      const app = initializeApp(firebaseConfig);
+      const database = getDatabase(app);
 
-data.map(function(each){
-  each.mass < 50000 ? each.rad = 1 : each.mass < 100000 ? each.rad = 2 : each.mass < 250000 ? each.rad = 3 : each.mass < 500000 ? each.rad = 5 : each.mass < 1000000 ? each.rad = 7 : each.mass < 1500000 ? each.rad = 9 : each.mass < 2000000 ? each.rad = 12 : each.mass < 3000000 ? each.rad = 18 : each.mass < 4000000 ? each.rad = 24 : each.mass < 5000000 ? each.rad = 30 : each.rad = 36 ;
-})
+      function fetchDataAndUpdateMap() {
+        const dbRef = ref(database, 'path/to/your/data');
+        onValue(dbRef, (snapshot) => {
+          const data = snapshot.val();
+          updateMap(data);
+        }, {
+          onlyOnce: true
+        });
+      }
 
-var width = window.innerWidth,
-    height = window.innerHeight;
+      function updateMap(data) {
+        // Logic to update the map based on the data
+        console.log(data);
+      }
 
-var projection = d3.geo.peirceQuincuncial()
-    .rotate([-70, -90, 45])
-    .scale(width / 6.5)
-    .translate([width / 2, height / 2])
-    .precision(.1);
+      fetchDataAndUpdateMap();
+    </script>
+    <script>
+      var width = window.innerWidth,
+          height = window.innerHeight;
 
-var path = d3.geo.path()
-    .projection(projection);
+      var projection = d3.geo.peirceQuincuncial()
+          .rotate([-70, -90, 45])
+          .scale(width / 6.5)
+          .translate([width / 2, height / 2])
+          .precision(.1);
 
-var graticule = d3.geo.graticule();
+      var path = d3.geo.path()
+          .projection(projection);
 
-var svg = d3.select("div").append("svg")
-    .attr("width", width)
-    .attr("height", height);
+      var graticule = d3.geo.graticule();
 
-svg.append("path")
-    .datum(graticule)
-    .attr("class", "graticule")
-    .attr("d", path);
+      var svg = d3.select("div").append("svg")
+          .attr("width", width)
+          .attr("height", height);
 
+      svg.append("path")
+          .datum(graticule)
+          .attr("class", "graticule")
+          .attr("d", path);
 
- var tooltip = d3.select("div").append("div")
-  .attr("class", "tooltip")
-  .style("opacity", 0);
+      var tooltip = d3.select("div").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
 
- svg.selectAll("circle")
-		.data(data).enter()
-		.append("circle")
-		.attr("cx", function (d) { return projection(d.coordinates)[0]; })
-		.attr("cy", function (d) { return projection(d.coordinates)[1]; })
-		.attr("r", function(d){ return parseInt(d.rad)})
-    .attr("d", path)
-		.attr("fill", "red")
- .on("mouseover", function(d){
-  d3.select(this).style("fill", "orange");
-  tooltip.style("opacity", .95);
-  tooltip.html("<div><p>" + d.name + "</p><p> Mass: " + d.mass + " g</p></div>")
-    .style("left", (d3.event.pageX + 18) + "px")
-    .style("top", (d3.event.pageY - 28) + "px");
-  
-  })
-.on("mouseout", function(){
-  
-    d3.select(this).style("fill", "red");
-  
-    tooltip.style("opacity", 0);
-  
-  });;
+      function updateSize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
 
-function updateSize() {
-  width = window.innerWidth;
-  height = window.innerHeight;
+        projection
+          .translate([width / 2, height / 2])
+          .scale(width / 6.5);
 
-  projection
-    .translate([width / 2, height / 2])
-    .scale(width / 6.5);
+        svg
+          .attr("width", width)
+          .attr("height", height);
 
-  svg
-    .attr("width", width)
-    .attr("height", height);
+        svg.selectAll("path")
+          .attr("d", path);
 
-  svg.selectAll("path")
-    .attr("d", path);
+        svg.selectAll("circle")
+          .attr("cx", function (d) { return projection(d.coordinates)[0]; })
+          .attr("cy", function (d) { return projection(d.coordinates)[1]; });
+      }
 
-  svg.selectAll("circle")
-    .attr("cx", function (d) { return projection(d.coordinates)[0]; })
-    .attr("cy", function (d) { return projection(d.coordinates)[1]; });
-}
+      updateSize();
 
-updateSize();
+      window.addEventListener('resize', updateSize);
 
-window.addEventListener('resize', updateSize);
+      d3.json("https://gist.githubusercontent.com/mbostock/4090846/raw/d534aba169207548a8a3d670c9c2cc719ff05c47/world-50m.json", function(error, world) {
+        if (error) throw error;
 
-d3.json("https://gist.githubusercontent.com/mbostock/4090846/raw/d534aba169207548a8a3d670c9c2cc719ff05c47/world-50m.json", function(error, world) {
-  if (error) throw error;
+        svg.insert("path", ".graticule")
+            .datum(topojson.feature(world, world.objects.land))
+            .attr("class", "land")
+            .attr("d", path);
 
-  
-  svg.insert("path", ".graticule")
-      .datum(topojson.feature(world, world.objects.land))
-      .attr("class", "land")
-      .attr("d", path);
+        svg.insert("path", ".graticule")
+            .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
+            .attr("class", "boundary")
+            .attr("d", path);
+      });
 
-  svg.insert("path", ".graticule")
-      .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
-      .attr("class", "boundary")
-      .attr("d", path);
-});
-
-d3.select(self.frameElement).style("height", height + "px");
-</script>
+      d3.select(self.frameElement).style("height", height + "px");
+    </script>
+</body>
 </html>
-
