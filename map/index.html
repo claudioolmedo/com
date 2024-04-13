@@ -35,7 +35,10 @@
         const dbRef = ref(database, 'path/to/your/data');
         onValue(dbRef, (snapshot) => {
           const data = snapshot.val();
+          console.log("Dados recebidos:", data); // Log de sucesso
           updateMap(data);
+        }, (error) => {
+          console.error("Erro ao buscar dados:", error); // Tratamento de erro
         }, {
           onlyOnce: true
         });
