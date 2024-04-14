@@ -15,6 +15,27 @@
         <div></div>
       </body>
       <script>
+        //Ip Location
+      async function getIPLocation(ip) {
+        const token = 'ce751735f54e4f'; // Substitua pelo seu token de API do IPinfo
+        const url = `https://ipinfo.io/${ip}?token=${token}`;
+
+        try {
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error('Falha ao buscar informações do IP');
+          }
+          const data = await response.json();
+          console.log(data);
+          return data;
+        } catch (error) {
+          console.error('Erro:', error);
+        }
+      }
+      // Teste com o IP 8.8.8.8
+      getIPLocation('172.56.195.59');
+      </script>
+      <script>
         var data = []; // Initialize empty array to hold data from the database
     
     console.log("Dados do json:", data);
@@ -24,15 +45,16 @@
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js';
         import { getDatabase, ref, onValue } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js';
   
+        //Database for locations
         const firebaseConfig = {
-          apiKey: "AIzaSyAHbhUXbXFSkXWfaV9OXqhX3Ob_CJ4Eklg",
-          authDomain: "world-a872e.firebaseapp.com",
-          databaseURL: "https://world-a872e-default-rtdb.firebaseio.com",
-          projectId: "world-a872e",
-          storageBucket: "world-a872e.appspot.com",
-          messagingSenderId: "593660676477",
-          appId: "1:593660676477:web:7f8554721d14fee275e414",
-          measurementId: "G-X72BNFQ8NJ"
+          apiKey: "AIzaSyCmKB-3GsdM0kYuSups-wO047quU1YE9TQ",
+            authDomain: "stick-d4f7b.firebaseapp.com",
+            databaseURL: "https://stick-d4f7b-default-rtdb.firebaseio.com/",
+            projectId: "stick-d4f7b",
+            storageBucket: "stick-d4f7b.appspot.com",
+            messagingSenderId: "459914689023",
+            appId: "1:459914689023:web:e041f4ea739c226081cfca",
+            measurementId: "G-2X8EWV9H66"
         };
   
         const app = initializeApp(firebaseConfig);
