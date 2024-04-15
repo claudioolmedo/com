@@ -13,6 +13,9 @@
         <script src="//d3js.org/d3.geo.projection.v0.min.js"></script>
         <script src="//d3js.org/topojson.v1.min.js"></script>
         <h1></h1>
+        <div id="waitlistCount" style="position: fixed; top: 0; left: 0; background-color: white; padding: 10px; z-index: 1000;">
+          Waitlist Entries: 0
+        </div>
         <div></div>
       </body>
       <script type="module">
@@ -61,6 +64,8 @@
           const waitlistRef = ref(database, 'waitlist');
           onValue(waitlistRef, (snapshot) => {
             const waitlistData = snapshot.val();
+            const totalEntries = waitlistData ? Object.keys(waitlistData).length : 0;
+            document.getElementById('waitlistCount').innerText = `Waitlist Entries: ${totalEntries}`;
             const dataArray = Object.values(waitlistData);
             dataArray.forEach(item => {
               sendNotification("New Item in Waitlist", {
