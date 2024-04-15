@@ -4,7 +4,6 @@
     <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
-<link rel="manifest" href="images/site.webmanifest">
 </head>
 <html>
     <body>
@@ -26,25 +25,19 @@
             throw new Error('Falha ao buscar informações do IP');
           }
           const data = await response.json();
-          console.log(data);
+          //console.log(data);
           return data;
         } catch (error) {
           console.error('Erro:', error);
         }
       }
-      // Teste com o IP 8.8.8.8
-      getIPLocation('172.56.195.59');
-      </script>
-      <script>
-        var data = []; // Initialize empty array to hold data from the database
-    
-    console.log("Dados do json:", data);
+
     
     </script>
       <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js';
-        import { getDatabase, ref, onValue } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js';
-  
+        import { getDatabase, ref, onValue, set, get } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js';
+
         //Database for locations
         const firebaseConfig = {
           apiKey: "AIzaSyCmKB-3GsdM0kYuSups-wO047quU1YE9TQ",
@@ -61,10 +54,10 @@
         const database = getDatabase(app);
   
         function fetchDataAndUpdateMap() {
-          const dbRef = ref(database, 'map');
+          const dbRef = ref(database, 'maplocation');
           onValue(dbRef, (snapshot) => {
             data = snapshot.val(); // Assign data from the database to the global 'data' variable
-            console.log("Dados recebidos:", data); // Log de sucesso
+            console.log("Dados recebidos maplocation :", data); // Log de sucesso
             updateMap(data); // Call updateMap function to update the map with new data
           }, (error) => {
             console.error("Erro ao buscar dados:", error); // Tratamento de erro
@@ -75,15 +68,74 @@
   
         function updateMap(data) {
           // Logic to update the map based on the data
-          console.log(data);
+          //console.log("Logic to update the map based on the data :", data); // Log de sucesso
+
           drawMap(data); // Call drawMap function to draw the map with the data
         }
   
         fetchDataAndUpdateMap();
+
+        // Consulta e armazenamento dos dados filtrados, incluindo os dados adicionais.
+        const waitlistRef = ref(database, 'waitlist');
+        onValue(waitlistRef, async (snapshot) => {
+          const waitlistData = snapshot.val();
+          const additionalData = {
+            coordinates: [-71.0598, 42.3584],
+            mass: 1000700,
+            name: "r"
+          };
+
+          const filteredData = Object.keys(waitlistData)
+            .filter(key => waitlistData[key].hasOwnProperty('userIp'))
+            .map(key => ({
+              id: key,
+              userIp: waitlistData[key].userIp,
+              ...additionalData // Adicionando os dados adicionais a cada item filtrado
+            }));
+          console.log("IDs, IPs da lista de espera com userIp e dados adicionais recebidos:", filteredData);
+
+          // Processamento do mapa com execução única para cada IP
+          const processWaitlistData = async () => {
+            const processedIPLocations = {}; // Armazenar localizações processadas para evitar chamadas repetidas
+            const locationPromises = filteredData.map(async (item) => {
+              if (item.userIp && !processedIPLocations[item.userIp]) {
+                const location = await getIPLocation(item.userIp);
+                // Armazenar a localização processada para uso futuro
+                processedIPLocations[item.userIp] = location.loc.split(',').reverse().map(Number); // Inverte a ordem e converte para números
+                //console.log(`Dados processados para IP ${item.userIp}:`, { ...location, loc: processedIPLocations[item.userIp] });
+              }
+              // Usar a localização processada anteriormente se disponível
+              const loc = processedIPLocations[item.userIp] || item.coordinates;
+              return { 
+                id: item.id, // Adicionando o id do item
+                coordinates: loc, // Aqui seria a localização
+                mass: 1000700,
+                name: "r"
+              };
+            });
+
+            const processedData = await Promise.all(locationPromises);
+            console.log("Todos os dados foram processados:", processedData);
+            // Armazenando os dados processados no banco de dados em 'maplocation'
+            const mapLocationRef = ref(database, 'maplocation');
+            await set(mapLocationRef, processedData);
+            console.log("Dados processados armazenados em 'maplocation'.");
+          };
+
+          processWaitlistData().catch(console.error);
+          // Armazenando os dados filtrados, incluindo os dados adicionais, no banco de dados em 'map'
+          const mapRef = ref(database, 'map');
+          await set(mapRef, filteredData);
+          console.log("Dados filtrados, incluindo os dados adicionais, armazenados em 'map'.");
+          
+        }, (error) => {
+          console.error("Erro ao buscar dados da lista de espera:", error);
+        });
       </script>
 
-
 <script>
+ var data = []; // Initialize empty array to hold data from the database
+
 function drawMap(data) {
   data.forEach(function(each){
     each.mass < 50000 ? each.rad = 1 : each.mass < 100000 ? each.rad = 2 : each.mass < 250000 ? each.rad = 3 : each.mass < 500000 ? each.rad = 5 : each.mass < 1000000 ? each.rad = 7 : each.mass < 1500000 ? each.rad = 9 : each.mass < 2000000 ? each.rad = 12 : each.mass < 3000000 ? each.rad = 18 : each.mass < 4000000 ? each.rad = 24 : each.mass < 5000000 ? each.rad = 30 : each.rad = 36 ;
