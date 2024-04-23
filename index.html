@@ -367,9 +367,11 @@
               <li class="port-item mix photography">
                   <div class="port-img-overlay">
                     <video class="port-main-img" autoplay loop muted playsinline>
-                      <source src="images/portfolio/woodstick.mov" type="video/mp4">
+                      <source src="images/portfolio/woodtostick.mp4" type="video/mp4">
                       Your browser does not support the video tag.
                     </video>
+                    <!-- Fallback Image for Safari -->
+                    <img src="images/portfolio/woodtostick.png" class="port-main-img safari-fallback-img" style="display:none;">
                   </div>
                   <div class="port-overlay-cont">
                     <div class="port-title-cont2">
@@ -525,6 +527,23 @@
        
       }); /*ready*/
     </script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    
+    if (isSafari) {
+      var videos = document.querySelectorAll('video');
+      videos.forEach(function(video) {
+        video.style.display = 'none';
+      });
+      
+      var fallbackImages = document.querySelectorAll('.safari-fallback-img');
+      fallbackImages.forEach(function(img) {
+        img.style.display = 'block';
+      });
+    }
+  });
+</script>
 <!-- JS end -->	
 	
 	</body>
