@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Game - Claudio Olmedo</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 Word Game</h1>
+            <p class="subtitle">Aprenda e gerencie seu vocabulário em inglês</p>
+        </header>
+
+        <!-- Configuração Firebase -->
+        <div id="firebase-config" class="config-panel">
+            <h2>⚙️ Configuração Firebase</h2>
+            <p class="info">As credenciais já estão pré-preenchidas. Clique em "Salvar Configuração" para começar:</p>
+            <div class="config-form">
+                <label>
+                    <span>API Key:</span>
+                    <input type="text" id="apiKey" placeholder="AIza...">
+                </label>
+                <label>
+                    <span>Auth Domain:</span>
+                    <input type="text" id="authDomain" placeholder="word-xxxxx.firebaseapp.com">
+                </label>
+                <label>
+                    <span>Database URL:</span>
+                    <input type="text" id="databaseURL" placeholder="https://word-xxxxx-default-rtdb.firebaseio.com/">
+                </label>
+                <label>
+                    <span>Project ID:</span>
+                    <input type="text" id="projectId" placeholder="word-xxxxx">
+                </label>
+                <label>
+                    <span>Storage Bucket:</span>
+                    <input type="text" id="storageBucket" placeholder="word-xxxxx.appspot.com">
+                </label>
+                <label>
+                    <span>Messaging Sender ID:</span>
+                    <input type="text" id="messagingSenderId" placeholder="123456789">
+                </label>
+                <label>
+                    <span>App ID:</span>
+                    <input type="text" id="appId" placeholder="1:123456789:web:xxxxx">
+                </label>
+                <button id="saveConfig" class="btn btn-primary">Salvar Configuração</button>
+                <p class="info-small">As credenciais são salvas localmente no seu navegador</p>
+            </div>
+        </div>
+
+        <!-- Estatísticas -->
+        <div id="stats" class="stats-panel" style="display: none;">
+            <div class="stat-card">
+                <div class="stat-value" id="totalWords">0</div>
+                <div class="stat-label">Palavras Totais</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="masteredWords">0</div>
+                <div class="stat-label">Dominadas</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="learningWords">0</div>
+                <div class="stat-label">Aprendendo</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="avgConfidence">0%</div>
+                <div class="stat-label">Confiança Média</div>
+            </div>
+        </div>
+
+        <!-- Jogo Principal -->
+        <div id="game" class="game-panel" style="display: none;">
+            <div class="word-card">
+                <div class="word-display">
+                    <h2 id="currentWord">Carregando...</h2>
+                    <p id="wordDefinition" class="definition"></p>
+                </div>
+                
+                <div class="word-actions">
+                    <button id="btnKnow" class="btn btn-success">
+                        ✅ Conheço
+                    </button>
+                    <button id="btnLearning" class="btn btn-warning">
+                        📚 Estou Aprendendo
+                    </button>
+                    <button id="btnDontKnow" class="btn btn-danger">
+                        ❌ Não Conheço
+                    </button>
+                    <button id="btnSkip" class="btn btn-secondary">
+                        ⏭️ Pular
+                    </button>
+                </div>
+
+                <div class="word-input-section">
+                    <h3>Ou adicione uma palavra manualmente:</h3>
+                    <div class="input-group">
+                        <input type="text" id="manualWord" placeholder="Digite uma palavra em inglês">
+                        <button id="btnAddManual" class="btn btn-primary">Adicionar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+            <p class="progress-text">Palavra <span id="currentIndex">1</span> de <span id="totalWordsGame">100</span></p>
+        </div>
+
+        <!-- Lista de Palavras -->
+        <div id="wordsList" class="words-list-panel" style="display: none;">
+            <h2>📚 Suas Palavras</h2>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">Todas</button>
+                <button class="filter-btn" data-filter="mastered">Dominadas</button>
+                <button class="filter-btn" data-filter="learning">Aprendendo</button>
+                <button class="filter-btn" data-filter="unknown">Desconhecidas</button>
+            </div>
+            <div id="wordsContainer" class="words-container">
+                <!-- Palavras serão inseridas aqui -->
+            </div>
+        </div>
+
+        <!-- Navegação -->
+        <div class="nav-buttons">
+            <button id="btnStartGame" class="btn btn-large btn-primary" style="display: none;">
+                🎮 Iniciar Jogo
+            </button>
+            <button id="btnViewWords" class="btn btn-large btn-secondary" style="display: none;">
+                📚 Ver Minhas Palavras
+            </button>
+            <button id="btnBackToGame" class="btn btn-large btn-primary" style="display: none;">
+                ← Voltar ao Jogo
+            </button>
+        </div>
+
+        <!-- Status -->
+        <div id="status" class="status-message"></div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module" src="game.js"></script>
+</body>
+</html>
+
