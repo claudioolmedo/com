@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test - Word Game</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧪 API Test</h1>
+            <p class="subtitle">Teste a API de consulta de vocabulário</p>
+        </header>
+
+        <div class="api-test-panel">
+            <h2>Verificar Palavra</h2>
+            <div class="input-group">
+                <input type="text" id="wordInput" placeholder="Digite uma palavra">
+                <button id="btnCheckWord" class="btn btn-primary">Verificar</button>
+            </div>
+            <div id="wordResult" class="result-box"></div>
+
+            <h2 style="margin-top: 40px;">Analisar Texto</h2>
+            <textarea id="textInput" placeholder="Cole um texto aqui..." rows="5" style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px;"></textarea>
+            <button id="btnAnalyze" class="btn btn-primary" style="margin-top: 10px;">Analisar</button>
+            <div id="textResult" class="result-box"></div>
+
+            <h2 style="margin-top: 40px;">Estatísticas</h2>
+            <button id="btnStats" class="btn btn-primary">Obter Estatísticas</button>
+            <div id="statsResult" class="result-box"></div>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="api-docs.html" class="btn btn-secondary">📖 Ver Documentação</a>
+            <a href="../index.html" class="btn btn-secondary">← Voltar</a>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initAPI, checkWord, analyzeText, getStats } from '../js/api/api-client.js';
+        
+        // Carregar Firebase config
+        const saved = localStorage.getItem('firebaseConfig');
+        if (saved) {
+            const firebaseConfig = JSON.parse(saved);
+            initAPI(firebaseConfig);
+        }
+        
+        document.getElementById('btnCheckWord').addEventListener('click', async () => {
+            const word = document.getElementById('wordInput').value.trim();
+            if (!word) return;
+            
+            try {
+                const result = await checkWord(word);
+                document.getElementById('wordResult').innerHTML = `
+                    <h3>Resultado:</h3>
+                    <p><strong>Conhece:</strong> ${result.known ? 'Sim' : 'Não'}</p>
+                    <p><strong>Confiança:</strong> ${result.confidence}%</p>
+                    <p><strong>Status:</strong> ${result.status}</p>
+                    ${result.translation ? `<p><strong>Tradução:</strong> ${result.translation}</p>` : ''}
+                `;
+            } catch (error) {
+                document.getElementById('wordResult').innerHTML = `<p style="color: red;">Erro: ${error.message}</p>`;
+            }
+        });
+        
+        document.getElementById('btnAnalyze').addEventListener('click', async () => {
+            const text = document.getElementById('textInput').value.trim();
+            if (!text) return;
+            
+            try {
+                const result = await analyzeText(text);
+                document.getElementById('textResult').innerHTML = `
+                    <h3>Análise:</h3>
+                    <p><strong>Total de palavras:</strong> ${result.total_words}</p>
+                    <p><strong>Conhece:</strong> ${result.known_words.length} (${result.known_percentage}%)</p>
+                    <p><strong>Não conhece:</strong> ${result.unknown_words.length}</p>
+                    ${result.unknown_words.length > 0 ? `<p><strong>Palavras desconhecidas:</strong> ${result.unknown_words.join(', ')}</p>` : ''}
+                `;
+            } catch (error) {
+                document.getElementById('textResult').innerHTML = `<p style="color: red;">Erro: ${error.message}</p>`;
+            }
+        });
+        
+        document.getElementById('btnStats').addEventListener('click', async () => {
+            try {
+                const stats = await getStats();
+                document.getElementById('statsResult').innerHTML = `
+                    <h3>Estatísticas:</h3>
+                    <p><strong>Total de palavras:</strong> ${stats.total_words}</p>
+                    <p><strong>Dominadas:</strong> ${stats.mastered_count}</p>
+                    <p><strong>Aprendendo:</strong> ${stats.learning_count}</p>
+                    <p><strong>Desconhecidas:</strong> ${stats.unknown_count}</p>
+                    <p><strong>Confiança média:</strong> ${stats.total_confidence_avg}%</p>
+                `;
+            } catch (error) {
+                document.getElementById('statsResult').innerHTML = `<p style="color: red;">Erro: ${error.message}</p>`;
+            }
+        });
+    </script>
+    <style>
+        .result-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+        .result-box h3 {
+            margin-top: 0;
+            color: #667eea;
+        }
+    </style>
+</body>
+</html>
+

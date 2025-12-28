@@ -3,11 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Word Game - Claudio Olmedo</title>
+    <meta name="description" content="Aprenda e gerencie seu vocabulário em inglês com jogos interativos. Sistema de aprendizado de palavras integrado com Firebase.">
+    <meta name="keywords" content="vocabulário inglês, aprendizado de palavras, flashcards, quiz, word game">
+    <title>Word Game - Sistema de Aprendizado de Vocabulário | Claudio Olmedo</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/games.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .games-menu {
+            margin: 30px 0;
+        }
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .game-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            border-color: #667eea;
+        }
+        .game-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+        .game-card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .game-card p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -83,16 +125,16 @@
                 </div>
                 
                 <div class="word-actions">
-                    <button id="btnKnow" class="btn btn-success">
+                    <button id="btnKnow" class="btn btn-success" aria-label="Marcar palavra como conhecida">
                         ✅ Conheço
                     </button>
-                    <button id="btnLearning" class="btn btn-warning">
+                    <button id="btnLearning" class="btn btn-warning" aria-label="Marcar palavra como aprendendo">
                         📚 Estou Aprendendo
                     </button>
-                    <button id="btnDontKnow" class="btn btn-danger">
+                    <button id="btnDontKnow" class="btn btn-danger" aria-label="Marcar palavra como desconhecida">
                         ❌ Não Conheço
                     </button>
-                    <button id="btnSkip" class="btn btn-secondary">
+                    <button id="btnSkip" class="btn btn-secondary" aria-label="Pular palavra atual">
                         ⏭️ Pular
                     </button>
                 </div>
@@ -126,16 +168,60 @@
             </div>
         </div>
 
+        <!-- Menu de Jogos -->
+        <div id="gamesMenu" class="games-menu" style="display: none;">
+            <h2>🎮 Escolha um Jogo</h2>
+            <p class="info">Selecione um jogo para começar a aprender e detectar quais palavras você conhece:</p>
+            
+            <div class="games-grid">
+                <a href="games/flashcards.html" class="game-card">
+                    <div class="game-icon">📚</div>
+                    <h3>Flashcards</h3>
+                    <p>Revise palavras e marque seu conhecimento</p>
+                </a>
+                
+                <a href="games/quiz.html" class="game-card">
+                    <div class="game-icon">❓</div>
+                    <h3>Quiz</h3>
+                    <p>Teste com perguntas de múltipla escolha</p>
+                </a>
+                
+                <a href="games/typing.html" class="game-card">
+                    <div class="game-icon">⌨️</div>
+                    <h3>Typing Challenge</h3>
+                    <p>Digite traduções rapidamente</p>
+                </a>
+                
+                <a href="games/matching.html" class="game-card">
+                    <div class="game-icon">🔗</div>
+                    <h3>Matching</h3>
+                    <p>Encontre pares palavra-tradução</p>
+                </a>
+                
+                <a href="games/speedtest.html" class="game-card">
+                    <div class="game-icon">⚡</div>
+                    <h3>Speed Test</h3>
+                    <p>Teste rápido de conhecimento</p>
+                </a>
+                
+                <a href="games/hangman.html" class="game-card">
+                    <div class="game-icon">🎯</div>
+                    <h3>Hangman</h3>
+                    <p>Adivinhe palavras letra por letra</p>
+                </a>
+            </div>
+        </div>
+
         <!-- Navegação -->
         <div class="nav-buttons">
-            <button id="btnStartGame" class="btn btn-large btn-primary" style="display: none;">
-                🎮 Iniciar Jogo
+            <button id="btnRefreshStats" class="btn btn-large btn-secondary" style="display: none;">
+                🔄 Atualizar Estatísticas
             </button>
             <button id="btnViewWords" class="btn btn-large btn-secondary" style="display: none;">
                 📚 Ver Minhas Palavras
             </button>
-            <button id="btnBackToGame" class="btn btn-large btn-primary" style="display: none;">
-                ← Voltar ao Jogo
+            <button id="btnBackToGames" class="btn btn-large btn-primary" style="display: none;">
+                ← Voltar aos Jogos
             </button>
         </div>
 

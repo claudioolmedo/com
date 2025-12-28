@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation - Word Game</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .api-doc {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+        .endpoint {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .method {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+        .method.get { background: #10b981; color: white; }
+        .method.post { background: #667eea; color: white; }
+        code {
+            background: #e0e0e0;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="api-doc">
+            <header>
+                <h1>📡 API Documentation</h1>
+                <p class="subtitle">API REST para consultar conhecimento de vocabulário</p>
+            </header>
+
+            <div class="endpoint">
+                <h2><span class="method get">GET</span> /api/word/{word}</h2>
+                <p>Verifica o conhecimento de uma palavra específica.</p>
+                <h3>Exemplo:</h3>
+                <pre><code>GET /api/word/house
+Authorization: Bearer wlwheklsheio23890w</code></pre>
+                <h3>Resposta:</h3>
+                <pre><code>{
+  "known": true,
+  "confidence": 95,
+  "status": "mastered",
+  "lastSeen": "2024-01-15T10:30:00Z"
+}</code></pre>
+            </div>
+
+            <div class="endpoint">
+                <h2><span class="method post">POST</span> /api/words/batch</h2>
+                <p>Verifica conhecimento de múltiplas palavras.</p>
+                <h3>Exemplo:</h3>
+                <pre><code>POST /api/words/batch
+Content-Type: application/json
+Authorization: Bearer wlwheklsheio23890w
+
+["house", "serendipity", "ephemeral"]</code></pre>
+            </div>
+
+            <div class="endpoint">
+                <h2><span class="method get">GET</span> /api/stats</h2>
+                <p>Retorna estatísticas gerais.</p>
+            </div>
+
+            <div class="endpoint">
+                <h2><span class="method post">POST</span> /api/analyze/text</h2>
+                <p>Analisa um texto e retorna palavras conhecidas/desconhecidas.</p>
+                <h3>Exemplo:</h3>
+                <pre><code>POST /api/analyze/text
+Content-Type: application/json
+
+{
+  "text": "The house was beautiful..."
+}</code></pre>
+            </div>
+
+            <div class="nav-buttons" style="margin-top: 40px;">
+                <a href="../index.html" class="btn btn-secondary">← Voltar</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

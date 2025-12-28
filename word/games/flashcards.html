@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcards - Word Game</title>
+    <link rel="stylesheet" href="../css/games.css">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Flashcards</h1>
+            <p class="subtitle">Revise palavras e marque seu conhecimento</p>
+        </header>
+
+        <div class="game-stats">
+            <div class="stat-mini">
+                <span id="currentCard">1</span> / <span id="totalCards">0</span>
+            </div>
+            <div class="stat-mini">
+                Pontos: <span id="score">0</span>
+            </div>
+        </div>
+
+        <div id="flashcard" class="flashcard">
+            <div class="flashcard-inner" id="cardInner">
+                <div class="flashcard-front" id="cardFront">
+                    <h2 id="wordDisplay">Carregando...</h2>
+                    <p class="hint">Clique para ver a tradução</p>
+                </div>
+                <div class="flashcard-back" id="cardBack">
+                    <p id="translationDisplay"></p>
+                    <p id="definitionDisplay"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-actions">
+            <button id="btnKnow" class="btn btn-success">✅ Conheço</button>
+            <button id="btnLearning" class="btn btn-warning">📚 Aprendendo</button>
+            <button id="btnDontKnow" class="btn btn-danger">❌ Não Conheço</button>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar"></div>
+        </div>
+
+        <div class="nav-buttons">
+            <button id="btnBack" class="btn btn-secondary">← Voltar</button>
+            <button id="btnRestart" class="btn btn-primary">🔄 Reiniciar</button>
+        </div>
+    </div>
+
+    <script type="module" src="../js/games/flashcards.js"></script>
+</body>
+</html>
+

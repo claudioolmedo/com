@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matching Game - Word Game</title>
+    <link rel="stylesheet" href="../css/games.css">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔗 Matching Game</h1>
+            <p class="subtitle">Encontre os pares palavra-tradução</p>
+        </header>
+
+        <div class="game-stats">
+            <div class="stat-mini">Tentativas: <span id="attempts">0</span></div>
+            <div class="stat-mini">Pares encontrados: <span id="matched">0</span>/<span id="totalPairs">0</span></div>
+        </div>
+
+        <div class="matching-grid" id="matchingGrid"></div>
+
+        <div class="nav-buttons">
+            <button id="btnBack" class="btn btn-secondary">← Voltar</button>
+            <button id="btnRestart" class="btn btn-primary">🔄 Reiniciar</button>
+        </div>
+    </div>
+
+    <script type="module" src="../js/games/matching.js"></script>
+</body>
+</html>
+

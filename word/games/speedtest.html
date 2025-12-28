@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speed Test - Word Game</title>
+    <link rel="stylesheet" href="../css/games.css">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚡ Speed Test</h1>
+            <p class="subtitle">Marque rapidamente se você conhece a palavra</p>
+        </header>
+
+        <div class="game-stats">
+            <div class="stat-mini">Palavra <span id="currentNum">1</span>/<span id="total">50</span></div>
+            <div class="stat-mini">Conheço: <span id="known">0</span></div>
+            <div class="stat-mini timer" id="timer">60s</div>
+        </div>
+
+        <div class="speed-test-container">
+            <div class="word-display-large" id="wordDisplay">Carregando...</div>
+            <div class="speed-actions">
+                <button id="btnKnow" class="btn btn-success btn-large">✅ CONHEÇO</button>
+                <button id="btnDontKnow" class="btn btn-danger btn-large">❌ NÃO CONHEÇO</button>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <button id="btnBack" class="btn btn-secondary">← Voltar</button>
+        </div>
+    </div>
+
+    <script type="module" src="../js/games/speedtest.js"></script>
+</body>
+</html>
+

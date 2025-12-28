@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangman - Word Game</title>
+    <link rel="stylesheet" href="../css/games.css">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 Hangman</h1>
+            <p class="subtitle">Adivinhe a palavra letra por letra</p>
+        </header>
+
+        <div class="game-stats">
+            <div class="stat-mini">Vidas: <span id="lives">6</span></div>
+            <div class="stat-mini">Palavra <span id="wordNum">1</span>/<span id="totalWords">10</span></div>
+        </div>
+
+        <div class="hangman-container">
+            <div class="hangman-drawing" id="hangmanDrawing">
+                <pre id="drawing">_______
+|     |
+|     
+|     
+|     
+|     
+|_____</pre>
+            </div>
+            <div class="hangman-display" id="wordDisplay">_ _ _ _ _</div>
+            <p id="hint" class="hint-text"></p>
+            <div class="keyboard" id="keyboard"></div>
+        </div>
+
+        <div class="nav-buttons">
+            <button id="btnBack" class="btn btn-secondary">← Voltar</button>
+            <button id="btnNext" class="btn btn-primary" style="display: none;">Próxima Palavra →</button>
+        </div>
+    </div>
+
+    <script type="module" src="../js/games/hangman.js"></script>
+</body>
+</html>
+
