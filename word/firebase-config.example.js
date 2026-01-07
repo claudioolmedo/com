@@ -20,3 +20,4 @@ export const firebaseConfig = {
 // 5. Clique em "</>" (Web)
 // 6. Copie as credenciais que aparecem
 
+

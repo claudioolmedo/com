@@ -48,6 +48,60 @@
     <!-- ANIMATE -->	
 		<link rel='stylesheet' href="css/animate.min.css">
 		
+		<!-- SOCIAL ICONS STYLES -->
+		<style>
+			.header-wrapper {
+				position: relative;
+			}
+			.header-social-icons-inline {
+				position: absolute;
+				top: 50%;
+				right: 100px;
+				transform: translateY(-50%);
+				display: flex;
+				gap: 20px;
+				z-index: 100;
+			}
+			.header-social-icons-inline a {
+				color: #fff;
+				font-size: 24px;
+				opacity: 0.9;
+				transition: opacity 0.3s, transform 0.3s;
+				text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+			}
+			.header-social-icons-inline a:hover {
+				opacity: 1;
+				transform: scale(1.2);
+			}
+			@media (max-width: 991px) {
+				.header-social-icons-inline {
+					right: 70px;
+					gap: 16px;
+				}
+				.header-social-icons-inline a {
+					font-size: 22px;
+				}
+			}
+			@media (max-width: 778px) {
+				.header-social-icons-inline {
+					right: 60px;
+					gap: 14px;
+				}
+				.header-social-icons-inline a {
+					font-size: 20px;
+				}
+			}
+			@media (max-width: 480px) {
+				.header-social-icons-inline {
+					right: 50px;
+					gap: 12px;
+				}
+				.header-social-icons-inline a {
+					font-size: 18px;
+				}
+			}
+		</style>
+		
     <!-- IE Warning CSS -->
 		<!--[if lte IE 8]><link rel="stylesheet" type="text/css" href="css/ie-warning.css" ><![endif]-->
 		<!--[if lte IE 8]><link rel="stylesheet" type="text/css" href="css/ie8-fix.css" ><![endif]-->
@@ -121,6 +175,16 @@
              </div>
             </div>
 
+              <!-- SOCIAL ICONS IN HEADER -->
+              <div class="header-social-icons-inline">
+                <a href="https://www.linkedin.com/in/claudioolmedo-com/" title="Follow on LinkedIn" target="_blank" rel="noopener noreferrer">
+                  <i class="fa fa-linkedin"></i>
+                </a>
+                <a href="https://www.instagram.com/claudioolmedo_com/" title="Follow on Instagram" target="_blank" rel="noopener noreferrer">
+                  <i class="fa fa-instagram"></i>
+                </a>
+              </div>
+
               <!-- BUTTON --> 
               <div class="menu-btn-respons-container2">
                 <a class="fs-primary-nav-trigger" href="#"><span class="fs-menu-icon"></span></a>
@@ -182,7 +246,7 @@
                             data-hoffset="['40','40','40','20']" 
                             data-y="['center','center','center','center']" 
                             data-voffset="['-100','-90','-80','-70']">
-                              Opportunity for all to learn 
+                              Opportunity for every child to learn
                             </div>
 
                             <!-- LAYER NR. 2 -->
@@ -206,7 +270,7 @@
                             data-hoffset="['40','40','40','20']" 
                             data-y="['center','center','center','center']" 
                             data-voffset="['0','0','0','0']">
-                              engineers so &nbsp;they can 
+                              programming &amp; robotics —
                             </div>
 
                             <!-- LAYER NR. 3 -->
@@ -230,7 +294,7 @@
                             data-hoffset="['40','40','40','20']" 
                             data-y="['center','center','center','center']" 
                             data-voffset="['100','90','80','70']">
-                              make a <i>better world</i><span class="red-dot">.</span>
+                              and build a <i>better world</i><span class="red-dot">.</span>
                             </div>
                         </li>
                     </ul>
@@ -253,10 +317,10 @@
         	<div class="container">
         		<div>
         			<h3 class="sl2-text font-josefin">
-            Talented engineers are scattered around the <i>world</i> waiting to be discovered. Providing them with that first contact is fundamental, giving them their <i>first experiences</i> and the tools they need to develop their <i>talents</i>.
-            Claudio Olmedo	
-          </h3>
-
+    Talented engineers are everywhere — often undiscovered. I build ultra‑affordable tools and beginner‑friendly activities that give people their <i>first experience</i> with programming and robotics, so they can grow their <i>skills</i> and create real things.
+    <br><br>
+    Claudio Olmedo
+  </h3>
         		</div>
         	</div>
         </div>
@@ -341,106 +405,14 @@
         	<div class="container">
         		<div>
         			<h3 class="sl2-text font-josefin">
-                I believe that everyone should have the opportunity to learn and grow, regardless of their background or circumstances. That's why I'm working to make hardware, software, and education more <i>affordable</i> and accessible to people around the <i>world</i>.<br><br>Claudio Olmedo</h3>
-
+    I’m working on hardware, software, and educational experiences that are <i>affordable</i> and accessible worldwide — from classroom‑ready activities to hands‑on learning tools that help beginners build real things.
+    <br><br>
+    Claudio Olmedo
+  </h3>
         		</div>
         	</div>
         </div>     
-        <!-- PORTFOLIO 3 (2 COLS, MASONRY) FONT JOSEFIN -->
-        <div class="page-section">
-          <div class="relative">
-            
-            <!-- ITEMS GRID -->
-            <ul class="port-grid port-grid-2 masonry clearfix" id="items-grid">
-              
-              <!-- Item -->
-              <li class="port-item mix">
-                <div class="port-text-cont relative">
-                  <img class="port-main-img" src="images/portfolio/bg-black.png" alt="img" >
-										<div class="block-center-xy">
-										  <div class="title-fs-45-wide font-josefin font-light font-white">
-										  	<i class="border-bot">latest</i>&nbsp;works
-										  </div>
-										</div>
-								</div>
-              </li>
-              <!-- Item big -->
-              <li class="port-item mix photography">
-                  <div class="port-img-overlay">
-                    <video class="port-main-img" autoplay loop muted playsinline>
-                      <source src="images/portfolio/woodtostick.mp4" type="video/mp4">
-                      Your browser does not support the video tag.
-                    </video>
-                    <!-- Fallback Image for Safari -->
-                    <img src="images/portfolio/woodtostick.png" class="port-main-img safari-fallback-img" style="display:none;">
-                  </div>
-                  <div class="port-overlay-cont">
-                    <div class="port-title-cont2">
-                      <h3 class="font-26 font-josefin">Stick.Education</h3>
-                      <span>Electronic Ice Cream Stick to control other sticks.</span>
-                    </div>
-                  </div>
-              </li>                                           
-
-              <!-- Item -->
-              <li class="port-item mix development">
-                <!-- <a href="#"> -->
-                  <div class="port-img-overlay"><img class="port-main-img" src="images/portfolio/960x480_workshops.jpg" alt="img" >
-                  </div>
-                  <div class="port-overlay-cont">
-                    <div class="port-title-cont2">
-                      <h3 class="font-26 font-josefin">Develop Affordable STEM Teaching Products</h3>
-                      <span>The robot whose packaging transforms into the robot's structure</span>
-                    </div>
-                  </div>
-                <!-- </a> -->
-              </li>
-              <!-- New Item -->
-              <li class="port-item mix">
-                <div class="port-img-overlay">
-                  <img class="port-main-img" src="images/portfolio/960_480_stick_education_robotics_activities_usa.jpg" alt="Activity w stick.education">
-                </div>
-                <div class="port-overlay-cont">
-                  <div class="port-title-cont2">
-                    <h3 class="font-26 font-josefin">Introduction to Robotics</h3>
-                    <span> and Programming Activity, a first introduction to robotics using hardware with <a href="https://stick.education" target="_blank">stick.education</a>.</span>
-                  </div>
-                </div>
-              </li>
-                            <!-- New Item -->
-                            <li class="port-item mix">
-                              <div class="port-img-overlay">
-                                <img class="port-main-img" src="images/portfolio/stiisk_editor_popsicle_stick_v0.3.png" alt="Activity w stick.education">
-                              </div>
-                              <div class="port-overlay-cont">
-                                <div class="port-title-cont2">
-                                  <h3 class="font-26 font-josefin">STIISK: 3D Popscile* Sticks Projects</h3>
-                                  <span>To awaken and nurture talents globally by providing accessible materials and inspiring projects, starting with something simple like popsicle sticks, and making technology accessible to everyone. <a href="https://stiisk.com" target="_blank">stiisk.com</a>.</span>
-                                </div>
-                              </div>
-                            </li>
-              <!-- New Item -->
-              <li class="port-item mix col-xs-12 col-sm-12 col-md-12">
-                <div class="port-img-overlay">
-                  <img class="port-main-img" src="images/portfolio/new-image.jpg" alt="">
-                </div>
-                <div class="port-overlay-cont">
-                  <div class="port-title-cont2">
-                    <h3 class="font-26 font-josefin"></h3>
-                    <span></span>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          
-          </div>
-        </div>
         
-        <!-- VIEW MORE PROJECTS  
-        <div class="port-view-more-cont">
-          <a class="port-view-more font-josefin font-20" href="#">view all projects</a>
-        </div>
-        <!-- END PORTFOLIO SECTION -->
         
 
         <!-- FOOTER 1 only social links -->
@@ -448,11 +420,21 @@
           <div class="container">
                     
             <!-- Social Links -->
-            <div class="footer-soc-a">
-              <!-- <a href="https://www.facebook.com/" title="Facebook" target="_blank"><i class="fa fa-facebook"></i></a>-->
-              <!-- <a href="https://twitter.com/" title="Twitter" target="_blank"><i class="fa fa-twitter"></i></a>-->
+            <div class="footer-soc-a" style="margin-top:10px;">
+              <div class="font-josefin" style="font-size:28px; line-height:1.2; margin-bottom:18px;">
+                Follow me for updates
+              </div>
 
-              <a href="https://www.linkedin.com/in/claudioolmedo-com/" title="LinkedIn+" target="_blank"><i class="fa fa-linkedin" style="font-size: 24px;"></i></a>
+
+              <a href="https://www.linkedin.com/in/claudioolmedo-com/" title="LinkedIn" target="_blank" rel="noopener noreferrer" style="display:inline-block; margin:0 18px;">
+                <i class="fa fa-linkedin" style="font-size:44px;"></i>
+                <div class="font-open-sans" style="font-size:14px; margin-top:10px;">LinkedIn</div>
+              </a>
+
+              <a href="https://www.instagram.com/claudioolmedo_com/" title="Instagram" target="_blank" rel="noopener noreferrer" style="display:inline-block; margin:0 18px;">
+                <i class="fa fa-instagram" style="font-size:44px;"></i>
+                <div class="font-open-sans" style="font-size:14px; margin-top:10px;">Instagram</div>
+              </a>
             </div>
                     
           </div>
@@ -573,6 +555,31 @@
       fallbackImages.forEach(function(img) {
         img.style.display = 'block';
       });
+    }
+    
+    // Hide header social icons when footer is visible
+    var headerSocialIcons = document.querySelector('.header-social-icons-inline');
+    var footer = document.getElementById('footer1');
+    
+    if (headerSocialIcons && footer) {
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            // Footer is visible, hide header icons
+            headerSocialIcons.style.opacity = '0';
+            headerSocialIcons.style.pointerEvents = 'none';
+            headerSocialIcons.style.transition = 'opacity 0.3s ease';
+          } else {
+            // Footer is not visible, show header icons
+            headerSocialIcons.style.opacity = '1';
+            headerSocialIcons.style.pointerEvents = 'auto';
+          }
+        });
+      }, {
+        threshold: 0.1 // Trigger when 10% of footer is visible
+      });
+      
+      observer.observe(footer);
     }
   });
 </script>
