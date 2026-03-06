@@ -50,54 +50,45 @@
 		
 		<!-- SOCIAL ICONS STYLES -->
 		<style>
-			.header-wrapper {
-				position: relative;
-			}
-			.header-social-icons-inline {
-				position: absolute;
-				top: 50%;
-				right: 100px;
-				transform: translateY(-50%);
+			.social-icons-fixed {
+				position: fixed;
+				top: 25px;
+				right: 80px;
+				bottom: auto;
+				left: auto;
 				display: flex;
-				gap: 20px;
-				z-index: 100;
+				gap: 16px;
+				z-index: 9999;
 			}
-			.header-social-icons-inline a {
+			.social-icons-fixed a {
 				color: #fff;
-				font-size: 24px;
-				opacity: 0.9;
+				font-size: 22px;
+				opacity: 0.85;
 				transition: opacity 0.3s, transform 0.3s;
-				text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+				text-shadow: 0 1px 3px rgba(0,0,0,0.3);
 			}
-			.header-social-icons-inline a:hover {
+			.social-icons-fixed a:hover {
 				opacity: 1;
-				transform: scale(1.2);
+				transform: scale(1.15);
 			}
 			@media (max-width: 991px) {
-				.header-social-icons-inline {
-					right: 70px;
-					gap: 16px;
-				}
-				.header-social-icons-inline a {
-					font-size: 22px;
+				.social-icons-fixed {
+					top: auto;
+					bottom: 30px;
+					right: auto;
+					left: 20px;
 				}
 			}
 			@media (max-width: 778px) {
-				.header-social-icons-inline {
-					right: 60px;
+				.social-icons-fixed {
+					top: auto;
+					bottom: 25px;
+					right: auto;
+					left: 20px;
 					gap: 14px;
 				}
-				.header-social-icons-inline a {
-					font-size: 20px;
-				}
-			}
-			@media (max-width: 480px) {
-				.header-social-icons-inline {
-					right: 50px;
-					gap: 12px;
-				}
-				.header-social-icons-inline a {
-					font-size: 18px;
+				.social-icons-fixed a {
+					font-size: 24px;
 				}
 			}
 		</style>
@@ -175,22 +166,22 @@
              </div>
             </div>
 
-              <!-- SOCIAL ICONS IN HEADER -->
-              <div class="header-social-icons-inline">
-                <a href="https://www.linkedin.com/in/claudioolmedo-com/" title="Follow on LinkedIn" target="_blank" rel="noopener noreferrer">
-                  <i class="fa fa-linkedin"></i>
-                </a>
-                <a href="https://www.instagram.com/claudioolmedo_com/" title="Follow on Instagram" target="_blank" rel="noopener noreferrer">
-                  <i class="fa fa-instagram"></i>
-                </a>
-              </div>
-
               <!-- BUTTON --> 
               <div class="menu-btn-respons-container2">
                 <a class="fs-primary-nav-trigger" href="#"><span class="fs-menu-icon"></span></a>
               </div>
 				  </div> <!-- END header-wrapper -->
 				</header>
+				
+				<!-- SOCIAL ICONS FIXED -->
+				<div class="social-icons-fixed">
+					<a href="https://www.linkedin.com/in/claudioolmedo-com/" title="Follow on LinkedIn" target="_blank" rel="noopener noreferrer">
+						<i class="fa fa-linkedin"></i>
+					</a>
+					<a href="https://www.instagram.com/claudioolmedo/" title="Follow on Instagram" target="_blank" rel="noopener noreferrer">
+						<i class="fa fa-instagram"></i>
+					</a>
+				</div>
         
         <!-- MENU FONT JOSEFIN-->      
         <nav>
@@ -425,6 +416,9 @@
                 Follow me for updates
               </div>
 
+              <div class="font-open-sans" style="font-size:16px; opacity:0.85; margin-bottom:26px;">
+                Instagram and LinkedIn
+              </div>
 
               <a href="https://www.linkedin.com/in/claudioolmedo-com/" title="LinkedIn" target="_blank" rel="noopener noreferrer" style="display:inline-block; margin:0 18px;">
                 <i class="fa fa-linkedin" style="font-size:44px;"></i>
@@ -555,31 +549,6 @@
       fallbackImages.forEach(function(img) {
         img.style.display = 'block';
       });
-    }
-    
-    // Hide header social icons when footer is visible
-    var headerSocialIcons = document.querySelector('.header-social-icons-inline');
-    var footer = document.getElementById('footer1');
-    
-    if (headerSocialIcons && footer) {
-      var observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-          if (entry.isIntersecting) {
-            // Footer is visible, hide header icons
-            headerSocialIcons.style.opacity = '0';
-            headerSocialIcons.style.pointerEvents = 'none';
-            headerSocialIcons.style.transition = 'opacity 0.3s ease';
-          } else {
-            // Footer is not visible, show header icons
-            headerSocialIcons.style.opacity = '1';
-            headerSocialIcons.style.pointerEvents = 'auto';
-          }
-        });
-      }, {
-        threshold: 0.1 // Trigger when 10% of footer is visible
-      });
-      
-      observer.observe(footer);
     }
   });
 </script>

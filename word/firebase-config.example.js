@@ -21,3 +21,4 @@ export const firebaseConfig = {
 // 6. Copie as credenciais que aparecem
 
 
+
