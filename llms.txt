@@ -1,0 +1,38 @@
+# Claudio Olmedo - Robotics Education & STEM
+
+All children in the world should have the opportunity to learn programming and robotics so they can make a better world. Greatness is built in the ordinary.
+
+---
+
+## Core Vision
+I build ultra‑affordable tools and beginner‑friendly activities that give people their first experience with programming and robotics, so they can grow their skills and create real things.
+
+---
+
+## Key Projects
+
+### One Dollar Computer (formerly One Dollar Board)
+A minimal, open-source RISC-V development board designed for extremely low-cost manufacturing and global accessibility. 
+*   **MCU:** CH32V003 (RISC-V)
+*   **Design:** 2-layer PCB, single-sided SMD assembly, 0603 passives
+*   **Compatibility:** WebHID compatible
+*   **Files:** Gerbers, BOM, Pick & Place, schematics are open-source
+*   **Allocations & Support:** [Milestone Build Registry](https://shop.claudioolmedo.com)
+
+### Educational Philosophy
+Exposing children to hands-on learning with tangible materials (e.g., Ice Cream Sticks, ROBOX™ robotics) to foster creativity, motor skills, and scientific curiosity without digital frustration.
+*   **Article:** [The Role of Ice Cream Sticks in Education](https://claudioolmedo.com/sticks.html)
+
+---
+
+## Services & Expertise
+*   STEM curriculum development
+*   RISC-V hardware development
+*   Robotics educational kit design (ROBOX™)
+*   Low-cost manufacturing consulting
+
+---
+
+## Contact & Follow
+*   **LinkedIn:** [claudioolmedo-com](https://www.linkedin.com/in/claudioolmedo-com/)
+*   **Instagram:** [claudioolmedo](https://www.instagram.com/claudioolmedo/)

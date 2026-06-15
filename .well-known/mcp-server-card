@@ -1,0 +1,20 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/server-card.json",
+  "name": "one-dollar-computer-mcp",
+  "version": "1.0.0",
+  "description": "Exposes status, documentation, and active build milestones for the One Dollar Computer project.",
+  "protocol_version": "2024-11-05",
+  "serverUrl": "https://shop.claudioolmedo.com/api",
+  "repository": "https://github.com/claudioolmedo/shop",
+  "websiteUrl": "https://claudioolmedo.com",
+  "tools": [
+    {
+      "name": "get_active_milestones",
+      "description": "Retrieve the list of active engineering and deployment milestones currently open for allocation."
+    },
+    {
+      "name": "get_project_vision",
+      "description": "Exposes the core philosophical and design principles behind the One Dollar Computer."
+    }
+  ]
+}

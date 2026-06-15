@@ -1,0 +1,122 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "One Dollar Computer API",
+    "description": "Backend services for retrieving active build milestones and creating Stripe Checkout sessions.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://shop.claudioolmedo.com",
+      "description": "Production Build & Allocation Server"
+    }
+  ],
+  "paths": {
+    "/api/campaigns": {
+      "get": {
+        "summary": "Get Active Milestones",
+        "description": "Returns the active engineering and computer allocation milestones.",
+        "responses": {
+          "200": {
+            "description": "A JSON array of active milestones",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Milestone"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/create-checkout-session": {
+      "post": {
+        "summary": "Create Checkout Session",
+        "description": "Initiate a Stripe Checkout session for a specified set of milestone allocations.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CheckoutRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful session initialization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "format": "uri",
+                      "description": "Redirect URL to complete Stripe checkout."
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "Stripe Session ID."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid items or quantities selected"
+          },
+          "503": {
+            "description": "Stripe keys are not configured"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Milestone": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "type": { "type": "string", "example": "Allocation" },
+          "name": { "type": "string", "example": "Fund one computer allocation" },
+          "description": { "type": "string" },
+          "unitAmount": { "type": "integer", "description": "Target amount in cents" },
+          "currency": { "type": "string", "default": "usd" },
+          "probability": { "type": "string", "example": "100%" },
+          "reward": { "type": "string" },
+          "maxQty": { "type": "integer" }
+        }
+      },
+      "CheckoutRequest": {
+        "type": "object",
+        "required": ["email", "items"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "supporter@example.com"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "quantity"],
+              "properties": {
+                "id": { "type": "string" },
+                "quantity": { "type": "integer", "minimum": 1 }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
