@@ -19,4 +19,7 @@ Allow: /
 User-agent: *
 Allow: /
 
+# AI policy expressing preferences for search, AI grounding, and training
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+
 Sitemap: https://claudioolmedo.com/sitemap.xml
