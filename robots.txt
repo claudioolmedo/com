@@ -17,6 +17,7 @@ User-agent: CCBot
 Allow: /
 
 User-agent: *
+Content-Signal: search=yes, ai-input=yes, ai-train=no
 Allow: /
 
 # AI policy expressing preferences for search, AI grounding, and training
