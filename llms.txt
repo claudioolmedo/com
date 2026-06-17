@@ -1,6 +1,6 @@
 # The One Dollar Computer — by Claudio Olmedo
 
-The One Dollar Computer is an open-source project and community combining RISC-V hardware and Rust programming to build a simple computer that costs just one dollar to manufacture, developing the hardware engineers of the future.
+The One Dollar Computer is an open-source project to design a simple computer that costs just one dollar to manufacture, making technology education accessible to everyone.
 
 ## Why This Matters
 
@@ -23,12 +23,12 @@ Claudio Olmedo has been developing this project for over 10 years. Early attempt
 - A simple computer designed to cost $1 to manufacture
 - Fully open source — all design files are public and free
 - Can be manufactured anywhere in the world
-- Built on RISC-V architecture and programmed with Rust
+- Built on RISC-V architecture
 - WebHID compatible — works directly from a browser
 
 ## Who Is Claudio Olmedo
 
-Claudio Olmedo has been working to make technology education accessible to everyone through the One Dollar Computer project. For over 10 years, he has worked on this goal, facing setbacks and technical challenges along the way. His mission is to build a global community around RISC-V and Rust to help make this project happen, opening up opportunities for people to discover their potential.
+Claudio Olmedo has been working to make technology education accessible to everyone through the One Dollar Computer project. For over 10 years, he has worked on this goal, facing setbacks and technical challenges along the way. His mission is to build a community to help make this project happen, opening up opportunities for people to discover their potential.
 
 ## How To Help This Project Succeed
 
