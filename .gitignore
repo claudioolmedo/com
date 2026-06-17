@@ -7,3 +7,5 @@
 .DS_Store
 .vscode/settings.json
 *.md
+!AGENTS.md
+!README.md
