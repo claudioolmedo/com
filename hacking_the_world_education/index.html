@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<!--
+	Author: Claudio Olmedo 
+-->
+
+<html lang="en">
+ 	<head>
+		<title>Hacking the World Education | Claudio Olmedo</title>
+		<meta charset="UTF-8">
+		<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+		<meta name="robots" content="index, follow">
+		<meta name="keywords" content="One Dollar Computer, Claudio Olmedo, affordable computer, talent discovery, accessible technology, open source hardware, education technology">
+		<meta name="description" content="Everyone has talent waiting to be discovered. The One Dollar Computer removes the barriers — so anyone can learn, create, and build a better world.">
+		<meta name="author" content="Claudio Olmedo">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="theme-color" content="#2a2b2f">
+		<link rel="canonical" href="https://claudioolmedo.com">
+    <meta property="og:image" content="https://claudioolmedo.com/images/revo-slider/face.jpg">
+    <meta property="og:title" content="The One Dollar Computer — by Claudio Olmedo">
+    <meta property="og:description" content="A simple computer built to cost just one dollar — because everyone deserves the chance to discover their talent.">
+    <meta property="og:url" content="https://claudioolmedo.com">
+    <meta property="og:type" content="website">
+
+    <!-- SCHEMA.ORG STRUCTURED DATA -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Claudio Olmedo",
+      "url": "https://claudioolmedo.com",
+      "jobTitle": "Creator of the One Dollar Computer project",
+      "sameAs": [
+        "https://www.linkedin.com/in/claudioolmedo-com/",
+        "https://www.instagram.com/claudioolmedo_com/"
+      ],
+      "knowsAbout": ["RISC-V", "Open Hardware", "PCB Design", "Robotics Education", "Low-cost Manufacturing"]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": "One Dollar Computer",
+      "description": "A simple computer built to cost just one dollar",
+      "url": "https://claudioolmedo.com",
+      "brand": {
+        "@type": "Brand",
+        "name": "One Dollar Computer"
+      },
+      "manufacturer": {
+        "@type": "Person",
+        "name": "Claudio Olmedo"
+      }
+    }
+    </script>
+
+		<!-- FAVICONS -->
+    <link rel="shortcut icon" href="../images/favicon/favicon.png">
+    <link rel="apple-touch-icon" href="../images/favicon/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/favicon/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/favicon/apple-touch-icon-114x114.png">
+    <link rel="icon" sizes="192x192" href="../images/favicon/icon-192x192.png">
+		
+<!-- CSS -->
+    <!--  GOOGLE FONT -->		
+    <link href='https://fonts.googleapis.com/css?family=Josefin+Sans:400,300,300italic%7COpen+Sans:400,300,700' rel='stylesheet' type='text/css'>
+    
+    <!-- REVOSLIDER CSS SETTINGS -->
+    
+    <!-- REVOLUTION STYLE SHEETS -->
+    <link href="../revo-slider/css/settings-custom.css" rel="stylesheet" type="text/css">
+    
+    <!--  BOOTSTRAP -->
+		<link rel="stylesheet" href="../css/bootstrap.min.css"> 
+	
+    <!-- ICONS ELEGANT FONT & FONT AWESOME & LINEA ICONS  -->		
+		<link rel="stylesheet" href="../css/icons-fonts.css" >	
+	
+    <!--  CSS THEME -->		
+		<link rel="stylesheet" href="../css/style.css" >
+	
+    <!-- ANIMATE -->	
+		<link rel='stylesheet' href="../css/animate.min.css">
+		
+		<!-- SOCIAL ICONS STYLES -->
+		<style>
+			.social-icons-fixed {
+				position: fixed;
+				top: 25px;
+				right: 80px;
+				bottom: auto;
+				left: auto;
+				display: flex;
+				gap: 16px;
+				z-index: 9999;
+			}
+			.social-icons-fixed a {
+				color: #fff;
+				font-size: 22px;
+				opacity: 0.85;
+				transition: opacity 0.3s, transform 0.3s;
+				text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+			}
+			.social-icons-fixed a:hover {
+				opacity: 1;
+				transform: scale(1.15);
+			}
+			@media (max-width: 991px) {
+				.social-icons-fixed {
+					top: auto;
+					bottom: 30px;
+					right: auto;
+					left: 20px;
+				}
+			}
+			@media (max-width: 778px) {
+				.social-icons-fixed {
+					top: auto;
+					bottom: 25px;
+					right: auto;
+					left: 20px;
+					gap: 14px;
+				}
+				.social-icons-fixed a {
+					font-size: 24px;
+				}
+			}
+		</style>
+		
+    <!-- IE Warning CSS -->
+		<!--[if lte IE 8]><link rel="stylesheet" type="text/css" href="../css/ie-warning.css" ><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" type="text/css" href="../css/ie8-fix.css" ><![endif]-->
+    
+    <!-- Magnific popup, Owl Carousel Assets in style.css -->		
+	
+<!-- CSS end -->
+
+<!-- JS begin some js files in bottom of file-->
+		
+		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		  <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+		
+	</head>
+	<body>
+	
+		<!-- LOADER -->	
+		<div id="loader-overflow">
+      <div id="loader3" class="loader-cont">Please enable JS</div>
+    </div>	
+
+		<div id="wrap" class="boxed ">
+			<div class="grey-bg"> <!-- Grey BG  -->	
+				
+				<!--[if lte IE 8]>
+				<div id="ie-container">
+					<div id="ie-cont-close">
+						<a href='#' onclick='javascript&#058;this.parentNode.parentNode.style.display="none"; return false;'><img src='images/ie-warn/ie-warning-close.jpg' style='border: none;' alt='Close'></a>
+					</div>
+					<div id="ie-cont-content" >
+						<div id="ie-cont-warning">
+							<img src='images/ie-warn/ie-warning.jpg' alt='Warning!'>
+						</div>
+						<div id="ie-cont-text" >
+							<div id="ie-text-bold">
+								You are using an outdated browser
+							</div>
+							<div id="ie-text">
+								For a better experience using this site, please upgrade to a modern web browser.
+							</div>
+						</div>
+						<div id="ie-cont-brows" >
+							<a href='https://www.mozilla.org/firefox/' target='_blank' rel='noopener noreferrer'><img src='images/ie-warn/ie-warning-firefox.jpg' alt='Download Firefox'></a>
+							<a href='https://www.opera.com/download/' target='_blank' rel='noopener noreferrer'><img src='images/ie-warn/ie-warning-opera.jpg' alt='Download Opera'></a>
+							<a href='https://www.apple.com/safari/' target='_blank' rel='noopener noreferrer'><img src='images/ie-warn/ie-warning-safari.jpg' alt='Download Safari'></a>
+							<a href='https://www.google.com/chrome/' target='_blank' rel='noopener noreferrer'><img src='images/ie-warn/ie-warning-chrome.jpg' alt='Download Google Chrome'></a>
+						</div>
+					</div>
+				</div>
+				<![endif]-->
+				
+				<!-- HEADER 2 MIN FULL SCREEN MENU FONT JOSEFIN FONT WHITE TRANSPARENT -->
+				<header id="nav-stick" class="header header-1 header-side-menu header-black">
+				  <div class="header-wrapper">
+            <div class="container-m-30 clearfix">
+              <div class="logo-row">
+              
+                <!-- LOGO --> 
+                <div class="logo-container-2 fs-logo">
+                  <div class="logo-2">
+                    <a href="../index.html" class="clearfix" aria-label="Claudio Olmedo - Home">
+                      <img src="../images/logo_claudio_olmedo.png" class="logo-img" alt="Claudio Olmedo" width="200" height="60">
+                    </a>
+                  </div>
+                </div>
+                
+             </div>
+            </div>
+
+              <!-- BUTTON --> 
+              <div class="menu-btn-respons-container2">
+                <a class="fs-primary-nav-trigger" href="#"><span class="fs-menu-icon"></span></a>
+              </div>
+				  </div> <!-- END header-wrapper -->
+				</header>
+				
+				<!-- SOCIAL ICONS FIXED -->
+				<div class="social-icons-fixed">
+					<a href="https://www.linkedin.com/in/claudioolmedo-com/" title="Follow on LinkedIn" target="_blank" rel="noopener noreferrer">
+						<i class="fa fa-linkedin"></i>
+					</a>
+					<a href="https://www.instagram.com/claudioolmedo_com/" title="Follow on Instagram" target="_blank" rel="noopener noreferrer">
+						<i class="fa fa-instagram"></i>
+					</a>
+				</div>
+        
+        <!-- MENU FONT JOSEFIN-->      
+        <nav>
+          <div class="fs-primary-nav fs-nav-black font-josefin">
+            <ul class="block-center-xy">
+              <li><a class="a-white font-josefin" href="https://claudioolmedo.com/">Home</a></li>
+              <li><a class="a-white font-josefin" href="https://shop.claudioolmedo.com/">Shop</a></li>
+              <li><a class="a-white font-josefin" href="/hacking_the_world_education/">Hacking the World Education</a></li>
+            </ul>
+          </div>
+        </nav>
+      
+        
+<div class="page-section p-140-cont bg-black font-white">
+  <div class="container">
+    <div class="row" style="padding-top: 60px;">
+      <div class="col-md-8 col-md-offset-2">
+        <h1 class="title-fs-45-wide font-josefin font-light m-0 mb-30" style="font-size: 36px;">Hacking the World Education<br><i class="border-bot" style="font-size: 24px; line-height: 1.5; color: #ff9d00;">A Philosophy of Universal Talent</i></h1>
+        
+        <p class="font-open-sans" style="font-size: 19px; line-height: 1.8; color: #ffffff; margin-bottom: 40px; font-weight: 700;">
+          O talento é universal. A ferramenta, não.
+        </p>
+
+        <p class="font-open-sans" style="font-size: 17px; line-height: 1.8; color: #a0a5b0; margin-bottom: 40px;">
+          Por mais de uma década, observei um padrão: empresas de tecnologia e kits educacionais frequentemente criam barreiras. Elas vendem "experiências fechadas" que, em vez de libertar a criatividade, limitam o aprendizado ao que o fabricante permite. Nós acreditamos no contrário.
+        </p>
+
+        <h2 class="font-josefin font-light mb-30" style="color: #ff9d00;">O que é "Hacking the World Education"?</h2>
+        
+        <p class="font-open-sans" style="font-size: 17px; line-height: 1.8; color: #a0a5b0; margin-bottom: 24px;">
+          Não é sobre quebrar sistemas; é sobre <strong>reaprender a construir</strong>. Inspirado pela cultura <em>hacker</em> original — aquela que floresceu nos laboratórios do MIT, focada na exploração, na curiosidade e na capacidade de transformar o mundo ao nosso redor — criamos o <em>Hacking the World Education</em>.
+        </p>
+        
+        <p class="font-open-sans" style="font-size: 17px; line-height: 1.8; color: #a0a5b0; margin-bottom: 24px;">
+          Nosso objetivo é simples, mas radical: <strong>despertar talentos onde quer que eles existam</strong>.
+        </p>
+
+        <ul class="font-open-sans" style="font-size: 17px; line-height: 1.8; color: #a0a5b0; margin-bottom: 40px; padding-left: 20px;">
+          <li style="margin-bottom: 12px;"><strong>A ferramenta deve servir ao humano:</strong> O computador não deve ser um luxo, mas um lápis. Acessível, simples e aberto.</li>
+          <li style="margin-bottom: 12px;"><strong>Soberania através do RISC-V:</strong> Escolhemos a arquitetura RISC-V porque o conhecimento não deve ser propriedade de uma única marca. Ao utilizar arquitetura aberta e o ecossistema Rust, removemos a opacidade e permitimos que o estudante entenda exatamente o que acontece "sob o capô".</li>
+          <li style="margin-bottom: 12px;"><strong>Educação sem barreiras:</strong> Não acreditamos em soluções que dependem de licenças caras ou hardware proprietário. A verdadeira inovação acontece quando damos a famílias e educadores a liberdade de conduzir o aprendizado na realidade em que vivem.</li>
+        </ul>
+
+        <h2 class="font-josefin font-light mb-30" style="color: #ff9d00;">Uma Plataforma de Liberdade</h2>
+        
+        <p class="font-open-sans" style="font-size: 17px; line-height: 1.8; color: #a0a5b0; margin-bottom: 30px;">
+          Acreditamos que o talento é despertado quando o educador tem liberdade para ensinar da forma que melhor se conecta com seus alunos. Por isso, o <a href="https://claudioolmedo.com/" style="color: #ffffff; text-decoration: underline;">One Dollar Computer</a> não é uma plataforma de conteúdo; é um <strong>espaço de criação</strong>.
+        </p>
+
+        <h3 class="font-josefin font-light mb-20" style="font-size: 24px;">Nossos Pilares para Educadores:</h3>
+
+        <ul class="font-open-sans" style="font-size: 17px; line-height: 1.8; color: #a0a5b0; margin-bottom: 40px; padding-left: 20px;">
+          <li style="margin-bottom: 12px;"><strong>Autonomia Total:</strong> Não criamos currículos proprietários que limitam o professor. Nós fornecemos a base física e o ecossistema para que professores, treinadores e mentores tragam suas próprias metodologias.</li>
+          <li style="margin-bottom: 12px;"><strong>Valorização do Educador:</strong> Acreditamos que quem ensina deve prosperar. O nosso objetivo é que esta plataforma sirva de meio para que educadores alcancem alunos globalmente, gerando impacto e sustentabilidade financeira para o seu trabalho.</li>
+          <li style="margin-bottom: 12px;"><strong>Ecossistema Aberto:</strong> Somos a infraestrutura. O "como" se ensina pertence à comunidade. Nós removemos as barreiras do custo do hardware para que o foco total do educador seja no despertar do talento.</li>
+        </ul>
+
+        <h2 class="font-josefin font-light mb-30" style="color: #ff9d00;">O seu potencial é o nosso hardware.</h2>
+
+        <p class="font-open-sans" style="font-size: 17px; line-height: 1.8; color: #a0a5b0; margin-bottom: 24px;">
+          O <em>One Dollar Computer</em> é apenas o meio. O fim é você. Queremos remover a barreira do custo para que, em vez de consumir tecnologia, você possa hackeá-la, modificá-la e usá-la para construir o que ainda não existe.
+        </p>
+
+        <p class="font-open-sans" style="font-size: 17px; line-height: 1.8; color: #a0a5b0; margin-bottom: 40px;">
+          Se você é um educador, seu lugar é aqui. Se você tem um método, uma paixão e quer alcançar mais pessoas, o <em>One Dollar Computer</em> é a plataforma onde seu talento encontra a tecnologia acessível necessária para transformar vidas.
+        </p>
+
+        <hr style="border-top: 1px solid #333; margin-bottom: 30px;">
+
+        <p class="font-open-sans" style="font-size: 15px; line-height: 1.8; color: #777; font-style: italic; text-align: center;">
+          Este é um projeto aberto. Junte-se a nós para construir um futuro onde a tecnologia não exclui, mas conecta e impulsiona.
+        </p>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- FOOTER 1 with social links & CTAs -->
+        <footer id="footer1" class="page-section text-center p-100-cont" style="background: #1a1b1f; color: #ffffff; border-top: 1px solid #2a2b2f;">
+          <div class="container">
+            
+            <div class="row" style="margin-bottom: 50px;">
+              <!-- See the Project -->
+              <div class="col-xs-12 col-sm-4" style="margin-bottom: 30px;">
+                <div style="font-size: 40px; color: #ffffff; margin-bottom: 15px;"><i class="fa fa-github"></i></div>
+                <h4 class="font-josefin" style="font-size: 20px; letter-spacing: 1px; color: #ffffff; margin-bottom: 12px;">See the Project</h4>
+                <p class="font-open-sans" style="font-size: 14px; color: #a0a5b0; line-height: 1.6; margin-bottom: 20px; min-height: 40px;">
+                  Explore our open source hardware designs and repository files.
+                </p>
+                <a href="https://github.com/claudioolmedo" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 10px 24px; background: transparent; color: #ffffff; border: 2px solid #ffffff; font-weight: 700; border-radius: 4px; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; transition: all 0.3s; text-decoration: none;">
+                  View GitHub
+                </a>
+              </div>
+              
+              <!-- Support the Build -->
+              <div class="col-xs-12 col-sm-4" style="margin-bottom: 30px;">
+                <div style="font-size: 40px; color: #ffea00; margin-bottom: 15px;"><i class="fa fa-shopping-cart"></i></div>
+                <h4 class="font-josefin" style="font-size: 20px; letter-spacing: 1px; color: #ffffff; margin-bottom: 12px;">Support the Build</h4>
+                <p class="font-open-sans" style="font-size: 14px; color: #a0a5b0; line-height: 1.6; margin-bottom: 20px; min-height: 40px;">
+                  Help us fund milestones, from prototypes to assembly runs.
+                </p>
+                <span style="display: inline-block; padding: 10px 24px; background: #333; color: #888; font-weight: 700; border-radius: 4px; text-transform: uppercase; font-size: 12px; letter-spacing: 1px;">
+                  Coming Soon
+                </span>
+              </div>
+
+              <!-- Connect / Social -->
+              <div class="col-xs-12 col-sm-4" style="margin-bottom: 30px;">
+                <div style="font-size: 40px; color: #0077b5; margin-bottom: 15px;"><i class="fa fa-link"></i></div>
+                <h4 class="font-josefin" style="font-size: 20px; letter-spacing: 1px; color: #ffffff; margin-bottom: 12px;">Get in Touch</h4>
+                <p class="font-open-sans" style="font-size: 14px; color: #a0a5b0; line-height: 1.6; margin-bottom: 20px; min-height: 40px;">
+                  Connect with me directly on LinkedIn or Instagram.
+                </p>
+                <div style="display: flex; justify-content: center; gap: 24px;">
+                  <a href="https://www.linkedin.com/in/claudioolmedo-com/" target="_blank" rel="noopener noreferrer" style="color: #ffffff; font-size: 24px; opacity: 0.8; transition: opacity 0.3s;" title="LinkedIn"><i class="fa fa-linkedin"></i></a>
+                  <a href="https://www.instagram.com/claudioolmedo_com/" target="_blank" rel="noopener noreferrer" style="color: #ffffff; font-size: 24px; opacity: 0.8; transition: opacity 0.3s;" title="Instagram"><i class="fa fa-instagram"></i></a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Agent Portal link -->
+            <div class="font-open-sans" style="font-size: 13px; opacity: 0.5; margin-top: 40px;">
+              <a href="/.well-known/mcp-server-card" style="color: #ffffff; text-decoration: underline;"><i class="fa fa-android"></i> Agent-Ready Portal (MCP Card)</a>
+            </div>
+          </div>
+        </footer>
+        
+				<!-- BACK TO TOP -->
+				<p id="back-top">
+          <a href="#top" title="Back to Top" aria-label="Back to top"><span class="icon icon-arrows-up" aria-hidden="true"></span></a>
+        </p>
+        
+			</div><!-- End BG -->	
+		</div><!-- End wrap -->	
+			
+<!-- JS begin -->
+
+		<!-- jQuery  -->
+		<script type="text/javascript" src="../js/jquery.min.js"></script>
+
+		<!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../js/bootstrap.min.js"></script>		
+    
+    <!-- PORTFOLIO SCRIPTS -->
+    <script type="text/javascript" src="../js/isotope.pkgd.min.js"></script>
+    <script type="text/javascript" src="../js/imagesloaded.pkgd.min.js"></script>
+    <script type="text/javascript" src="../js/masonry.pkgd.min.js"></script>
+    
+    <!-- APPEAR -->    
+    <script type="text/javascript" src="../js/jquery.appear.js"></script>
+    
+    <!-- GOOGLE MAP 
+    !!! To setup Google Maps, please, see the documentation !!! --> 
+    <!-- Google Maps API - Uncomment and add your API key when needed
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOUR-API-KEY-HERE"></script>
+    <script type="text/javascript" src="../js/gmap3.min.js"></script>
+    -->
+    
+    <!-- MAIN SCRIPT -->
+		<script src="../js/main.js"></script>
+		
+    <!-- FULL SCREEN MENU -->
+		<script src="../js/fs-menu.js"></script>
+    
+		<!-- REVOSLIDER SCRIPTS  -->
+    <script src="../revo-slider/js/jquery.themepunch.tools.min.js" type="text/javascript">
+    </script>
+    <script src="../revo-slider/js/jquery.themepunch.revolution.min.js" type="text/javascript">
+    </script>
+    
+    <!-- SLIDER REVOLUTION 5.0 EXTENSIONS  
+      (Load Extensions only on Local File Systems ! 
+      The following part can be removed on Server for On Demand Loading) -->
+    <script src="../revo-slider/js/extensions/revolution.extension.actions.min.js" type="text/javascript"></script>
+    <script src="../revo-slider/js/extensions/revolution.extension.carousel.min.js" type="text/javascript"></script>
+    <script src="../revo-slider/js/extensions/revolution.extension.kenburn.min.js" type="text/javascript"></script>
+    <script src="../revo-slider/js/extensions/revolution.extension.layeranimation.min.js" type="text/javascript">
+    </script>
+    <script src="../revo-slider/js/extensions/revolution.extension.migration.min.js" type="text/javascript"></script>
+    <script src="../revo-slider/js/extensions/revolution.extension.navigation.min.js" type="text/javascript"></script>
+    <script src="../revo-slider/js/extensions/revolution.extension.parallax.min.js" type="text/javascript"></script>
+    <script src="../revo-slider/js/extensions/revolution.extension.slideanims.min.js" type="text/javascript"></script>
+    <script src="../revo-slider/js/extensions/revolution.extension.video.min.js" type="text/javascript"></script>
+      
+    <!-- SLIDER REVOLUTION INITIALIZATION  -->
+    <script type="text/javascript">
+      jQuery(document).ready(function() {
+          
+        jQuery("#rev_slider_280_1").show().revolution({
+          sliderType: "hero",
+          jsFileLocation: "revo-slider/js/",
+          sliderLayout: "fullscreen",
+          dottedOverlay: "none",
+          delay: 9000,
+          responsiveLevels: [1240, 1024, 778, 480],
+          visibilityLevels: [1240, 1024, 778, 480],
+          gridwidth: [1240, 1024, 778, 480],
+          gridheight: [868, 768, 960, 720],
+          lazyType: "none",
+          parallax: {
+            type: "off",
+            origo: "slidercenter",
+            speed: 1000,
+            levels: [0],
+            type: "scroll",
+            disable_onmobile: "on"
+          },
+          shadow: 0,
+          spinner: "spinner2",
+          autoHeight: "off",
+          fullScreenAutoWidth: "off",
+          fullScreenAlignForce: "off",
+          fullScreenOffsetContainer: "",
+          fullScreenOffset: "",
+          disableProgressBar: "on",
+          hideThumbsOnMobile: "off",
+          hideSliderAtLimit: 0,
+          hideCaptionAtLimit: 0,
+          hideAllCaptionAtLilmit: 0,
+          debugMode: false,
+          fallbacks: {
+            simplifyAll: "off",
+            disableFocusListener: false,
+          }
+        });
+       
+      }); /*ready*/
+    </script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    
+    if (isSafari) {
+      var videos = document.querySelectorAll('video');
+      videos.forEach(function(video) {
+        video.style.display = 'none';
+      });
+      
+      var fallbackImages = document.querySelectorAll('.safari-fallback-img');
+      fallbackImages.forEach(function(img) {
+        img.style.display = 'block';
+      });
+    }
+  });
+</script>
+<!-- JS end -->	
+	
+	</body>
+</html>		
