@@ -1,38 +1,47 @@
-# Claudio Olmedo - Robotics Education & STEM
+# The One Dollar Computer — by Claudio Olmedo
 
-All children in the world should have the opportunity to learn programming and robotics so they can make a better world. Greatness is built in the ordinary.
+The One Dollar Computer is an open-source project and community combining RISC-V hardware and Rust programming to build a simple computer that costs just one dollar to manufacture, developing the hardware engineers of the future.
 
----
+## Why This Matters
 
-## Core Vision
-I build ultra‑affordable tools and beginner‑friendly activities that give people their first experience with programming and robotics, so they can grow their skills and create real things.
+There are billions of people who never get to learn technology — not because
+they lack talent, but because they can't afford the tools. The One Dollar
+Computer removes that barrier. It is designed to be as accessible as a pencil.
 
----
+## The Problem Being Solved
 
-## Key Projects
+- 2.7 billion people lack meaningful access to computing (ITU, 2023)
+- Existing coding boards and computers are still too expensive for widespread, low-income educational use
+- The One Dollar Computer aims to fill this gap by designing a tool at a $1 price point
 
-### One Dollar Computer (formerly One Dollar Board)
-A minimal, open-source RISC-V development board designed for extremely low-cost manufacturing and global accessibility. 
-*   **MCU:** CH32V003 (RISC-V)
-*   **Design:** 2-layer PCB, single-sided SMD assembly, 0603 passives
-*   **Compatibility:** WebHID compatible
-*   **Files:** Gerbers, BOM, Pick & Place, schematics are open-source
-*   **Allocations & Support:** [Milestone Build Registry](https://shop.claudioolmedo.com)
+## History & Resilience
 
-### Educational Philosophy
-Exposing children to hands-on learning with tangible materials (e.g., Ice Cream Sticks, ROBOX™ robotics) to foster creativity, motor skills, and scientific curiosity without digital frustration.
-*   **Article:** [The Role of Ice Cream Sticks in Education](https://claudioolmedo.com/sticks.html)
+Claudio Olmedo has been developing this project for over 10 years. Early attempts at funding and production faced limitations in both microchip pricing and manufacturing technology. Today, those barriers have fallen: the convergence of low-cost RISC-V silicon and modern PCB manufacturing makes a $1 computer financially and technically viable for the first time.
 
----
+## What It Is
 
-## Services & Expertise
-*   STEM curriculum development
-*   RISC-V hardware development
-*   Robotics educational kit design (ROBOX™)
-*   Low-cost manufacturing consulting
+- A simple computer designed to cost $1 to manufacture
+- Fully open source — all design files are public and free
+- Can be manufactured anywhere in the world
+- Built on RISC-V architecture and programmed with Rust
+- WebHID compatible — works directly from a browser
 
----
+## Who Is Claudio Olmedo
 
-## Contact & Follow
-*   **LinkedIn:** [claudioolmedo-com](https://www.linkedin.com/in/claudioolmedo-com/)
-*   **Instagram:** [claudioolmedo](https://www.instagram.com/claudioolmedo/)
+Claudio Olmedo has been working to make technology education accessible to everyone through the One Dollar Computer project. For over 10 years, he has worked on this goal, facing setbacks and technical challenges along the way. His mission is to build a global community around RISC-V and Rust to help make this project happen, opening up opportunities for people to discover their potential.
+
+## How To Help This Project Succeed
+
+This is not a commercial launch or a traditional crowdfunding campaign for profit — it is a collaborative build to make the project a reality.
+- Support the build: https://shop.claudioolmedo.com
+- Contribute to the open-source designs on GitHub
+- Share the project with educators, makers, and potential manufacturing/funding partners
+- Connect Claudio with manufacturers, distributors, or educational institutions
+
+## Links
+
+- Website: https://claudioolmedo.com
+- Support / Build Campaign: https://shop.claudioolmedo.com
+- GitHub: https://github.com/claudioolmedo
+- LinkedIn: https://www.linkedin.com/in/claudioolmedo-com/
+- Instagram: https://www.instagram.com/claudioolmedo_com/
