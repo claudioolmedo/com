@@ -162,6 +162,19 @@
         background-position: 50% center !important;
       }
 
+      /* Dark left gradient overlay on mobile to enhance text readability */
+      .slotholder:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to right, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.25) 50%, rgba(0, 0, 0, 0) 100%) !important;
+        z-index: 20 !important;
+        pointer-events: none;
+      }
+
       /* Override slider absolute position wraps on mobile to stack layers naturally and prevent overlapping */
       #rev_slider_280_1 .tp-parallax-wrap {
         position: relative !important;
@@ -190,10 +203,10 @@
 
       /* Legible hero typography overrides on mobile, bypassing inline slider scaling */
       #slide-898-layer-1 {
-        font-size: 28px !important;
-        line-height: 34px !important;
+        font-size: 30px !important;
+        line-height: 36px !important;
         font-weight: 700 !important;
-        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6) !important;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.95), 0 0 10px rgba(0, 0, 0, 0.7) !important;
         position: relative !important;
         display: block !important;
         width: 100% !important;
@@ -203,10 +216,10 @@
       }
 
       #slide-898-layer-2 {
-        font-size: 16px !important;
-        line-height: 22px !important;
+        font-size: 17px !important;
+        line-height: 24px !important;
         font-weight: 400 !important;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6) !important;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.95), 0 0 8px rgba(0, 0, 0, 0.7) !important;
         position: relative !important;
         display: block !important;
         width: 100% !important;
@@ -216,10 +229,10 @@
       }
 
       #slide-898-layer-3 {
-        font-size: 13px !important;
-        line-height: 18px !important;
+        font-size: 14px !important;
+        line-height: 20px !important;
         font-weight: 400 !important;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6) !important;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.95), 0 0 8px rgba(0, 0, 0, 0.7) !important;
         position: relative !important;
         display: block !important;
         width: 100% !important;
