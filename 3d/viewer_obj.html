@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>OneDollarBoard 3D Viewer (OBJ)</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #0d1117; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #e6edf3;
+  }
+  #app { position: fixed; inset: 0; }
+  canvas { display: block; }
+
+  /* ---------- Loading ---------- */
+  #loader {
+    position: fixed; inset: 0; z-index: 50;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    background: radial-gradient(circle at 50% 40%, #1b2330 0%, #0d1117 70%);
+    transition: opacity .6s ease;
+  }
+  #loader.hidden { opacity: 0; pointer-events: none; }
+  .spinner {
+    width: 56px; height: 56px;
+    border: 4px solid rgba(255,191,0,.18);
+    border-top-color: #ffbf00;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 18px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #loader .title { font-size: 18px; font-weight: 600; letter-spacing: .5px; }
+  #loader .sub { margin-top: 6px; font-size: 13px; color: #8b949e; }
+  #progress {
+    margin-top: 14px; width: 260px; height: 6px;
+    background: #21262d; border-radius: 4px; overflow: hidden;
+  }
+  #progress > div { height: 100%; width: 0%; background: #ffbf00; transition: width .2s; }
+
+  /* ---------- Top bar ---------- */
+  #topbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 20;
+    padding: 12px 18px;
+    display: flex; align-items: center; gap: 14px;
+    background: linear-gradient(180deg, rgba(13,17,23,.85), rgba(13,17,23,0));
+    pointer-events: none;
+  }
+  #brand { display: flex; align-items: center; gap: 10px; pointer-events: auto; }
+  #brand .logo {
+    width: 30px; height: 30px; border-radius: 8px;
+    background: linear-gradient(135deg, #ffbf00, #ff8a00);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; color: #1b1300; font-size: 16px;
+    box-shadow: 0 2px 10px rgba(255,160,0,.35);
+  }
+  #brand .name { font-weight: 700; font-size: 15px; }
+  #brand .name small { display: block; font-weight: 400; font-size: 11px; color: #8b949e; }
+
+  /* ---------- Side panel ---------- */
+  #panel {
+    position: fixed; top: 64px; right: 14px; z-index: 20;
+    width: 250px; max-width: calc(100vw - 28px);
+    background: rgba(22,27,34,.92);
+    backdrop-filter: blur(10px);
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 14px;
+    font-size: 13px;
+  }
+  #panel h3 {
+    font-size: 11px; text-transform: uppercase; letter-spacing: .8px;
+    color: #8b949e; margin-bottom: 10px;
+  }
+  .seg {
+    display: flex; gap: 6px; background: #0d1117;
+    border: 1px solid #30363d; border-radius: 8px; padding: 3px; margin-bottom: 12px;
+  }
+  .seg button {
+    flex: 1; border: 0; background: transparent; color: #c9d1d9;
+    padding: 7px 6px; border-radius: 6px; cursor: pointer; font-size: 12px;
+    transition: all .15s;
+  }
+  .seg button.active { background: #ffbf00; color: #1b1300; font-weight: 600; }
+  .row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .row label { color: #c9d1d9; }
+  .toggle {
+    position: relative; width: 38px; height: 21px;
+    background: #30363d; border-radius: 11px; cursor: pointer; transition: background .2s;
+    flex-shrink: 0;
+  }
+  .toggle::after {
+    content: ""; position: absolute; top: 2px; left: 2px;
+    width: 17px; height: 17px; background: #fff; border-radius: 50%; transition: transform .2s;
+  }
+  .toggle.on { background: #ffbf00; }
+  .toggle.on::after { transform: translateX(17px); }
+  .hint { font-size: 11px; color: #6e7681; line-height: 1.5; }
+
+  /* ---------- Bottom hint ---------- */
+  #hint {
+    position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%); z-index: 20;
+    font-size: 12px; color: #8b949e; background: rgba(22,27,34,.8);
+    padding: 7px 14px; border-radius: 20px; border: 1px solid #30363d;
+    backdrop-filter: blur(8px); white-space: nowrap;
+  }
+  #hint b { color: #c9d1d9; }
+
+  /* ---------- Error ---------- */
+  #error {
+    position: fixed; inset: 0; z-index: 60; display: none;
+    align-items: center; justify-content: center; text-align: center; padding: 20px;
+    background: #0d1117;
+  }
+  #error .box { max-width: 460px; }
+  #error h2 { color: #f85149; margin-bottom: 10px; }
+  #error p { color: #c9d1d9; line-height: 1.6; }
+  #error code { background: #161b22; padding: 2px 6px; border-radius: 4px; color: #ffbf00; }
+  
+  /* ---------- Slider ---------- */
+  .slider { margin-bottom: 12px; }
+  .slider label { display: flex; justify-content: space-between; color: #8b949e; font-size: 12px; margin-bottom: 4px; }
+  .slider label span { color: #ffbf00; font-weight: 600; }
+  .slider input[type="range"] {
+    width: 100%; -webkit-appearance: none; background: #30363d; height: 5px; border-radius: 3px; outline: none;
+  }
+  .slider input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #ffbf00; cursor: pointer;
+    transition: transform 0.1s;
+  }
+  .slider input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+</style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <!-- Loading -->
+  <div id="loader">
+    <div class="spinner"></div>
+    <div class="title">Carregando OneDollarBoard (OBJ)</div>
+    <div class="sub" id="status">Lendo arquivos…</div>
+    <div id="progress"><div></div></div>
+  </div>
+
+  <!-- Top bar -->
+  <div id="topbar">
+    <div id="brand">
+      <div class="logo">$1</div>
+      <div class="name">OneDollarBoard<small>Visualizador 3D (OBJ)</small></div>
+    </div>
+  </div>
+
+  <!-- Control panel -->
+  <div id="panel">
+    <h3>Textura</h3>
+    <div class="seg" id="texSeg">
+      <button data-tex="none">Cor</button>
+      <button data-tex="both" class="active">Foto</button>
+      <button data-tex="top">Topo</button>
+      <button data-tex="button">Base</button>
+    </div>
+
+    <div id="fitControls" style="display:none">
+      <h3 style="margin-top: 8px; margin-bottom: 8px;">Ajuste de Textura</h3>
+      <div class="seg" id="fitLayerSeg" style="margin-bottom: 12px;">
+        <button data-layer="top" class="active">Topo</button>
+        <button data-layer="button">Base</button>
+      </div>
+
+      <div class="slider">
+        <label>Escala <span id="vScale">1.000</span></label>
+        <input id="sScale" type="range" min="0.3" max="4.0" step="0.001" value="1.0" />
+      </div>
+      <div class="slider">
+        <label>Offset X <span id="vOffX">0.000</span></label>
+        <input id="sOffX" type="range" min="-2.0" max="2.0" step="0.001" value="0.0" />
+      </div>
+      <div class="slider">
+        <label>Offset Y <span id="vOffZ">0.000</span></label>
+        <input id="sOffZ" type="range" min="-2.0" max="2.0" step="0.001" value="0.0" />
+      </div>
+      <div class="slider">
+        <label>Rotação <span id="vRot">0.0°</span></label>
+        <input id="sRot" type="range" min="-180" max="180" step="0.1" value="0.0" />
+      </div>
+      <div class="slider" style="margin-bottom:2px">
+        <label><span style="display:flex;align-items:center;gap:8px"><span class="toggle on" id="tFlipV"></span> Inverter V</span></label>
+      </div>
+    </div>
+
+    <h3>Exibição</h3>
+    <div class="row">
+      <label>Grade</label>
+      <div class="toggle" id="tGrid"></div>
+    </div>
+    <div class="row">
+      <label>Eixos</label>
+      <div class="toggle" id="tAxes"></div>
+    </div>
+    <div class="row">
+      <label>Rotação auto.</label>
+      <div class="toggle" id="tSpin"></div>
+    </div>
+
+    <h3>Visualização</h3>
+    <div class="seg" id="bgSeg">
+      <button data-bg="dark" class="active">Escuro</button>
+      <button data-bg="light">Claro</button>
+      <button data-bg="studio">Studio</button>
+    </div>
+
+    <div class="hint">Arraste para girar • Scroll para zoom • Botão direito para mover</div>
+  </div>
+
+  <div id="hint"><b>Mouse:</b> girar &nbsp;•&nbsp; <b>Scroll:</b> zoom &nbsp;•&nbsp; <b>Botão direito:</b> mover</div>
+
+  <!-- Error -->
+  <div id="error">
+    <div class="box">
+      <h2>Falha ao abrir o modelo</h2>
+      <p id="errMsg"></p>
+    </div>
+  </div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
+
+const FILES = {
+  pcbObj: 'OneDollarBoard.com.1.004_pcb.obj',
+  pcbMtl: 'OneDollarBoard.com.1.004_pcb.mtl',
+  compObj: 'OneDollarBoard.com.1.004_components.obj',
+  compMtl: 'OneDollarBoard.com.1.004_components.mtl',
+  top:    'OneDollarBoard.com.1.004_top.png',
+  button: 'OneDollarBoard.com.1.004_button.png',
+};
+
+let isLoaded = false;
+
+const $ = (id) => document.getElementById(id);
+const setStatus = (t) => $('status').textContent = t;
+const setProgress = (p) => $('progress').firstElementChild.style.width = (p * 100) + '%';
+const fail = (msg) => {
+  $('loader').classList.add('hidden');
+  $('errMsg').textContent = msg;
+  $('error').style.display = 'flex';
+  throw new Error(msg);
+};
+
+// ---------- Renderer ----------
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.0;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+$('app').appendChild(renderer.domElement);
+
+// ---------- Scene ----------
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0d1117);
+
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 1000);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.minDistance = 0.5;
+controls.maxDistance = 40;
+
+// ---------- Lights ----------
+const hemi = new THREE.HemisphereLight(0xffffff, 0x444444, 1.0);
+scene.add(hemi);
+
+const key = new THREE.DirectionalLight(0xffffff, 2.2);
+key.position.set(5, 8, 6);
+key.castShadow = true;
+key.shadow.mapSize.set(2048, 2048);
+key.shadow.camera.near = 0.5;
+key.shadow.camera.far = 50;
+key.shadow.camera.left = -6;
+key.shadow.camera.right = 6;
+key.shadow.camera.top = 6;
+key.shadow.camera.bottom = -6;
+key.shadow.bias = -0.0005;
+scene.add(key);
+
+const fill = new THREE.DirectionalLight(0xbfd4ff, 0.6);
+fill.position.set(-6, 3, -4);
+scene.add(fill);
+
+const rim = new THREE.DirectionalLight(0xffbf00, 0.5);
+rim.position.set(0, -4, -8);
+scene.add(rim);
+
+// ---------- Ground / helpers ----------
+const grid = new THREE.GridHelper(20, 40, 0x30363d, 0x21262d);
+grid.material.transparent = true;
+grid.material.opacity = 0.5;
+grid.visible = false;
+scene.add(grid);
+
+const axes = new THREE.AxesHelper(2);
+axes.visible = false;
+scene.add(axes);
+
+const ground = new THREE.Mesh(
+  new THREE.PlaneGeometry(60, 60),
+  new THREE.ShadowMaterial({ opacity: 0.35 })
+);
+ground.rotation.x = -Math.PI / 2;
+ground.position.y = -0.01;
+ground.receiveShadow = true;
+scene.add(ground);
+
+// ---------- Backgrounds ----------
+const BG = {
+  dark:   { color: 0x0d1117, hemi: 0x444444, key: 2.2, fog: false },
+  light:  { color: 0xeeeeee, hemi: 0xcccccc, key: 1.6, fog: false },
+  studio: { color: 0x10141c, hemi: 0x222a36, key: 2.0, fog: true  },
+};
+function applyBg(name) {
+  const b = BG[name];
+  scene.background = new THREE.Color(b.color);
+  hemi.groundColor.setHex(b.hemi);
+  key.intensity = b.key;
+  if (b.fog) scene.fog = new THREE.Fog(b.color, 8, 30);
+  else scene.fog = null;
+}
+
+// ---------- Load ----------
+const texLoader = new THREE.TextureLoader();
+const textures = {};
+function loadTexture(name) {
+  return new Promise((resolve, reject) => {
+    texLoader.load(FILES[name],
+      (tex) => {
+        tex.colorSpace = THREE.SRGBColorSpace;
+        tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+        textures[name] = tex;
+        resolve(tex);
+      },
+      undefined, reject);
+  });
+}
+
+// Calibration parameters
+const calibration = {
+  top: { scale: 1.0, offsetX: 0.0, offsetY: 0.0, rotation: 0.0, flipV: false },
+  button: { scale: 1.0, offsetX: 0.0, offsetY: 0.0, rotation: 0.0, flipV: false },
+};
+let activeFitLayer = 'top';
+
+// PCB Materials
+const frontMaterial = new THREE.MeshStandardMaterial({
+  color: 0x0c5c30, // deep green PCB
+  roughness: 0.25,
+  metalness: 0.1,
+});
+const backMaterial = new THREE.MeshStandardMaterial({
+  color: 0x0c5c30,
+  roughness: 0.25,
+  metalness: 0.1,
+});
+const sideMaterial = new THREE.MeshStandardMaterial({
+  color: 0x063b1e, // darker green substrate
+  roughness: 0.5,
+  metalness: 0.05,
+});
+
+function updateTextureTransforms() {
+  ['top', 'button'].forEach((key) => {
+    const tex = textures[key];
+    if (!tex) return;
+    
+    const cal = calibration[key];
+    
+    tex.wrapS = THREE.ClampToEdgeWrapping;
+    tex.wrapT = THREE.ClampToEdgeWrapping;
+    tex.center.set(0.5, 0.5);
+    tex.rotation = (cal.rotation * Math.PI) / 180;
+    
+    let repX = 1 / cal.scale;
+    let repY = 1 / cal.scale;
+    if (cal.flipV) {
+      repY = -repY;
+    }
+    tex.repeat.set(repX, repY);
+    
+    let offX = cal.offsetX;
+    let offY = cal.offsetY;
+    if (cal.flipV) {
+      offY = 1.0 - offY;
+    }
+    tex.offset.set(offX, offY);
+    
+    tex.needsUpdate = true;
+  });
+}
+
+function logCalibration() {
+  console.log("CALIBRATION:", JSON.stringify(calibration, null, 2));
+}
+
+function splitPCBGeometry(pcbMesh, pcbBBox) {
+  const originalGeometry = pcbMesh.geometry;
+  const geometry = originalGeometry.index ? originalGeometry.toNonIndexed() : originalGeometry.clone();
+  
+  if (!geometry.attributes.normal) {
+    geometry.computeVertexNormals();
+  }
+  
+  const posAttr = geometry.attributes.position;
+  const normAttr = geometry.attributes.normal;
+  const count = posAttr.count;
+  
+  const minX = pcbBBox.min.x;
+  const maxX = pcbBBox.max.x;
+  const minY = pcbBBox.min.y;
+  const maxY = pcbBBox.max.y;
+  const sizeX = maxX - minX;
+  const sizeY = maxY - minY;
+  
+  const frontVertices = [];
+  const frontNormals = [];
+  const frontUVs = [];
+  
+  const backVertices = [];
+  const backNormals = [];
+  const backUVs = [];
+  
+  const sideVertices = [];
+  const sideNormals = [];
+  const sideUVs = [];
+  
+  const tempV1 = new THREE.Vector3();
+  const tempV2 = new THREE.Vector3();
+  const tempV3 = new THREE.Vector3();
+  
+  const tempN1 = new THREE.Vector3();
+  const tempN2 = new THREE.Vector3();
+  const tempN3 = new THREE.Vector3();
+  
+  for (let i = 0; i < count; i += 3) {
+    tempV1.fromBufferAttribute(posAttr, i);
+    tempV2.fromBufferAttribute(posAttr, i + 1);
+    tempV3.fromBufferAttribute(posAttr, i + 2);
+    
+    tempN1.fromBufferAttribute(normAttr, i);
+    tempN2.fromBufferAttribute(normAttr, i + 1);
+    tempN3.fromBufferAttribute(normAttr, i + 2);
+    
+    const avgNormalZ = (tempN1.z + tempN2.z + tempN3.z) / 3;
+    
+    let targetVertices, targetNormals, targetUVs;
+    let isFront = false;
+    let isBack = false;
+    
+    if (avgNormalZ > 0.5) {
+      targetVertices = frontVertices;
+      targetNormals = frontNormals;
+      targetUVs = frontUVs;
+      isFront = true;
+    } else if (avgNormalZ < -0.5) {
+      targetVertices = backVertices;
+      targetNormals = backNormals;
+      targetUVs = backUVs;
+      isBack = true;
+    } else {
+      targetVertices = sideVertices;
+      targetNormals = sideNormals;
+      targetUVs = sideUVs;
+    }
+    
+    targetVertices.push(
+      tempV1.x, tempV1.y, tempV1.z,
+      tempV2.x, tempV2.y, tempV2.z,
+      tempV3.x, tempV3.y, tempV3.z
+    );
+    
+    targetNormals.push(
+      tempN1.x, tempN1.y, tempN1.z,
+      tempN2.x, tempN2.y, tempN2.z,
+      tempN3.x, tempN3.y, tempN3.z
+    );
+    
+    if (isFront) {
+      targetUVs.push(
+        341/2880 + ((tempV1.x - minX) / sizeX) * (2198/2880), 66/1466 + ((tempV1.y - minY) / sizeY) * (1335/1466),
+        341/2880 + ((tempV2.x - minX) / sizeX) * (2198/2880), 66/1466 + ((tempV2.y - minY) / sizeY) * (1335/1466),
+        341/2880 + ((tempV3.x - minX) / sizeX) * (2198/2880), 66/1466 + ((tempV3.y - minY) / sizeY) * (1335/1466)
+      );
+    } else if (isBack) {
+      targetUVs.push(
+        341/2880 + ((tempV1.x - minX) / sizeX) * (2198/2880), 66/1466 + ((maxY - tempV1.y) / sizeY) * (1335/1466),
+        341/2880 + ((tempV2.x - minX) / sizeX) * (2198/2880), 66/1466 + ((maxY - tempV2.y) / sizeY) * (1335/1466),
+        341/2880 + ((tempV3.x - minX) / sizeX) * (2198/2880), 66/1466 + ((maxY - tempV3.y) / sizeY) * (1335/1466)
+      );
+    } else {
+      targetUVs.push(0, 0, 0, 0, 0, 0);
+    }
+  }
+  
+  function createGeometry(vertices, normals, uvs) {
+    if (vertices.length === 0) return null;
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+    geo.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3));
+    geo.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+    return geo;
+  }
+  
+  return {
+    frontGeo: createGeometry(frontVertices, frontNormals, frontUVs),
+    backGeo: createGeometry(backVertices, backNormals, backUVs),
+    sideGeo: createGeometry(sideVertices, sideNormals, sideUVs),
+  };
+}
+
+// Clone original colors so we can restore from "Cor"
+const originalMaterials = new WeakMap();
+
+let modelRoot = null;
+
+function centerAndFrame(object) {
+  const box = new THREE.Box3().setFromObject(object);
+  const size = box.getSize(new THREE.Vector3());
+  const center = box.getCenter(new THREE.Vector3());
+  object.position.sub(center);
+  object.position.y -= box.min.y - center.y;
+  return { size, center };
+}
+
+// Pre-cache textures and MTL files in parallel
+setStatus('Carregando recursos iniciais…');
+setProgress(0.05);
+
+let loadedCount = 0;
+const totalInitialAssets = 4;
+const onInitialAssetLoaded = () => {
+  loadedCount++;
+  setProgress(0.05 + (loadedCount / totalInitialAssets) * 0.45);
+};
+
+const loadTextureWithProgress = (name) => loadTexture(name).then((res) => { onInitialAssetLoaded(); return res; });
+
+const mtlLoader = new MTLLoader();
+const loadMtl = (url) => new Promise((res, rej) => mtlLoader.load(url, (m) => { m.preload(); res(m); }, undefined, rej));
+const loadMtlWithProgress = (url) => loadMtl(url).then((res) => { onInitialAssetLoaded(); return res; });
+
+Promise.all([
+  loadTextureWithProgress('top'),
+  loadTextureWithProgress('button'),
+  loadMtlWithProgress(FILES.pcbMtl),
+  loadMtlWithProgress(FILES.compMtl)
+])
+  .then(([topTex, buttonTex, pcbMtls, compMtls]) => {
+    setStatus('Carregando geometrias (.obj)…');
+    setProgress(0.5);
+    
+    let objLoadedCount = 0;
+    const onObjLoaded = () => {
+      objLoadedCount++;
+      setProgress(0.5 + (objLoadedCount / 2) * 0.45);
+    };
+    
+    const objLoader = new OBJLoader();
+    const loadObj = (url, mtls) => {
+      objLoader.setMaterials(mtls);
+      return new Promise((res, rej) => objLoader.load(url, res, undefined, rej));
+    };
+    const loadObjWithProgress = (url, mtls) => loadObj(url, mtls).then((res) => { onObjLoaded(); return res; });
+    
+    return Promise.all([
+      loadObjWithProgress(FILES.pcbObj, pcbMtls),
+      loadObjWithProgress(FILES.compObj, compMtls)
+    ]);
+  })
+  .then(([pcbObj, compObj]) => {
+    setProgress(0.96);
+    setStatus('Preparando cena…');
+
+    const modelGroup = new THREE.Group();
+    modelGroup.name = "Model_Group";
+    modelGroup.add(pcbObj);
+    modelGroup.add(compObj);
+    
+    modelRoot = modelGroup;
+
+    // Enable shadows for components + cache originals
+    compObj.traverse((child) => {
+      if (child.isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+        if (child.material) {
+          const mats = Array.isArray(child.material) ? child.material : [child.material];
+          mats.forEach((m) => {
+            if (!originalMaterials.has(m)) {
+              originalMaterials.set(m, {
+                map: m.map,
+                color: m.color ? m.color.clone() : null,
+                roughness: m.roughness,
+                metalness: m.metalness,
+              });
+            }
+          });
+        }
+      }
+    });
+
+    // Bounding box for PCB OBJ
+    const pcbBBox = new THREE.Box3().setFromObject(pcbObj);
+
+    // Split PCB geometries
+    const meshesToSplit = [];
+    pcbObj.traverse((child) => {
+      if (child.isMesh) {
+        meshesToSplit.push(child);
+      }
+    });
+
+    meshesToSplit.forEach((child) => {
+      const parent = child.parent;
+      if (!parent) return;
+
+      const { frontGeo, backGeo, sideGeo } = splitPCBGeometry(child, pcbBBox);
+      
+      if (frontGeo) {
+        const frontMesh = new THREE.Mesh(frontGeo, frontMaterial);
+        frontMesh.name = child.name + "_Front";
+        frontMesh.castShadow = true;
+        frontMesh.receiveShadow = true;
+        parent.add(frontMesh);
+      }
+      if (backGeo) {
+        const backMesh = new THREE.Mesh(backGeo, backMaterial);
+        backMesh.name = child.name + "_Back";
+        backMesh.castShadow = true;
+        backMesh.receiveShadow = true;
+        parent.add(backMesh);
+      }
+      if (sideGeo) {
+        const sideMesh = new THREE.Mesh(sideGeo, sideMaterial);
+        sideMesh.name = child.name + "_Sides";
+        sideMesh.castShadow = true;
+        sideMesh.receiveShadow = true;
+        parent.add(sideMesh);
+      }
+      parent.remove(child);
+    });
+
+    // Normalize and scale the entire group (PCB + components)
+    const box = new THREE.Box3().setFromObject(modelGroup);
+    const size = box.getSize(new THREE.Vector3());
+    const center = box.getCenter(new THREE.Vector3());
+    const maxDim = Math.max(size.x, size.y, size.z);
+    const scale = 4 / maxDim;
+    
+    modelGroup.scale.setScalar(scale);
+    modelGroup.position.x = -center.x * scale;
+    modelGroup.position.z = -center.z * scale;
+    modelGroup.position.y = -box.min.y * scale; // base on ground
+
+    scene.add(modelGroup);
+
+    // Camera framing
+    const radius = (maxDim * scale) / 2;
+    camera.position.set(radius * 2.4, radius * 1.7, radius * 2.4);
+    controls.target.set(0, radius * 0.5, 0);
+    controls.update();
+
+    setProgress(1);
+    applyTexture('both');
+    isLoaded = true;
+    window.dispatchEvent(new CustomEvent('viewerLoaded'));
+    setTimeout(() => $('loader').classList.add('hidden'), 400);
+  })
+  .catch((err) => {
+    console.error(err);
+    fail('Verifique se os arquivos de pcb e componentes estão na mesma pasta e servidos por http.');
+  });
+
+// ---------- Texture application ----------
+function applyTexture(kind) {
+  if (!modelRoot) return;
+  
+  if (kind === 'none') {
+    frontMaterial.map = null;
+    frontMaterial.color.setHex(0x0c5c30);
+    frontMaterial.needsUpdate = true;
+    
+    backMaterial.map = null;
+    backMaterial.color.setHex(0x0c5c30);
+    backMaterial.needsUpdate = true;
+    
+    $('fitControls').style.display = 'none';
+  } else if (kind === 'top') {
+    frontMaterial.map = textures.top || null;
+    frontMaterial.color.setHex(0xffffff);
+    frontMaterial.needsUpdate = true;
+    
+    backMaterial.map = null;
+    backMaterial.color.setHex(0x0c5c30);
+    backMaterial.needsUpdate = true;
+    
+    updateTextureTransforms();
+    updateUIFromCalibration();
+    $('fitControls').style.display = 'block';
+  } else if (kind === 'button') {
+    frontMaterial.map = null;
+    frontMaterial.color.setHex(0x0c5c30);
+    frontMaterial.needsUpdate = true;
+    
+    backMaterial.map = textures.button || null;
+    backMaterial.color.setHex(0xffffff);
+    backMaterial.needsUpdate = true;
+    
+    updateTextureTransforms();
+    updateUIFromCalibration();
+    $('fitControls').style.display = 'block';
+  } else if (kind === 'both') {
+    frontMaterial.map = textures.top || null;
+    frontMaterial.color.setHex(0xffffff);
+    frontMaterial.needsUpdate = true;
+    
+    backMaterial.map = textures.button || null;
+    backMaterial.color.setHex(0xffffff);
+    backMaterial.needsUpdate = true;
+    
+    updateTextureTransforms();
+    updateUIFromCalibration();
+    $('fitControls').style.display = 'block';
+  }
+}
+
+function updateUIFromCalibration() {
+  const cal = calibration[activeFitLayer];
+  $('sScale').value = cal.scale;
+  $('vScale').textContent = cal.scale.toFixed(3);
+  
+  $('sOffX').value = cal.offsetX;
+  $('vOffX').textContent = cal.offsetX.toFixed(3);
+  
+  $('sOffZ').value = cal.offsetY;
+  $('vOffZ').textContent = cal.offsetY.toFixed(3);
+  
+  $('sRot').value = cal.rotation;
+  $('vRot').textContent = cal.rotation.toFixed(1) + '°';
+  
+  $('tFlipV').classList.toggle('on', cal.flipV);
+}
+
+// ---------- UI bindings ----------
+$('texSeg').addEventListener('click', (e) => {
+  const b = e.target.closest('button'); if (!b) return;
+  [...e.currentTarget.children].forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+  applyTexture(b.dataset.tex);
+});
+
+$('bgSeg').addEventListener('click', (e) => {
+  const b = e.target.closest('button'); if (!b) return;
+  [...e.currentTarget.children].forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+  applyBg(b.dataset.bg);
+});
+
+// Bind layer selector
+$('fitLayerSeg').addEventListener('click', (e) => {
+  const b = e.target.closest('button'); if (!b) return;
+  [...e.currentTarget.children].forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+  activeFitLayer = b.dataset.layer;
+  updateUIFromCalibration();
+});
+
+// Bind sliders
+$('sScale').addEventListener('input', (e) => {
+  const val = parseFloat(e.target.value);
+  calibration[activeFitLayer].scale = val;
+  $('vScale').textContent = val.toFixed(3);
+  updateTextureTransforms();
+  logCalibration();
+});
+
+$('sOffX').addEventListener('input', (e) => {
+  const val = parseFloat(e.target.value);
+  calibration[activeFitLayer].offsetX = val;
+  $('vOffX').textContent = val.toFixed(3);
+  updateTextureTransforms();
+  logCalibration();
+});
+
+$('sOffZ').addEventListener('input', (e) => {
+  const val = parseFloat(e.target.value);
+  calibration[activeFitLayer].offsetY = val;
+  $('vOffZ').textContent = val.toFixed(3);
+  updateTextureTransforms();
+  logCalibration();
+});
+
+$('sRot').addEventListener('input', (e) => {
+  const val = parseFloat(e.target.value);
+  calibration[activeFitLayer].rotation = val;
+  $('vRot').textContent = val.toFixed(1) + '°';
+  updateTextureTransforms();
+  logCalibration();
+});
+
+$('tFlipV').addEventListener('click', () => {
+  calibration[activeFitLayer].flipV = !calibration[activeFitLayer].flipV;
+  $('tFlipV').classList.toggle('on', calibration[activeFitLayer].flipV);
+  updateTextureTransforms();
+  logCalibration();
+});
+
+function bindToggle(id, fn, initial) {
+  const el = $(id);
+  let state = !!initial;
+  const apply = () => { el.classList.toggle('on', state); fn(state); };
+  el.addEventListener('click', () => { state = !state; apply(); });
+  apply();
+}
+bindToggle('tGrid',  (v) => grid.visible = v);
+bindToggle('tAxes',  (v) => axes.visible = v);
+bindToggle('tSpin',  (v) => controls.autoRotate = v);
+
+// ---------- Resize ----------
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// ---------- Render loop ----------
+function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene, camera);
+}
+animate();
+
+// Expose global API for external interaction
+window.viewerAPI = {
+  applyTexture: (kind) => {
+    const button = document.querySelector(`#texSeg button[data-tex="${kind}"]`);
+    if (button) {
+      button.click();
+    } else {
+      applyTexture(kind);
+    }
+  },
+  
+  setCalibration: (layer, params) => {
+    if (!calibration[layer]) return;
+    const cal = calibration[layer];
+    if (params.scale !== undefined) cal.scale = params.scale;
+    if (params.offsetX !== undefined) cal.offsetX = params.offsetX;
+    if (params.offsetY !== undefined) cal.offsetY = params.offsetY;
+    if (params.rotation !== undefined) cal.rotation = params.rotation;
+    if (params.flipV !== undefined) cal.flipV = params.flipV;
+    
+    updateTextureTransforms();
+    updateUIFromCalibration();
+  },
+  
+  getCalibration: () => JSON.parse(JSON.stringify(calibration)),
+
+  toggleGrid: (visible) => {
+    const el = $('tGrid');
+    const isCurrentlyOn = el.classList.contains('on');
+    if (!!visible !== isCurrentlyOn) {
+      el.click();
+    }
+  },
+  toggleAxes: (visible) => {
+    const el = $('tAxes');
+    const isCurrentlyOn = el.classList.contains('on');
+    if (!!visible !== isCurrentlyOn) {
+      el.click();
+    }
+  },
+  toggleSpin: (active) => {
+    const el = $('tSpin');
+    const isCurrentlyOn = el.classList.contains('on');
+    if (!!active !== isCurrentlyOn) {
+      el.click();
+    }
+  },
+  
+  applyBg: (theme) => {
+    const button = document.querySelector(`#bgSeg button[data-bg="${theme}"]`);
+    if (button) {
+      button.click();
+    } else {
+      applyBg(theme);
+    }
+  },
+
+  onLoad: (callback) => {
+    if (isLoaded) {
+      callback();
+    } else {
+      window.addEventListener('viewerLoaded', callback, { once: true });
+    }
+  }
+};
+</script>
+</body>
+</html>
