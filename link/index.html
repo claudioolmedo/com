@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claudio Olmedo | Redirecionando...</title>
+    <meta name="description" content="Redirecionamento rápido para o site oficial de Claudio Olmedo, criador do projeto One Dollar Computer.">
+    <!-- Redirect immediately to the root if JavaScript is disabled -->
+    <noscript>
+        <meta http-equiv="refresh" content="1; url=../">
+    </noscript>
+    
+    <!-- Google Fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Josefin+Sans:400,300,700%7COpen+Sans:400,300,600' rel='stylesheet' type='text/css'>
+    
+    <!-- Font Awesome for icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #15191f;
+            color: #ffffff;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Background decorative elements */
+        .bg-glow {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 157, 0, 0.15) 0%, rgba(0,0,0,0) 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .container {
+            text-align: center;
+            z-index: 2;
+            padding: 20px;
+            max-width: 90%;
+        }
+
+        h1.logo {
+            font-family: 'Josefin Sans', sans-serif;
+            font-weight: 700;
+            font-size: 2.2rem;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            color: #ffffff;
+            text-transform: uppercase;
+        }
+
+        h1.logo span {
+            color: #ff9d00;
+        }
+
+        .subtitle {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 300;
+            font-size: 1.1rem;
+            color: #a0a5b0;
+            margin-bottom: 40px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Modern Spinner Animation */
+        .spinner-container {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 40px auto;
+        }
+
+        .spinner {
+            width: 100%;
+            height: 100%;
+            border: 3px solid rgba(255, 255, 255, 0.05);
+            border-top: 3px solid #ff9d00;
+            border-radius: 50%;
+            animation: spin 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        }
+
+        .spinner-inner {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 3px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 3px solid #ffea00;
+            border-radius: 50%;
+            animation: spin-reverse 1.5s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes spin-reverse {
+            0% { transform: rotate(360deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        /* Premium Link Button */
+        .btn-redirect {
+            display: inline-block;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #ff9d00 0%, #ffea00 100%);
+            color: #111111;
+            font-family: 'Josefin Sans', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border: none;
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(255, 157, 0, 0.3);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-redirect:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 157, 0, 0.5);
+            color: #000000;
+        }
+
+        .btn-redirect:active {
+            transform: translateY(1px);
+        }
+
+        /* Pulse hint text */
+        .hint {
+            font-size: 0.85rem;
+            color: #6c727f;
+            margin-top: 25px;
+            font-weight: 400;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-glow"></div>
+    <div class="container">
+        <h1 class="logo">Claudio <span>Olmedo</span></h1>
+        <p class="subtitle">Redirecionando você para o site principal...</p>
+        
+        <div class="spinner-container">
+            <div class="spinner"></div>
+            <div class="spinner-inner"></div>
+        </div>
+        
+        <a href="../" id="btn-manual-redirect" class="btn-redirect">Acessar Agora <i class="fa fa-arrow-right" style="margin-left: 8px;"></i></a>
+        
+        <p class="hint">Caso não seja redirecionado automaticamente, clique no botão acima.</p>
+    </div>
+
+
+    <script>
+        // Redirect after a short delay to allow visual transition animation
+        setTimeout(function() {
+            window.location.href = "../";
+        }, 1000);
+    </script>
+</body>
+</html>

@@ -41,6 +41,7 @@ This is not a commercial launch or a traditional crowdfunding campaign for profi
 ## Links
 
 - Website: https://claudioolmedo.com
+- Website Redirect / Presentation Link: https://claudioolmedo.com/link
 - Support / Build Campaign: Coming soon
 - GitHub: https://github.com/claudioolmedo
 - LinkedIn: https://www.linkedin.com/in/claudioolmedo-com/
