@@ -3,182 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Claudio Olmedo | Compartilhar Link</title>
+    <title>Claudio Olmedo</title>
     <meta name="description" content="Acesse o site oficial de Claudio Olmedo escaneando o código QR.">
-    
-    <!-- Google Fonts -->
-    <link href='https://fonts.googleapis.com/css?family=Josefin+Sans:400,300,700%7COpen+Sans:400,300,600' rel='stylesheet' type='text/css'>
-    
-    <!-- Font Awesome for icon -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
-        body {
-            font-family: 'Open Sans', sans-serif;
-            background-color: #f7f9fc;
-            color: #1e2229;
-            min-height: 100vh;
+        html, body {
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
-            position: relative;
-            padding: 20px;
+            overflow: hidden;
         }
-
-        /* Ambient glow in background */
-        .bg-glow {
-            position: absolute;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(255, 157, 0, 0.08) 0%, rgba(0,0,0,0) 70%);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .card {
-            background-color: #ffffff;
-            border-radius: 24px;
-            padding: 40px 30px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.02);
-            width: 100%;
-            max-width: 440px;
-            text-align: center;
-            z-index: 2;
-            border: 1px solid rgba(0, 0, 0, 0.02);
-        }
-
-        .logo {
-            font-family: 'Josefin Sans', sans-serif;
-            font-weight: 700;
-            font-size: 2rem;
-            letter-spacing: 1.5px;
-            margin-bottom: 8px;
-            color: #1e2229;
-            text-transform: uppercase;
-        }
-
-        .logo span {
-            color: #ff9d00;
-        }
-
-        .tagline {
-            font-family: 'Open Sans', sans-serif;
-            font-size: 0.95rem;
-            color: #ff9d00;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-bottom: 24px;
-        }
-
-        .qr-wrapper {
-            background-color: #ffffff;
-            border: 2px solid #f1f3f7;
-            border-radius: 20px;
-            padding: 20px;
-            display: inline-block;
-            margin-bottom: 24px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
-            transition: transform 0.3s ease;
-        }
-
-        .qr-wrapper:hover {
-            transform: scale(1.02);
-        }
-
-        .qr-image {
-            display: block;
-            width: 260px;
-            height: 260px;
-            max-width: 100%;
-            border-radius: 8px;
-        }
-
-        .instructions {
-            font-size: 1.05rem;
-            color: #4a5262;
-            line-height: 1.5;
-            margin-bottom: 30px;
-            font-weight: 400;
-        }
-
-        .btn-link {
-            display: inline-flex;
-            align-items: center;
+        .qr-container {
+            width: 85vmin;
+            height: 85vmin;
+            display: flex;
             justify-content: center;
-            width: 100%;
-            padding: 16px 32px;
-            background: #1e2229;
-            color: #ffffff;
-            font-family: 'Josefin Sans', sans-serif;
-            font-weight: 700;
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            border: none;
-            border-radius: 12px;
-            text-decoration: none;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            align-items: center;
         }
-
-        .btn-link:hover {
-            background: #ff9d00;
-            color: #ffffff;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 157, 0, 0.4);
-        }
-
-        .btn-link:active {
-            transform: translateY(0);
-        }
-
-        .footer-text {
-            margin-top: 25px;
-            font-size: 0.85rem;
-            color: #8c96a8;
-        }
-        
-        .footer-text a {
-            color: #1e2229;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .footer-text a:hover {
-            text-decoration: underline;
+        .qr-image {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            aspect-ratio: 1 / 1;
+            display: block;
         }
     </style>
 </head>
 <body>
-    <div class="bg-glow"></div>
-    <main class="card">
-        <h1 class="logo">Claudio <span>Olmedo</span></h1>
-        <p class="tagline">One Dollar Computer</p>
-        
-        <div class="qr-wrapper">
-            <img src="qrcode.png" alt="Código QR para claudioolmedo.com" class="qr-image">
-        </div>
-        
-        <p class="instructions">
-            Aponte a câmera do seu celular para o código acima para acessar o site.
-        </p>
-        
-        <a href="../" id="btn-visit-site" class="btn-link">
-            Acessar Site <i class="fa fa-external-link" style="margin-left: 10px;"></i>
-        </a>
-        
-        <p class="footer-text">
-            Ou digite no navegador: <a href="https://claudioolmedo.com">claudioolmedo.com</a>
-        </p>
-    </main>
+    <div class="qr-container">
+        <img src="qrcode.png" alt="Código QR para claudioolmedo.com" class="qr-image">
+    </div>
 </body>
 </html>
