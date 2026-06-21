@@ -3,12 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Claudio Olmedo | Redirecionando...</title>
-    <meta name="description" content="Redirecionamento rápido para o site oficial de Claudio Olmedo, criador do projeto One Dollar Computer.">
-    <!-- Redirect immediately to the root if JavaScript is disabled -->
-    <noscript>
-        <meta http-equiv="refresh" content="1; url=../">
-    </noscript>
+    <title>Claudio Olmedo | Compartilhar Link</title>
+    <meta name="description" content="Acesse o site oficial de Claudio Olmedo escaneando o código QR.">
     
     <!-- Google Fonts -->
     <link href='https://fonts.googleapis.com/css?family=Josefin+Sans:400,300,700%7COpen+Sans:400,300,600' rel='stylesheet' type='text/css'>
@@ -24,22 +20,22 @@
         }
         body {
             font-family: 'Open Sans', sans-serif;
-            background-color: #15191f;
-            color: #ffffff;
-            height: 100vh;
+            background-color: #f7f9fc;
+            color: #1e2229;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
             position: relative;
+            padding: 20px;
         }
-        
-        /* Background decorative elements */
+
+        /* Ambient glow in background */
         .bg-glow {
             position: absolute;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(255, 157, 0, 0.15) 0%, rgba(0,0,0,0) 70%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255, 157, 0, 0.08) 0%, rgba(0,0,0,0) 70%);
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
@@ -47,143 +43,142 @@
             pointer-events: none;
         }
 
-        .container {
+        .card {
+            background-color: #ffffff;
+            border-radius: 24px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.02);
+            width: 100%;
+            max-width: 440px;
             text-align: center;
             z-index: 2;
-            padding: 20px;
-            max-width: 90%;
+            border: 1px solid rgba(0, 0, 0, 0.02);
         }
 
-        h1.logo {
+        .logo {
             font-family: 'Josefin Sans', sans-serif;
             font-weight: 700;
-            font-size: 2.2rem;
-            letter-spacing: 2px;
-            margin-bottom: 20px;
-            color: #ffffff;
+            font-size: 2rem;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+            color: #1e2229;
             text-transform: uppercase;
         }
 
-        h1.logo span {
+        .logo span {
             color: #ff9d00;
         }
 
-        .subtitle {
+        .tagline {
             font-family: 'Open Sans', sans-serif;
-            font-weight: 300;
-            font-size: 1.1rem;
-            color: #a0a5b0;
-            margin-bottom: 40px;
-            letter-spacing: 0.5px;
+            font-size: 0.95rem;
+            color: #ff9d00;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
         }
 
-        /* Modern Spinner Animation */
-        .spinner-container {
-            position: relative;
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 40px auto;
-        }
-
-        .spinner {
-            width: 100%;
-            height: 100%;
-            border: 3px solid rgba(255, 255, 255, 0.05);
-            border-top: 3px solid #ff9d00;
-            border-radius: 50%;
-            animation: spin 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-        }
-
-        .spinner-inner {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            right: 10px;
-            bottom: 10px;
-            border: 3px solid rgba(255, 255, 255, 0.05);
-            border-bottom: 3px solid #ffea00;
-            border-radius: 50%;
-            animation: spin-reverse 1.5s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes spin-reverse {
-            0% { transform: rotate(360deg); }
-            100% { transform: rotate(0deg); }
-        }
-
-        /* Premium Link Button */
-        .btn-redirect {
+        .qr-wrapper {
+            background-color: #ffffff;
+            border: 2px solid #f1f3f7;
+            border-radius: 20px;
+            padding: 20px;
             display: inline-block;
-            padding: 14px 32px;
-            background: linear-gradient(135deg, #ff9d00 0%, #ffea00 100%);
-            color: #111111;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+            transition: transform 0.3s ease;
+        }
+
+        .qr-wrapper:hover {
+            transform: scale(1.02);
+        }
+
+        .qr-image {
+            display: block;
+            width: 260px;
+            height: 260px;
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+        .instructions {
+            font-size: 1.05rem;
+            color: #4a5262;
+            line-height: 1.5;
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+
+        .btn-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 16px 32px;
+            background: #1e2229;
+            color: #ffffff;
             font-family: 'Josefin Sans', sans-serif;
             font-weight: 700;
-            font-size: 0.95rem;
+            font-size: 1rem;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             border: none;
-            border-radius: 50px;
+            border-radius: 12px;
             text-decoration: none;
-            box-shadow: 0 4px 15px rgba(255, 157, 0, 0.3);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            position: relative;
-            overflow: hidden;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
         }
 
-        .btn-redirect:hover {
+        .btn-link:hover {
+            background: #ff9d00;
+            color: #ffffff;
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255, 157, 0, 0.5);
-            color: #000000;
+            box-shadow: 0 6px 20px rgba(255, 157, 0, 0.4);
         }
 
-        .btn-redirect:active {
-            transform: translateY(1px);
+        .btn-link:active {
+            transform: translateY(0);
         }
 
-        /* Pulse hint text */
-        .hint {
-            font-size: 0.85rem;
-            color: #6c727f;
+        .footer-text {
             margin-top: 25px;
-            font-weight: 400;
-            animation: pulse 2s infinite;
+            font-size: 0.85rem;
+            color: #8c96a8;
+        }
+        
+        .footer-text a {
+            color: #1e2229;
+            text-decoration: none;
+            font-weight: 600;
         }
 
-        @keyframes pulse {
-            0% { opacity: 0.5; }
-            50% { opacity: 1; }
-            100% { opacity: 0.5; }
+        .footer-text a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
     <div class="bg-glow"></div>
-    <div class="container">
+    <main class="card">
         <h1 class="logo">Claudio <span>Olmedo</span></h1>
-        <p class="subtitle">Redirecionando você para o site principal...</p>
+        <p class="tagline">One Dollar Computer</p>
         
-        <div class="spinner-container">
-            <div class="spinner"></div>
-            <div class="spinner-inner"></div>
+        <div class="qr-wrapper">
+            <img src="qrcode.png" alt="Código QR para claudioolmedo.com" class="qr-image">
         </div>
         
-        <a href="../" id="btn-manual-redirect" class="btn-redirect">Acessar Agora <i class="fa fa-arrow-right" style="margin-left: 8px;"></i></a>
+        <p class="instructions">
+            Aponte a câmera do seu celular para o código acima para acessar o site.
+        </p>
         
-        <p class="hint">Caso não seja redirecionado automaticamente, clique no botão acima.</p>
-    </div>
-
-
-    <script>
-        // Redirect after a short delay to allow visual transition animation
-        setTimeout(function() {
-            window.location.href = "../";
-        }, 1000);
-    </script>
+        <a href="../" id="btn-visit-site" class="btn-link">
+            Acessar Site <i class="fa fa-external-link" style="margin-left: 10px;"></i>
+        </a>
+        
+        <p class="footer-text">
+            Ou digite no navegador: <a href="https://claudioolmedo.com">claudioolmedo.com</a>
+        </p>
+    </main>
 </body>
 </html>
