@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -133,7 +133,7 @@
   .slider input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
   #topbar, #panel, #hint { display: none !important; }
 
-  /* ---------- Simple mode dock: Girar (gimbal) / Mover (mãozinha) ---------- */
+  /* ---------- Simple mode dock: Rotate (gimbal) / Move (hand on canvas) ---------- */
   #dock {
     position: fixed;
     right: 16px;
@@ -369,8 +369,8 @@
   <!-- Loading -->
   <div id="loader">
     <div class="spinner"></div>
-    <div class="title">Carregando OneDollarBoard</div>
-    <div class="sub" id="status">Lendo arquivos…</div>
+    <div class="title">Loading OneDollarBoard</div>
+    <div class="sub" id="status">Reading files…</div>
     <div id="progress"><div></div></div>
   </div>
 
@@ -378,29 +378,29 @@
   <div id="topbar">
     <div id="brand">
       <div class="logo">$1</div>
-      <div class="name">OneDollarBoard<small>Visualizador 3D</small></div>
+      <div class="name">OneDollarBoard<small>3D Viewer</small></div>
     </div>
   </div>
 
   <!-- Control panel -->
   <div id="panel">
-    <h3>Textura</h3>
+    <h3>Texture</h3>
     <div class="seg" id="texSeg">
-      <button data-tex="none">Cor</button>
-      <button data-tex="both" class="active">Foto</button>
-      <button data-tex="top">Topo</button>
-      <button data-tex="button">Base</button>
+      <button data-tex="none">Color</button>
+      <button data-tex="both" class="active">Photo</button>
+      <button data-tex="top">Top</button>
+      <button data-tex="button">Bottom</button>
     </div>
 
     <div id="fitControls" style="display:none">
-      <h3 style="margin-top: 8px; margin-bottom: 8px;">Ajuste de Textura</h3>
+      <h3 style="margin-top: 8px; margin-bottom: 8px;">Texture Fit</h3>
       <div class="seg" id="fitLayerSeg" style="margin-bottom: 12px;">
-        <button data-layer="top" class="active">Topo</button>
-        <button data-layer="button">Base</button>
+        <button data-layer="top" class="active">Top</button>
+        <button data-layer="button">Bottom</button>
       </div>
 
       <div class="slider">
-        <label>Escala <span id="vScale">1.000</span></label>
+        <label>Scale <span id="vScale">1.000</span></label>
         <input id="sScale" type="range" min="0.3" max="4.0" step="0.001" value="1.0" />
       </div>
       <div class="slider">
@@ -412,46 +412,46 @@
         <input id="sOffZ" type="range" min="-2.0" max="2.0" step="0.001" value="0.0" />
       </div>
       <div class="slider">
-        <label>Rotação <span id="vRot">0.0°</span></label>
+        <label>Rotation <span id="vRot">0.0°</span></label>
         <input id="sRot" type="range" min="-180" max="180" step="0.1" value="0.0" />
       </div>
       <div class="slider" style="margin-bottom:2px">
-        <label><span style="display:flex;align-items:center;gap:8px"><span class="toggle on" id="tFlipV"></span> Inverter V</span></label>
+        <label><span style="display:flex;align-items:center;gap:8px"><span class="toggle on" id="tFlipV"></span> Flip V</span></label>
       </div>
     </div>
 
-    <h3>Exibição</h3>
+    <h3>Display</h3>
     <div class="row">
-      <label>Grade</label>
+      <label>Grid</label>
       <div class="toggle" id="tGrid"></div>
     </div>
     <div class="row">
-      <label>Eixos</label>
+      <label>Axes</label>
       <div class="toggle" id="tAxes"></div>
     </div>
     <div class="row">
-      <label>Rotação auto.</label>
+      <label>Auto-rotate</label>
       <div class="toggle" id="tSpin"></div>
     </div>
 
-    <h3>Visualização</h3>
+    <h3>Background</h3>
     <div class="seg" id="bgSeg">
-      <button data-bg="dark" class="active">Escuro</button>
-      <button data-bg="light">Claro</button>
+      <button data-bg="dark" class="active">Dark</button>
+      <button data-bg="light">Light</button>
       <button data-bg="studio">Studio</button>
     </div>
 
-    <div class="hint">Arraste para girar • Scroll para zoom • Botão direito para mover</div>
+    <div class="hint">Drag to rotate • Scroll to zoom • Right-click to pan</div>
   </div>
 
-  <div id="hint"><b>Mouse:</b> girar &nbsp;•&nbsp; <b>Scroll:</b> zoom &nbsp;•&nbsp; <b>Botão direito:</b> mover</div>
+  <div id="hint"><b>Mouse:</b> rotate &nbsp;•&nbsp; <b>Scroll:</b> zoom &nbsp;•&nbsp; <b>Right-click:</b> pan</div>
 
-  <!-- Dock: modo Girar (gimbal) ou Mover (mãozinha no 3D) -->
-  <div id="dock" class="mode-rotate" aria-label="Controles do visualizador 3D">
-    <div id="moveHint">Modo mover ativo — <strong>arraste na placa</strong></div>
+  <!-- Dock: Rotate (gimbal) or Move (hand on 3D) -->
+  <div id="dock" class="mode-rotate" aria-label="3D viewer controls">
+    <div id="moveHint">Move mode on — <strong>drag on the board</strong></div>
 
     <div id="gimbalBlock">
-      <div class="gimbal-pad" id="gimbalPad" role="application" aria-label="Gimbal de rotação">
+      <div class="gimbal-pad" id="gimbalPad" role="application" aria-label="Rotation gimbal">
         <div class="gimbal-ring"></div>
         <div class="gimbal-ring-inner"></div>
         <div class="gimbal-cross"></div>
@@ -461,30 +461,30 @@
         <div class="gimbal-arrow right">▶</div>
         <div class="gimbal-knob" id="gimbalKnob"></div>
       </div>
-      <div class="dock-label">Girar</div>
+      <div class="dock-label">Rotate</div>
     </div>
 
     <div class="dock-tools">
-      <button type="button" class="mode-btn" id="btnHand" title="Mover sem girar" aria-label="Ativar mãozinha para mover">
+      <button type="button" class="mode-btn" id="btnHand" title="Move without rotating" aria-label="Enable hand tool to move">
         <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
           <path fill="currentColor" d="M9.5 2.75a1.25 1.25 0 0 1 2.5 0v7.5h.25V4.5a1.25 1.25 0 1 1 2.5 0v5.75h.25V5.75a1.25 1.25 0 1 1 2.5 0v5.75h.25V8.5a1.25 1.25 0 1 1 2.5 0v7.25c0 3.45-2.55 6-6 6h-.5c-2.9 0-5.25-2.1-5.25-5.25V9.5a1.25 1.25 0 1 1 2.5 0v1.25V2.75z"/>
         </svg>
       </button>
-      <button type="button" class="mode-btn" id="btnGimbal" title="Voltar a girar" aria-label="Ativar gimbal para girar">
+      <button type="button" class="mode-btn" id="btnGimbal" title="Back to rotate" aria-label="Enable gimbal to rotate">
         <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
           <path fill="currentColor" d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46A7.93 7.93 0 0 0 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74A7.93 7.93 0 0 0 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/>
         </svg>
       </button>
-      <button type="button" class="gimbal-btn" id="gimbalZoomIn" title="Aproximar" aria-label="Aproximar">+</button>
-      <button type="button" class="gimbal-btn" id="gimbalZoomOut" title="Afastar" aria-label="Afastar">−</button>
-      <button type="button" class="gimbal-btn" id="gimbalReset" title="Resetar vista" aria-label="Resetar vista">↺</button>
+      <button type="button" class="gimbal-btn" id="gimbalZoomIn" title="Zoom in" aria-label="Zoom in">+</button>
+      <button type="button" class="gimbal-btn" id="gimbalZoomOut" title="Zoom out" aria-label="Zoom out">−</button>
+      <button type="button" class="gimbal-btn" id="gimbalReset" title="Reset view" aria-label="Reset view">↺</button>
     </div>
   </div>
 
   <!-- Error -->
   <div id="error">
     <div class="box">
-      <h2>Falha ao abrir o modelo</h2>
+      <h2>Could not open the model</h2>
       <p id="errMsg"></p>
     </div>
   </div>
@@ -561,7 +561,7 @@ let defaultTarget = null;
 const spherical = new THREE.Spherical();
 const offsetVec = new THREE.Vector3();
 
-// ---------- Mode dock: Girar (gimbal) <-> Mover (mãozinha no canvas) ----------
+// ---------- Mode dock: Rotate (gimbal) <-> Move (hand on canvas) ----------
 const dockEl = $('dock');
 const gimbalPad = $('gimbalPad');
 const gimbalKnob = $('gimbalKnob');
@@ -984,7 +984,7 @@ function splitPCBGeometry(pcbMesh, pcbBBox) {
   };
 }
 
-// Clone original colors so we can restore from "Cor"
+// Clone original colors so we can restore from "Color"
 const originalMaterials = new WeakMap();
 
 let modelRoot = null;
@@ -1001,7 +1001,7 @@ function centerAndFrame(object) {
   return { size, center };
 }
 // Pre-cache textures and GLB models in parallel
-setStatus('Carregando recursos…');
+setStatus('Loading assets…');
 setProgress(0.05);
 
 const gltfLoader = new GLTFLoader();
@@ -1025,7 +1025,7 @@ Promise.all([
 ])
   .then(([topTex, buttonTex, pcbGltf, compGltf]) => {
     setProgress(0.96);
-    setStatus('Preparando cena…');
+    setStatus('Preparing scene…');
 
     const pcbObj = pcbGltf.scene;
     const compObj = compGltf.scene;
@@ -1143,7 +1143,7 @@ Promise.all([
   })
   .catch((err) => {
     console.error(err);
-    fail('Verifique se os arquivos .glb de pcb e componentes estão na mesma pasta e servidos por http.');
+    fail('Make sure the PCB and components .glb files are in the same folder and served over http.');
   });
 
 // ---------- Texture application ----------
