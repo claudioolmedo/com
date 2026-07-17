@@ -170,6 +170,29 @@
       background: #0d1117;
     }
 
+    /* Safari / iOS fullscreen fallback: expand iframe over the page */
+    html.viewer-fs-active,
+    html.viewer-fs-active body {
+      overflow: hidden !important;
+      height: 100% !important;
+    }
+    html.viewer-fs-active #viewer-iframe {
+      position: fixed !important;
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      max-width: none !important;
+      z-index: 2147483000 !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+      opacity: 1 !important;
+      background: #0d1117 !important;
+    }
+    html.viewer-fs-active .viewer-container {
+      border: 0 !important;
+      border-radius: 0 !important;
+    }
+
     @media (max-width: 767px) {
       .viewer-container {
         height: 420px;
@@ -602,10 +625,10 @@
           <div class="row">
             <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
               <div class="viewer-container">
-                <iframe id="viewer-iframe" data-src="3d/viewer.html?v=19"
+                <iframe id="viewer-iframe" data-src="3d/viewer.html?v=20"
                   src="about:blank"
                   style="width: 100%; height: 100%; border: none; display: block; opacity: 0; transition: opacity 0.8s ease;"
-                  allow="autoplay; fullscreen" title="OneDollarBoard 3D Viewer" loading="lazy"></iframe>
+                  allow="autoplay; fullscreen" allowfullscreen webkitallowfullscreen playsinline title="OneDollarBoard 3D Viewer" loading="lazy"></iframe>
               </div>
             </div>
           </div>
@@ -852,6 +875,33 @@
       } else {
         loadViewer();
       }
+
+      // Safari fullscreen fallback: expand iframe when the viewer asks via postMessage
+      function setViewerFullscreen(active) {
+        document.documentElement.classList.toggle('viewer-fs-active', !!active);
+        try {
+          if (iframe.contentWindow) {
+            iframe.contentWindow.postMessage({
+              source: 'onedollar-parent',
+              type: 'fullscreen',
+              active: !!active
+            }, '*');
+          }
+        } catch (e) {}
+      }
+
+      window.addEventListener('message', function (event) {
+        var data = event.data;
+        if (!data || data.source !== 'onedollar-viewer' || data.type !== 'fullscreen') return;
+        if (data.action === 'enter') setViewerFullscreen(true);
+        else if (data.action === 'exit') setViewerFullscreen(false);
+      });
+
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && document.documentElement.classList.contains('viewer-fs-active')) {
+          setViewerFullscreen(false);
+        }
+      });
     });
   </script>
   <!-- JS end -->

@@ -1042,6 +1042,24 @@ function getFullscreenElement() {
     || null;
 }
 
+function isIOSSafari() {
+  const ua = navigator.userAgent || '';
+  const iOS = /iPad|iPhone|iPod/.test(ua)
+    || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const webkit = /WebKit/.test(ua);
+  return iOS && webkit;
+}
+
+function isInIframe() {
+  try { return window.self !== window.top; } catch (_) { return true; }
+}
+
+function canUseNativeFullscreen() {
+  if (isIOSSafari()) return false; // iOS Safari: API missing/unreliable for this content
+  const el = document.documentElement;
+  return !!(el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen);
+}
+
 function isFullscreen() {
   return !!getFullscreenElement() || document.body.classList.contains('pseudo-fullscreen');
 }
@@ -1053,18 +1071,61 @@ function syncFullscreenButton() {
   btnFullscreen.setAttribute('aria-label', on ? 'Exit full screen' : 'Enter full screen');
 }
 
-async function enterFullscreen() {
-  const el = document.documentElement;
+function notifyParentFullscreen(action) {
+  if (!isInIframe()) return false;
   try {
-    if (el.requestFullscreen) await el.requestFullscreen();
-    else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
-    else if (el.msRequestFullscreen) el.msRequestFullscreen();
-    else document.body.classList.add('pseudo-fullscreen');
+    window.parent.postMessage({
+      source: 'onedollar-viewer',
+      type: 'fullscreen',
+      action: action,
+    }, '*');
+    return true;
   } catch (_) {
-    document.body.classList.add('pseudo-fullscreen');
+    return false;
   }
+}
+
+function enterPseudoFullscreen() {
+  document.body.classList.add('pseudo-fullscreen');
+  notifyParentFullscreen('enter');
   syncFullscreenButton();
   window.dispatchEvent(new Event('resize'));
+}
+
+function exitPseudoFullscreen() {
+  document.body.classList.remove('pseudo-fullscreen');
+  notifyParentFullscreen('exit');
+  syncFullscreenButton();
+  window.dispatchEvent(new Event('resize'));
+}
+
+async function enterFullscreen() {
+  // Prefer native FS on desktop browsers; Safari/iOS uses parent-iframe fallback
+  if (canUseNativeFullscreen()) {
+    const el = document.documentElement;
+    try {
+      if (el.requestFullscreen) await el.requestFullscreen();
+      else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+      else if (el.msRequestFullscreen) el.msRequestFullscreen();
+      else {
+        enterPseudoFullscreen();
+        return;
+      }
+      // If still not fullscreen shortly after (Safari no-op), fall back
+      setTimeout(() => {
+        if (!getFullscreenElement()) enterPseudoFullscreen();
+        else {
+          syncFullscreenButton();
+          window.dispatchEvent(new Event('resize'));
+        }
+      }, 120);
+      return;
+    } catch (_) {
+      enterPseudoFullscreen();
+      return;
+    }
+  }
+  enterPseudoFullscreen();
 }
 
 async function exitFullscreen() {
@@ -1075,9 +1136,7 @@ async function exitFullscreen() {
       else if (document.msExitFullscreen) document.msExitFullscreen();
     }
   } catch (_) {}
-  document.body.classList.remove('pseudo-fullscreen');
-  syncFullscreenButton();
-  window.dispatchEvent(new Event('resize'));
+  exitPseudoFullscreen();
 }
 
 btnFullscreen.addEventListener('click', (e) => {
@@ -1089,10 +1148,22 @@ btnFullscreen.addEventListener('click', (e) => {
 
 ['fullscreenchange', 'webkitfullscreenchange', 'MSFullscreenChange'].forEach((evt) => {
   document.addEventListener(evt, () => {
-    if (!getFullscreenElement()) document.body.classList.remove('pseudo-fullscreen');
+    if (!getFullscreenElement()) {
+      // Native exited — also clear parent/pseudo state
+      document.body.classList.remove('pseudo-fullscreen');
+      notifyParentFullscreen('exit');
+    }
     syncFullscreenButton();
     window.dispatchEvent(new Event('resize'));
   });
+});
+
+window.addEventListener('message', (e) => {
+  const data = e.data;
+  if (!data || data.source !== 'onedollar-parent' || data.type !== 'fullscreen') return;
+  document.body.classList.toggle('pseudo-fullscreen', !!data.active);
+  syncFullscreenButton();
+  window.dispatchEvent(new Event('resize'));
 });
 
 function updateGimbal(dt) {

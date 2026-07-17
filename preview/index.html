@@ -102,13 +102,25 @@
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
+
+    /* Safari / iOS fullscreen fallback */
+    html.viewer-fs-active #chrome {
+      display: none !important;
+    }
+    html.viewer-fs-active,
+    html.viewer-fs-active body {
+      overflow: hidden !important;
+    }
+    html.viewer-fs-active #viewer {
+      z-index: 1;
+    }
   </style>
 </head>
 <body>
   <div id="chrome">
     <div class="left">
       <a href="../">← Site</a>
-      <span class="badge" title="Use the top-right button for full screen">Preview · Fullscreen</span>
+      <span class="badge" title="Fullscreen works on Safari via page expand fallback">Preview · Safari FS</span>
     </div>
     <div class="right">
       <a href="#" class="share" id="copyLink" title="Copy preview link">Copy link</a>
@@ -117,10 +129,11 @@
 
   <iframe
     id="viewer"
-    src="../3d/viewer.html?v=19&pad=1"
-    title="Preview — hand tool to move on the 3D board"
+    src="../3d/viewer.html?v=20&pad=1"
+    title="Preview — OneDollarBoard 3D viewer"
     allow="autoplay; fullscreen"
     allowfullscreen
+    webkitallowfullscreen
   ></iframe>
 
   <div id="toast" role="status" aria-live="polite">Link copied</div>
@@ -130,6 +143,7 @@
       var btn = document.getElementById('copyLink');
       var toast = document.getElementById('toast');
       var toastTimer;
+      var iframe = document.getElementById('viewer');
 
       function showToast(msg) {
         toast.textContent = msg;
@@ -151,6 +165,32 @@
           });
         } else {
           window.prompt('Copy the preview link:', url);
+        }
+      });
+
+      function setViewerFullscreen(active) {
+        document.documentElement.classList.toggle('viewer-fs-active', !!active);
+        try {
+          if (iframe.contentWindow) {
+            iframe.contentWindow.postMessage({
+              source: 'onedollar-parent',
+              type: 'fullscreen',
+              active: !!active
+            }, '*');
+          }
+        } catch (e) {}
+      }
+
+      window.addEventListener('message', function (event) {
+        var data = event.data;
+        if (!data || data.source !== 'onedollar-viewer' || data.type !== 'fullscreen') return;
+        if (data.action === 'enter') setViewerFullscreen(true);
+        else if (data.action === 'exit') setViewerFullscreen(false);
+      });
+
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && document.documentElement.classList.contains('viewer-fs-active')) {
+          setViewerFullscreen(false);
         }
       });
     })();
