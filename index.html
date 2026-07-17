@@ -154,12 +154,32 @@
     .viewer-container {
       position: relative;
       overflow: hidden;
-      height: 500px;
+      height: 520px;
+      border-radius: 12px;
+      border: 1px solid #30363d;
+      background: #0d1117;
+    }
+
+    .viewer-hint {
+      margin-top: 14px;
+      font-size: 13px;
+      color: #8b949e;
+      letter-spacing: 0.2px;
+    }
+
+    .viewer-hint strong {
+      color: #ffbf00;
+      font-weight: 600;
     }
 
     @media (max-width: 767px) {
       .viewer-container {
-        height: 380px;
+        height: 420px;
+      }
+
+      .viewer-hint {
+        font-size: 12px;
+        padding: 0 8px;
       }
 
       /* Shift background circle on mobile to make Claudio's face fully visible while clearing logo and menu icon */
@@ -589,10 +609,13 @@
           <div class="row">
             <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
               <div class="viewer-container">
-                <iframe id="viewer-iframe" src="3d/viewer.html?v=4"
+                <iframe id="viewer-iframe" src="3d/viewer.html?v=5"
                   style="width: 100%; height: 100%; border: none; display: block; opacity: 0; transition: opacity 0.8s ease;"
-                  allow="autoplay"></iframe>
+                  allow="autoplay" title="OneDollarBoard 3D Viewer"></iframe>
               </div>
+              <p class="viewer-hint font-open-sans">
+                No celular, use o <strong>gimbal</strong> no canto para girar a placa · + / − para zoom · ↺ para resetar
+              </p>
             </div>
           </div>
         </div>
