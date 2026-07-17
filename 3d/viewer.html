@@ -492,7 +492,7 @@
 
   <!-- Dock: Rotate (gimbal) or Move (hand on 3D) -->
   <div id="dock" class="mode-rotate" aria-label="3D viewer controls">
-    <div id="moveHint">Move mode on — <strong>drag on the board</strong></div>
+    <div id="moveHint">Move mode on — <strong>drag on the board</strong><br><span style="opacity:.85">Pinch to zoom · twist two fingers to rotate</span></div>
 
     <div id="gimbalBlock">
       <div class="gimbal-orbit-row">
@@ -616,7 +616,8 @@ controls.mouseButtons = {
 };
 controls.touches = {
   ONE: THREE.TOUCH.PAN,
-  TWO: THREE.TOUCH.DOLLY_PAN,
+  // Two-finger pinch+twist is handled by our custom gesture (not OrbitControls)
+  TWO: -1,
 };
 
 // Remember default framing for reset
@@ -650,7 +651,8 @@ const canvasDrag = {
   y: 0,
   sens: 0.005,
 };
-const activePointers = new Set();
+const pointerPos = new Map(); // pointerId -> { x, y }
+let pinchGesture = null; // { dist, angle } for two-finger zoom + twist
 
 function setKnob(nx, ny) {
   gimbalKnob.style.transform = `translate(${nx * gimbalState.maxTravel}px, ${ny * gimbalState.maxTravel}px)`;
@@ -741,12 +743,13 @@ function applyViewMode(mode) {
   dockEl.classList.toggle('mode-rotate', !isMove);
   document.body.classList.toggle('mode-move', isMove);
 
-  // Move mode: one-finger pans. Rotate mode: custom free spin (OrbitControls rotate stays off).
+  // Move mode: one-finger pans. Rotate mode: one-finger free spin.
+  // Two-finger pinch+twist is always our custom gesture.
   controls.enableRotate = false;
   controls.enablePan = isMove;
   controls.mouseButtons.LEFT = THREE.MOUSE.PAN;
   controls.touches.ONE = THREE.TOUCH.PAN;
-  controls.touches.TWO = THREE.TOUCH.DOLLY_PAN;
+  controls.touches.TWO = -1;
 
   if (!isMove) resetKnob();
   else {
@@ -794,16 +797,37 @@ gimbalPad.addEventListener('pointercancel', onGimbalPointerUp);
 gimbalPad.addEventListener('touchstart', (e) => e.preventDefault(), { passive: false });
 gimbalPad.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
 
+function twoFingerMetrics() {
+  if (pointerPos.size < 2) return null;
+  const pts = Array.from(pointerPos.values());
+  const a = pts[0];
+  const b = pts[1];
+  const dx = b.x - a.x;
+  const dy = b.y - a.y;
+  return {
+    dist: Math.hypot(dx, dy) || 1,
+    angle: Math.atan2(dy, dx),
+  };
+}
+
 function onCanvasPointerDown(e) {
-  activePointers.add(e.pointerId);
-  if (viewMode !== 'rotate' || !modelRoot) return;
-  if (e.pointerType === 'mouse' && e.button !== 0) return;
-  // Multi-touch → let pinch-zoom win; cancel free-spin drag
-  if (activePointers.size > 1) {
+  pointerPos.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+  // Two fingers: pinch zoom + twist rotate (mobile-standard)
+  if (pointerPos.size >= 2) {
+    if (canvasDrag.pointerId != null) {
+      try { renderer.domElement.releasePointerCapture?.(canvasDrag.pointerId); } catch (_) {}
+    }
     canvasDrag.active = false;
     canvasDrag.pointerId = null;
+    pinchGesture = twoFingerMetrics();
+    stopAutoRotateIfNeeded();
     return;
   }
+
+  // One finger trackball only in rotate mode
+  if (viewMode !== 'rotate' || !modelRoot) return;
+  if (e.pointerType === 'mouse' && e.button !== 0) return;
   canvasDrag.active = true;
   canvasDrag.pointerId = e.pointerId;
   canvasDrag.x = e.clientX;
@@ -813,8 +837,32 @@ function onCanvasPointerDown(e) {
 }
 
 function onCanvasPointerMove(e) {
+  if (!pointerPos.has(e.pointerId)) return;
+  pointerPos.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+  if (pointerPos.size >= 2) {
+    e.preventDefault();
+    const m = twoFingerMetrics();
+    if (!pinchGesture || !m) return;
+
+    // Pinch → zoom (spread out = zoom in)
+    const zoomFactor = pinchGesture.dist / m.dist;
+    if (Number.isFinite(zoomFactor) && zoomFactor > 0.01 && zoomFactor < 100) {
+      dollyBy(zoomFactor);
+    }
+
+    // Twist → roll like spinning a sheet
+    let dAngle = m.angle - pinchGesture.angle;
+    while (dAngle > Math.PI) dAngle -= Math.PI * 2;
+    while (dAngle < -Math.PI) dAngle += Math.PI * 2;
+    if (Math.abs(dAngle) > 0.0005) orbitRoll(dAngle);
+
+    pinchGesture = m;
+    return;
+  }
+
   if (!canvasDrag.active || e.pointerId !== canvasDrag.pointerId) return;
-  if (viewMode !== 'rotate' || activePointers.size > 1) return;
+  if (viewMode !== 'rotate') return;
   const dx = e.clientX - canvasDrag.x;
   const dy = e.clientY - canvasDrag.y;
   canvasDrag.x = e.clientX;
@@ -823,7 +871,8 @@ function onCanvasPointerMove(e) {
 }
 
 function onCanvasPointerUp(e) {
-  activePointers.delete(e.pointerId);
+  pointerPos.delete(e.pointerId);
+  if (pointerPos.size < 2) pinchGesture = null;
   if (e.pointerId !== canvasDrag.pointerId) return;
   canvasDrag.active = false;
   canvasDrag.pointerId = null;
