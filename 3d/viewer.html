@@ -545,6 +545,11 @@ controls.dampingFactor = 0.08;
 controls.minDistance = 0.5;
 controls.maxDistance = 40;
 controls.enablePan = true;
+// Allow full orbit: spin all the way around and flip top/bottom
+controls.minPolarAngle = 0;
+controls.maxPolarAngle = Math.PI;
+controls.minAzimuthAngle = -Infinity;
+controls.maxAzimuthAngle = Infinity;
 controls.mouseButtons = {
   LEFT: THREE.MOUSE.ROTATE,
   MIDDLE: THREE.MOUSE.DOLLY,
@@ -608,7 +613,9 @@ function orbitBy(deltaTheta, deltaPhi) {
   spherical.setFromVector3(offsetVec);
   spherical.theta -= deltaTheta;
   spherical.phi -= deltaPhi;
-  spherical.phi = Math.max(0.12, Math.min(Math.PI - 0.12, spherical.phi));
+  // Keep full polar range (tiny epsilon only — avoids singularity at the poles)
+  const eps = 0.000001;
+  spherical.phi = Math.max(eps, Math.min(Math.PI - eps, spherical.phi));
   spherical.makeSafe();
   offsetVec.setFromSpherical(spherical);
   camera.position.copy(controls.target).add(offsetVec);
