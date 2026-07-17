@@ -545,26 +545,28 @@ controls.dampingFactor = 0.08;
 controls.minDistance = 0.5;
 controls.maxDistance = 40;
 controls.enablePan = true;
-// Allow full orbit: spin all the way around and flip top/bottom
-controls.minPolarAngle = 0;
-controls.maxPolarAngle = Math.PI;
+// Rotation is handled by free trackball on the model (no polar lock).
+controls.enableRotate = false;
 controls.minAzimuthAngle = -Infinity;
 controls.maxAzimuthAngle = Infinity;
 controls.mouseButtons = {
-  LEFT: THREE.MOUSE.ROTATE,
+  LEFT: THREE.MOUSE.PAN, // overridden per mode; rotate mode uses custom drag
   MIDDLE: THREE.MOUSE.DOLLY,
   RIGHT: THREE.MOUSE.PAN,
 };
 controls.touches = {
-  ONE: THREE.TOUCH.ROTATE,
+  ONE: THREE.TOUCH.PAN,
   TWO: THREE.TOUCH.DOLLY_PAN,
 };
 
 // Remember default framing for reset
 let defaultCameraPos = null;
 let defaultTarget = null;
-const spherical = new THREE.Spherical();
+let defaultModelPos = null;
+let defaultModelQuat = null;
 const offsetVec = new THREE.Vector3();
+const _rotAxis = new THREE.Vector3();
+const _rotQuat = new THREE.Quaternion();
 
 // ---------- Mode dock: Rotate (gimbal) <-> Move (hand on canvas) ----------
 const dockEl = $('dock');
@@ -579,8 +581,16 @@ const gimbalState = {
   nx: 0,
   ny: 0,
   maxTravel: 34,
-  rotateSpeed: 2.4,
+  rotateSpeed: 2.8,
 };
+const canvasDrag = {
+  active: false,
+  pointerId: null,
+  x: 0,
+  y: 0,
+  sens: 0.005,
+};
+const activePointers = new Set();
 
 function setKnob(nx, ny) {
   gimbalKnob.style.transform = `translate(${nx * gimbalState.maxTravel}px, ${ny * gimbalState.maxTravel}px)`;
@@ -608,18 +618,28 @@ function readPadOffset(clientX, clientY) {
   return { nx: dx / max, ny: dy / max };
 }
 
+/** Rotate model around a world point — unlimited tumble, no polar lock. */
+function rotateRootAroundPoint(point, axis, angle) {
+  if (!modelRoot || !angle) return;
+  _rotQuat.setFromAxisAngle(axis, angle);
+  modelRoot.position.sub(point);
+  modelRoot.position.applyQuaternion(_rotQuat);
+  modelRoot.quaternion.premultiply(_rotQuat);
+  modelRoot.position.add(point);
+}
+
+/** Free trackball rotation (radians). No clamp — keeps spinning past top/bottom. */
 function orbitBy(deltaTheta, deltaPhi) {
-  offsetVec.copy(camera.position).sub(controls.target);
-  spherical.setFromVector3(offsetVec);
-  spherical.theta -= deltaTheta;
-  spherical.phi -= deltaPhi;
-  // Keep full polar range (tiny epsilon only — avoids singularity at the poles)
-  const eps = 0.000001;
-  spherical.phi = Math.max(eps, Math.min(Math.PI - eps, spherical.phi));
-  spherical.makeSafe();
-  offsetVec.setFromSpherical(spherical);
-  camera.position.copy(controls.target).add(offsetVec);
-  controls.update();
+  if (!modelRoot) return;
+  const pivot = controls.target;
+  if (deltaTheta) {
+    _rotAxis.set(0, 1, 0);
+    rotateRootAroundPoint(pivot, _rotAxis, -deltaTheta);
+  }
+  if (deltaPhi) {
+    _rotAxis.setFromMatrixColumn(camera.matrixWorld, 0).normalize();
+    rotateRootAroundPoint(pivot, _rotAxis, -deltaPhi);
+  }
 }
 
 function dollyBy(factor) {
@@ -635,6 +655,10 @@ function resetView() {
   if (!defaultCameraPos || !defaultTarget) return;
   camera.position.copy(defaultCameraPos);
   controls.target.copy(defaultTarget);
+  if (modelRoot && defaultModelPos && defaultModelQuat) {
+    modelRoot.position.copy(defaultModelPos);
+    modelRoot.quaternion.copy(defaultModelQuat);
+  }
   controls.update();
 }
 
@@ -649,13 +673,18 @@ function applyViewMode(mode) {
   dockEl.classList.toggle('mode-rotate', !isMove);
   document.body.classList.toggle('mode-move', isMove);
 
-  // One finger / left drag: pan in move mode, rotate otherwise
-  controls.mouseButtons.LEFT = isMove ? THREE.MOUSE.PAN : THREE.MOUSE.ROTATE;
-  controls.touches.ONE = isMove ? THREE.TOUCH.PAN : THREE.TOUCH.ROTATE;
-  controls.enableRotate = !isMove;
+  // Move mode: one-finger pans. Rotate mode: custom free spin (OrbitControls rotate stays off).
+  controls.enableRotate = false;
+  controls.enablePan = isMove;
+  controls.mouseButtons.LEFT = THREE.MOUSE.PAN;
+  controls.touches.ONE = THREE.TOUCH.PAN;
+  controls.touches.TWO = THREE.TOUCH.DOLLY_PAN;
 
   if (!isMove) resetKnob();
-  else stopAutoRotateIfNeeded();
+  else {
+    stopAutoRotateIfNeeded();
+    canvasDrag.active = false;
+  }
 }
 
 function onGimbalPointerDown(e) {
@@ -696,6 +725,46 @@ gimbalPad.addEventListener('pointerup', onGimbalPointerUp);
 gimbalPad.addEventListener('pointercancel', onGimbalPointerUp);
 gimbalPad.addEventListener('touchstart', (e) => e.preventDefault(), { passive: false });
 gimbalPad.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
+
+function onCanvasPointerDown(e) {
+  activePointers.add(e.pointerId);
+  if (viewMode !== 'rotate' || !modelRoot) return;
+  if (e.pointerType === 'mouse' && e.button !== 0) return;
+  // Multi-touch → let pinch-zoom win; cancel free-spin drag
+  if (activePointers.size > 1) {
+    canvasDrag.active = false;
+    canvasDrag.pointerId = null;
+    return;
+  }
+  canvasDrag.active = true;
+  canvasDrag.pointerId = e.pointerId;
+  canvasDrag.x = e.clientX;
+  canvasDrag.y = e.clientY;
+  stopAutoRotateIfNeeded();
+  renderer.domElement.setPointerCapture?.(e.pointerId);
+}
+
+function onCanvasPointerMove(e) {
+  if (!canvasDrag.active || e.pointerId !== canvasDrag.pointerId) return;
+  if (viewMode !== 'rotate' || activePointers.size > 1) return;
+  const dx = e.clientX - canvasDrag.x;
+  const dy = e.clientY - canvasDrag.y;
+  canvasDrag.x = e.clientX;
+  canvasDrag.y = e.clientY;
+  orbitBy(dx * canvasDrag.sens, dy * canvasDrag.sens);
+}
+
+function onCanvasPointerUp(e) {
+  activePointers.delete(e.pointerId);
+  if (e.pointerId !== canvasDrag.pointerId) return;
+  canvasDrag.active = false;
+  canvasDrag.pointerId = null;
+}
+
+renderer.domElement.addEventListener('pointerdown', onCanvasPointerDown);
+renderer.domElement.addEventListener('pointermove', onCanvasPointerMove);
+renderer.domElement.addEventListener('pointerup', onCanvasPointerUp);
+renderer.domElement.addEventListener('pointercancel', onCanvasPointerUp);
 
 btnHand.addEventListener('click', (e) => {
   e.preventDefault();
@@ -1138,6 +1207,8 @@ Promise.all([
 
     defaultCameraPos = camera.position.clone();
     defaultTarget = controls.target.clone();
+    defaultModelPos = modelRoot.position.clone();
+    defaultModelQuat = modelRoot.quaternion.clone();
 
     setProgress(1);
     applyTexture('both');
