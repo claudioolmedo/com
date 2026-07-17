@@ -132,6 +132,165 @@
   }
   .slider input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
   #topbar, #panel, #hint { display: none !important; }
+
+  /* ---------- Mobile gimbal ---------- */
+  #gimbal {
+    position: fixed;
+    right: 16px;
+    bottom: 18px;
+    z-index: 25;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .45s ease;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: none;
+  }
+  #gimbal.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .gimbal-pad {
+    position: relative;
+    width: 112px;
+    height: 112px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 50% 50%, rgba(255,191,0,.08) 0%, transparent 55%),
+      radial-gradient(circle at 50% 50%, rgba(22,27,34,.92) 0%, rgba(13,17,23,.95) 100%);
+    border: 1px solid rgba(255,191,0,.35);
+    box-shadow:
+      0 8px 28px rgba(0,0,0,.45),
+      inset 0 0 0 1px rgba(255,255,255,.04);
+    backdrop-filter: blur(10px);
+    overflow: visible;
+  }
+  .gimbal-ring {
+    position: absolute;
+    inset: 10px;
+    border-radius: 50%;
+    border: 1px dashed rgba(139,148,158,.45);
+    pointer-events: none;
+  }
+  .gimbal-ring-inner {
+    position: absolute;
+    inset: 28px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,191,0,.22);
+    pointer-events: none;
+  }
+  .gimbal-cross {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .gimbal-cross::before,
+  .gimbal-cross::after {
+    content: "";
+    position: absolute;
+    background: rgba(139,148,158,.28);
+  }
+  .gimbal-cross::before {
+    left: 50%; top: 14px; bottom: 14px; width: 1px; transform: translateX(-50%);
+  }
+  .gimbal-cross::after {
+    top: 50%; left: 14px; right: 14px; height: 1px; transform: translateY(-50%);
+  }
+  .gimbal-knob {
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 36px; height: 36px;
+    margin: -18px 0 0 -18px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #ffd24a, #ff8a00);
+    box-shadow:
+      0 2px 10px rgba(255,160,0,.45),
+      inset 0 1px 0 rgba(255,255,255,.35);
+    border: 2px solid rgba(27,19,0,.35);
+    transition: transform .08s linear, box-shadow .15s;
+    will-change: transform;
+  }
+  .gimbal-pad.active .gimbal-knob {
+    box-shadow:
+      0 0 0 4px rgba(255,191,0,.18),
+      0 4px 16px rgba(255,160,0,.55),
+      inset 0 1px 0 rgba(255,255,255,.4);
+  }
+  .gimbal-arrow {
+    position: absolute;
+    width: 22px; height: 22px;
+    display: flex; align-items: center; justify-content: center;
+    color: #8b949e;
+    font-size: 11px;
+    pointer-events: none;
+  }
+  .gimbal-arrow.up { top: 4px; left: 50%; transform: translateX(-50%); }
+  .gimbal-arrow.down { bottom: 4px; left: 50%; transform: translateX(-50%); }
+  .gimbal-arrow.left { left: 4px; top: 50%; transform: translateY(-50%); }
+  .gimbal-arrow.right { right: 4px; top: 50%; transform: translateY(-50%); }
+  .gimbal-tools {
+    display: flex;
+    gap: 8px;
+  }
+  .gimbal-btn {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 1px solid #30363d;
+    background: rgba(22,27,34,.92);
+    color: #e6edf3;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 14px rgba(0,0,0,.35);
+    transition: background .15s, border-color .15s, color .15s, transform .1s;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  .gimbal-btn:hover,
+  .gimbal-btn:active {
+    background: rgba(255,191,0,.18);
+    border-color: rgba(255,191,0,.55);
+    color: #ffbf00;
+    transform: scale(1.05);
+  }
+  .gimbal-label {
+    font-size: 10px;
+    letter-spacing: .6px;
+    text-transform: uppercase;
+    color: #8b949e;
+    text-align: center;
+    margin-top: -2px;
+  }
+  @media (max-width: 767px) {
+    #gimbal {
+      right: 12px;
+      bottom: 14px;
+    }
+    .gimbal-pad {
+      width: 124px;
+      height: 124px;
+    }
+    .gimbal-btn {
+      width: 44px;
+      height: 44px;
+    }
+  }
+  @media (min-width: 768px) {
+    #gimbal {
+      right: 20px;
+      bottom: 22px;
+    }
+  }
+  #app canvas {
+    touch-action: none;
+  }
 </style>
 </head>
 <body>
@@ -217,6 +376,26 @@
 
   <div id="hint"><b>Mouse:</b> girar &nbsp;•&nbsp; <b>Scroll:</b> zoom &nbsp;•&nbsp; <b>Botão direito:</b> mover</div>
 
+  <!-- Mobile / touch gimbal -->
+  <div id="gimbal" aria-label="Controle para girar o modelo 3D">
+    <div class="gimbal-pad" id="gimbalPad" role="application" aria-label="Gimbal de rotação">
+      <div class="gimbal-ring"></div>
+      <div class="gimbal-ring-inner"></div>
+      <div class="gimbal-cross"></div>
+      <div class="gimbal-arrow up">▲</div>
+      <div class="gimbal-arrow down">▼</div>
+      <div class="gimbal-arrow left">◀</div>
+      <div class="gimbal-arrow right">▶</div>
+      <div class="gimbal-knob" id="gimbalKnob"></div>
+    </div>
+    <div class="gimbal-label">Girar</div>
+    <div class="gimbal-tools">
+      <button type="button" class="gimbal-btn" id="gimbalZoomIn" title="Aproximar" aria-label="Aproximar">+</button>
+      <button type="button" class="gimbal-btn" id="gimbalZoomOut" title="Afastar" aria-label="Afastar">−</button>
+      <button type="button" class="gimbal-btn" id="gimbalReset" title="Resetar vista" aria-label="Resetar vista">↺</button>
+    </div>
+  </div>
+
   <!-- Error -->
   <div id="error">
     <div class="box">
@@ -280,6 +459,165 @@ controls.enableDamping = true;
 controls.dampingFactor = 0.08;
 controls.minDistance = 0.5;
 controls.maxDistance = 40;
+controls.enablePan = true;
+controls.touches = {
+  ONE: THREE.TOUCH.ROTATE,
+  TWO: THREE.TOUCH.DOLLY_PAN,
+};
+
+// Remember default framing for reset
+let defaultCameraPos = null;
+let defaultTarget = null;
+const spherical = new THREE.Spherical();
+const offsetVec = new THREE.Vector3();
+
+// ---------- Gimbal (mobile-friendly orbit pad) ----------
+const gimbalEl = $('gimbal');
+const gimbalPad = $('gimbalPad');
+const gimbalKnob = $('gimbalKnob');
+const gimbalState = {
+  active: false,
+  pointerId: null,
+  nx: 0,
+  ny: 0,
+  maxTravel: 34,
+  rotateSpeed: 2.4,
+  wasAutoRotate: false,
+};
+
+function setKnob(nx, ny) {
+  const x = nx * gimbalState.maxTravel;
+  const y = ny * gimbalState.maxTravel;
+  gimbalKnob.style.transform = `translate(${x}px, ${y}px)`;
+}
+
+function resetKnob() {
+  gimbalState.nx = 0;
+  gimbalState.ny = 0;
+  setKnob(0, 0);
+  gimbalPad.classList.remove('active');
+}
+
+function readPadOffset(clientX, clientY) {
+  const rect = gimbalPad.getBoundingClientRect();
+  const cx = rect.left + rect.width / 2;
+  const cy = rect.top + rect.height / 2;
+  let dx = clientX - cx;
+  let dy = clientY - cy;
+  const max = Math.min(rect.width, rect.height) * 0.38;
+  const len = Math.hypot(dx, dy) || 1;
+  if (len > max) {
+    dx = (dx / len) * max;
+    dy = (dy / len) * max;
+  }
+  return { nx: dx / max, ny: dy / max };
+}
+
+function orbitBy(deltaTheta, deltaPhi) {
+  offsetVec.copy(camera.position).sub(controls.target);
+  spherical.setFromVector3(offsetVec);
+  spherical.theta -= deltaTheta;
+  spherical.phi -= deltaPhi;
+  spherical.phi = Math.max(0.12, Math.min(Math.PI - 0.12, spherical.phi));
+  spherical.makeSafe();
+  offsetVec.setFromSpherical(spherical);
+  camera.position.copy(controls.target).add(offsetVec);
+  controls.update();
+}
+
+function dollyBy(factor) {
+  offsetVec.copy(camera.position).sub(controls.target);
+  const dist = offsetVec.length();
+  const next = THREE.MathUtils.clamp(dist * factor, controls.minDistance, controls.maxDistance);
+  offsetVec.setLength(next);
+  camera.position.copy(controls.target).add(offsetVec);
+  controls.update();
+}
+
+function resetView() {
+  if (!defaultCameraPos || !defaultTarget) return;
+  camera.position.copy(defaultCameraPos);
+  controls.target.copy(defaultTarget);
+  controls.update();
+}
+
+function onGimbalPointerDown(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  gimbalState.active = true;
+  gimbalState.pointerId = e.pointerId;
+  gimbalState.wasAutoRotate = controls.autoRotate;
+  if (controls.autoRotate) $('tSpin').click();
+  gimbalPad.classList.add('active');
+  gimbalPad.setPointerCapture?.(e.pointerId);
+  const o = readPadOffset(e.clientX, e.clientY);
+  gimbalState.nx = o.nx;
+  gimbalState.ny = o.ny;
+  setKnob(o.nx, o.ny);
+}
+
+function onGimbalPointerMove(e) {
+  if (!gimbalState.active || e.pointerId !== gimbalState.pointerId) return;
+  e.preventDefault();
+  const o = readPadOffset(e.clientX, e.clientY);
+  gimbalState.nx = o.nx;
+  gimbalState.ny = o.ny;
+  setKnob(o.nx, o.ny);
+}
+
+function onGimbalPointerUp(e) {
+  if (e.pointerId !== gimbalState.pointerId) return;
+  e.preventDefault();
+  gimbalState.active = false;
+  gimbalState.pointerId = null;
+  resetKnob();
+  // Keep auto-rotate off after manual control; user can still enable via API
+}
+
+gimbalPad.addEventListener('pointerdown', onGimbalPointerDown);
+gimbalPad.addEventListener('pointermove', onGimbalPointerMove);
+gimbalPad.addEventListener('pointerup', onGimbalPointerUp);
+gimbalPad.addEventListener('pointercancel', onGimbalPointerUp);
+
+// Prevent page scroll while interacting with the pad (esp. inside iframe)
+gimbalPad.addEventListener('touchstart', (e) => e.preventDefault(), { passive: false });
+gimbalPad.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
+
+let zoomHoldTimer = null;
+function bindZoomHold(btn, factor) {
+  const step = () => dollyBy(factor);
+  const start = (e) => {
+    e.preventDefault();
+    step();
+    clearInterval(zoomHoldTimer);
+    zoomHoldTimer = setInterval(step, 90);
+  };
+  const stop = () => clearInterval(zoomHoldTimer);
+  btn.addEventListener('pointerdown', start);
+  btn.addEventListener('pointerup', stop);
+  btn.addEventListener('pointerleave', stop);
+  btn.addEventListener('pointercancel', stop);
+}
+bindZoomHold($('gimbalZoomIn'), 0.94);
+bindZoomHold($('gimbalZoomOut'), 1.06);
+$('gimbalReset').addEventListener('click', (e) => {
+  e.preventDefault();
+  resetView();
+});
+
+function showGimbal() {
+  gimbalEl.classList.add('visible');
+}
+
+function updateGimbal(dt) {
+  if (!gimbalState.active) return;
+  const dead = 0.08;
+  const nx = Math.abs(gimbalState.nx) < dead ? 0 : gimbalState.nx;
+  const ny = Math.abs(gimbalState.ny) < dead ? 0 : gimbalState.ny;
+  if (!nx && !ny) return;
+  // Joystick: right = yaw right, up = pitch up
+  orbitBy(nx * gimbalState.rotateSpeed * dt, ny * gimbalState.rotateSpeed * dt);
+}
 
 // ---------- Lights ----------
 const hemi = new THREE.HemisphereLight(0xffffff, 0x444444, 1.0);
@@ -675,11 +1013,17 @@ Promise.all([
     controls.target.set(0, radius, 0);
     controls.update();
 
+    defaultCameraPos = camera.position.clone();
+    defaultTarget = controls.target.clone();
+
     setProgress(1);
     applyTexture('both');
     isLoaded = true;
     window.dispatchEvent(new CustomEvent('viewerLoaded'));
-    setTimeout(() => $('loader').classList.add('hidden'), 400);
+    setTimeout(() => {
+      $('loader').classList.add('hidden');
+      showGimbal();
+    }, 400);
   })
   .catch((err) => {
     console.error(err);
@@ -831,6 +1175,15 @@ bindToggle('tGrid',  (v) => grid.visible = v);
 bindToggle('tAxes',  (v) => axes.visible = v);
 bindToggle('tSpin',  (v) => controls.autoRotate = v);
 
+function stopAutoRotate() {
+  if (controls.autoRotate) {
+    $('tSpin').click();
+  }
+}
+
+// Stop spin when the user takes manual control on the canvas
+controls.addEventListener('start', stopAutoRotate);
+
 // ---------- Resize ----------
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
@@ -839,12 +1192,16 @@ window.addEventListener('resize', () => {
 });
 
 // ---------- Render loop ----------
-function animate() {
+let lastFrame = performance.now();
+function animate(now) {
   requestAnimationFrame(animate);
+  const dt = Math.min(0.05, (now - lastFrame) / 1000);
+  lastFrame = now;
+  updateGimbal(dt);
   controls.update();
   renderer.render(scene, camera);
 }
-animate();
+animate(performance.now());
 
 // Expose global API for external interaction
 window.viewerAPI = {
@@ -902,6 +1259,10 @@ window.viewerAPI = {
       applyBg(theme);
     }
   },
+
+  resetView,
+  orbitBy,
+  dollyBy,
 
   onLoad: (callback) => {
     if (isLoaded) {
