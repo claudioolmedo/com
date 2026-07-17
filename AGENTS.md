@@ -16,6 +16,8 @@ Keep the site focused on the One Dollar Computer project as the main product and
 *   `js/fs-menu.js` - full screen menu handler.
 *   `images/` - branding assets, background imagery, and slides.
 *   `link/` - redirect page to easily share the site during presentations.
+*   `pad/` - fullscreen OneDollarBoard 3D explorer (short preview link with gimbal pad).
+*   `3d/viewer.html` - interactive 3D board viewer embedded on the homepage and opened via `/pad`.
 
 ## Guidelines for Agents
 

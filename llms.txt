@@ -42,6 +42,7 @@ This is not a commercial launch or a traditional crowdfunding campaign for profi
 
 - Website: https://claudioolmedo.com
 - Website Redirect / Presentation Link: https://claudioolmedo.com/link
+- 3D Board Explorer / Pad Preview: https://claudioolmedo.com/pad
 - Support / Build Campaign: Coming soon
 - GitHub: https://github.com/claudioolmedo
 - LinkedIn: https://www.linkedin.com/in/claudioolmedo-com/
