@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Preview — Mãozinha no 3D</title>
-  <meta name="description" content="Pré-visualização: botão de mão ativa mover direto no 3D; gimbal some e volta com um botão.">
+  <title>Preview — Hand Move Tool</title>
+  <meta name="description" content="Preview: hand button enables dragging on the 3D board; gimbal hides and returns with a button.">
   <meta name="robots" content="noindex,nofollow">
   <link rel="canonical" href="https://claudioolmedo.com/preview/">
   <style>
@@ -108,22 +108,22 @@
   <div id="chrome">
     <div class="left">
       <a href="../">← Site</a>
-      <span class="badge" title="Toque na mãozinha, depois arraste na placa">Preview · Mão</span>
+      <span class="badge" title="Tap the hand, then drag on the board">Preview · Hand</span>
     </div>
     <div class="right">
-      <a href="#" class="share" id="copyLink" title="Copiar link de pré-visualização">Copiar link</a>
+      <a href="#" class="share" id="copyLink" title="Copy preview link">Copy link</a>
     </div>
   </div>
 
   <iframe
     id="viewer"
-    src="../3d/viewer.html?v=9&pad=1"
-    title="Preview — mãozinha para mover direto no 3D"
+    src="../3d/viewer.html?v=10&pad=1"
+    title="Preview — hand tool to move on the 3D board"
     allow="autoplay; fullscreen"
     allowfullscreen
   ></iframe>
 
-  <div id="toast" role="status" aria-live="polite">Link copiado</div>
+  <div id="toast" role="status" aria-live="polite">Link copied</div>
 
   <script>
     (function () {
@@ -147,10 +147,10 @@
           navigator.clipboard.writeText(url).then(function () {
             showToast('Preview: ' + url);
           }).catch(function () {
-            window.prompt('Copie o link de pré-visualização:', url);
+            window.prompt('Copy the preview link:', url);
           });
         } else {
-          window.prompt('Copie o link de pré-visualização:', url);
+          window.prompt('Copy the preview link:', url);
         }
       });
     })();
