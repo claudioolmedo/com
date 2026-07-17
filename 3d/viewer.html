@@ -165,6 +165,45 @@
     align-items: center;
     gap: 8px;
   }
+  .gimbal-orbit-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .orbit-arrow {
+    width: 40px;
+    height: 72px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,191,0,.4);
+    background: rgba(22,27,34,.92);
+    color: #ffbf00;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 14px rgba(0,0,0,.35);
+    transition: background .15s, border-color .15s, color .15s, transform .1s;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    padding: 0;
+  }
+  .orbit-arrow svg {
+    width: 22px;
+    height: 36px;
+    display: block;
+    pointer-events: none;
+  }
+  .orbit-arrow:hover,
+  .orbit-arrow:active {
+    background: rgba(255,191,0,.18);
+    border-color: rgba(255,191,0,.7);
+    color: #ffd24a;
+    transform: scale(1.04);
+  }
+  .orbit-arrow:active {
+    transform: scale(0.97);
+  }
   .gimbal-pad {
     position: relative;
     width: 112px;
@@ -341,6 +380,10 @@
       width: 124px;
       height: 124px;
     }
+    .orbit-arrow {
+      width: 44px;
+      height: 80px;
+    }
     .gimbal-btn,
     .mode-btn {
       width: 46px;
@@ -451,15 +494,31 @@
     <div id="moveHint">Move mode on — <strong>drag on the board</strong></div>
 
     <div id="gimbalBlock">
-      <div class="gimbal-pad" id="gimbalPad" role="application" aria-label="Rotation gimbal">
-        <div class="gimbal-ring"></div>
-        <div class="gimbal-ring-inner"></div>
-        <div class="gimbal-cross"></div>
-        <div class="gimbal-arrow up">▲</div>
-        <div class="gimbal-arrow down">▼</div>
-        <div class="gimbal-arrow left">◀</div>
-        <div class="gimbal-arrow right">▶</div>
-        <div class="gimbal-knob" id="gimbalKnob"></div>
+      <div class="gimbal-orbit-row">
+        <button type="button" class="orbit-arrow" id="btnOrbitLeft" title="Rotate view left" aria-label="Rotate view left">
+          <svg viewBox="0 0 24 40" aria-hidden="true" focusable="false">
+            <path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+              d="M16 6c-5.5 2.2-9 7-9 14s3.5 11.8 9 14"/>
+            <path fill="currentColor" d="M16 4.2l-5.2 3.6 5.2 1.2V4.2z"/>
+          </svg>
+        </button>
+        <div class="gimbal-pad" id="gimbalPad" role="application" aria-label="Rotation gimbal">
+          <div class="gimbal-ring"></div>
+          <div class="gimbal-ring-inner"></div>
+          <div class="gimbal-cross"></div>
+          <div class="gimbal-arrow up">▲</div>
+          <div class="gimbal-arrow down">▼</div>
+          <div class="gimbal-arrow left">◀</div>
+          <div class="gimbal-arrow right">▶</div>
+          <div class="gimbal-knob" id="gimbalKnob"></div>
+        </div>
+        <button type="button" class="orbit-arrow" id="btnOrbitRight" title="Rotate view right" aria-label="Rotate view right">
+          <svg viewBox="0 0 24 40" aria-hidden="true" focusable="false">
+            <path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+              d="M8 6c5.5 2.2 9 7 9 14s-3.5 11.8-9 14"/>
+            <path fill="currentColor" d="M8 4.2l5.2 3.6L8 9V4.2z"/>
+          </svg>
+        </button>
       </div>
       <div class="dock-label">Rotate</div>
     </div>
@@ -774,6 +833,56 @@ btnGimbal.addEventListener('click', (e) => {
   e.preventDefault();
   applyViewMode('rotate');
 });
+
+// Fusion-style orbit arrows: tap = 90° snap, hold = keep turning
+const ORBIT_SNAP = Math.PI / 2;
+let orbitAnim = null;
+let orbitHoldTimer = null;
+
+function animateOrbitYaw(totalAngle, durationMs = 280) {
+  if (!modelRoot || !totalAngle) return;
+  if (orbitAnim) cancelAnimationFrame(orbitAnim.raf);
+  stopAutoRotateIfNeeded();
+  const start = performance.now();
+  let applied = 0;
+  const tick = (now) => {
+    const t = Math.min(1, (now - start) / durationMs);
+    const eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+    const target = totalAngle * eased;
+    orbitBy(target - applied, 0);
+    applied = target;
+    if (t < 1) {
+      orbitAnim = { raf: requestAnimationFrame(tick) };
+    } else {
+      orbitAnim = null;
+    }
+  };
+  orbitAnim = { raf: requestAnimationFrame(tick) };
+}
+
+function bindOrbitArrow(btn, sign) {
+  const nudge = () => orbitBy(sign * 0.12, 0);
+  const start = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (viewMode !== 'rotate') return;
+    stopAutoRotateIfNeeded();
+    animateOrbitYaw(sign * ORBIT_SNAP);
+    clearInterval(orbitHoldTimer);
+    // After the snap, holding keeps turning (Fusion-like assist)
+    orbitHoldTimer = setInterval(() => {
+      if (orbitAnim) return;
+      nudge();
+    }, 40);
+  };
+  const stop = () => clearInterval(orbitHoldTimer);
+  btn.addEventListener('pointerdown', start);
+  btn.addEventListener('pointerup', stop);
+  btn.addEventListener('pointerleave', stop);
+  btn.addEventListener('pointercancel', stop);
+}
+bindOrbitArrow($('btnOrbitLeft'), 1);
+bindOrbitArrow($('btnOrbitRight'), -1);
 
 let zoomHoldTimer = null;
 function bindZoomHold(btn, factor) {
