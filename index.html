@@ -182,52 +182,6 @@
       font-weight: 600;
     }
 
-    .viewer-pad-actions {
-      margin-top: 18px;
-    }
-
-    .viewer-pad-btn {
-      display: inline-block;
-      padding: 11px 22px;
-      background: #ffbf00;
-      color: #1b1300;
-      border: 0;
-      border-radius: 4px;
-      font-family: "Open Sans", "Josefin Sans", sans-serif;
-      font-weight: 700;
-      font-size: 12px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      text-decoration: none;
-      transition: background 0.2s ease, transform 0.15s ease;
-    }
-
-    .viewer-pad-btn:hover,
-    .viewer-pad-btn:focus {
-      background: #ffd24a;
-      color: #1b1300;
-      text-decoration: none;
-      transform: translateY(-1px);
-    }
-
-    .viewer-pad-link {
-      display: block;
-      margin-top: 10px;
-      font-size: 12px;
-      color: #8b949e;
-      word-break: break-all;
-    }
-
-    .viewer-pad-link a {
-      color: #ffbf00;
-      text-decoration: none;
-      border-bottom: 1px solid rgba(255, 191, 0, 0.35);
-    }
-
-    .viewer-pad-link a:hover {
-      border-bottom-color: #ffbf00;
-    }
-
     @media (max-width: 767px) {
       .viewer-container {
         height: 420px;
@@ -665,7 +619,7 @@
           <div class="row">
             <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
               <div class="viewer-container">
-                <iframe id="viewer-iframe" data-src="3d/viewer.html?v=7"
+                <iframe id="viewer-iframe" data-src="3d/viewer.html?v=6"
                   src="about:blank"
                   style="width: 100%; height: 100%; border: none; display: block; opacity: 0; transition: opacity 0.8s ease;"
                   allow="autoplay" title="OneDollarBoard 3D Viewer" loading="lazy"></iframe>
@@ -673,15 +627,6 @@
               <p class="viewer-hint font-open-sans">
                 No celular, use o <strong>gimbal</strong> no canto para girar a placa · + / − para zoom · ↺ para resetar
               </p>
-              <div class="viewer-pad-actions">
-                <a class="viewer-pad-btn" href="pad/" target="_blank" rel="noopener noreferrer">
-                  Explorar no Pad
-                </a>
-                <p class="viewer-pad-link font-open-sans">
-                  Pré-visualizar:
-                  <a href="https://claudioolmedo.com/pad/" target="_blank" rel="noopener noreferrer">claudioolmedo.com/pad</a>
-                </p>
-              </div>
             </div>
           </div>
         </div>

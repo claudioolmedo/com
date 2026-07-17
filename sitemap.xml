@@ -13,18 +13,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://claudioolmedo.com/pad/</loc>
-    <lastmod>2026-07-17</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://claudioolmedo.com/3d/viewer.html</loc>
-    <lastmod>2026-07-17</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://claudioolmedo.com/llms.txt</loc>
     <lastmod>2026-06-15</lastmod>
     <changefreq>weekly</changefreq>

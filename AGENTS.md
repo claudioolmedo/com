@@ -16,8 +16,14 @@ Keep the site focused on the One Dollar Computer project as the main product and
 *   `js/fs-menu.js` - full screen menu handler.
 *   `images/` - branding assets, background imagery, and slides.
 *   `link/` - redirect page to easily share the site during presentations.
-*   `pad/` - fullscreen OneDollarBoard 3D explorer (short preview link with gimbal pad).
-*   `3d/viewer.html` - interactive 3D board viewer embedded on the homepage and opened via `/pad`.
+*   `preview/` - staging area for features before they go on the main `index.html`. Confirm at `/preview/`, then promote to the homepage.
+*   `3d/viewer.html` - interactive 3D board viewer embedded on the homepage.
+
+## Preview workflow
+
+1. Ship new UI experiments under `preview/` (not on `index.html`).
+2. Share `https://claudioolmedo.com/preview/` for confirmation.
+3. Only after approval, promote the feature into the main homepage.
 
 ## Guidelines for Agents
 

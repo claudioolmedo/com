@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Explorar OneDollarBoard — Pad</title>
-  <meta name="description" content="Explore a placa One Dollar Computer em tela cheia com o gimbal de rotação.">
-  <meta name="robots" content="index,follow">
-  <link rel="canonical" href="https://claudioolmedo.com/pad/">
+  <title>Preview — OneDollarBoard Pad</title>
+  <meta name="description" content="Área de pré-visualização. Confirme aqui antes de publicar no site principal.">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="canonical" href="https://claudioolmedo.com/preview/">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body {
@@ -41,8 +41,15 @@
       background: linear-gradient(180deg, rgba(13,17,23,.92), rgba(13,17,23,0));
       pointer-events: none;
     }
-    #chrome a {
+    #chrome .left,
+    #chrome .right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
       pointer-events: auto;
+    }
+    #chrome a,
+    #chrome .badge {
       text-decoration: none;
       color: #e6edf3;
       font-size: 13px;
@@ -60,6 +67,14 @@
       border-color: rgba(255,191,0,.55);
       color: #ffbf00;
       outline: none;
+    }
+    #chrome .badge {
+      color: #ffbf00;
+      border-color: rgba(255,191,0,.45);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      cursor: default;
     }
     #chrome .share {
       color: #ffbf00;
@@ -80,6 +95,8 @@
       opacity: 0;
       pointer-events: none;
       transition: opacity .2s, transform .2s;
+      max-width: calc(100vw - 32px);
+      text-align: center;
     }
     #toast.show {
       opacity: 1;
@@ -89,14 +106,19 @@
 </head>
 <body>
   <div id="chrome">
-    <a href="../">← Site</a>
-    <a href="#" class="share" id="copyLink" title="Copiar link de pré-visualização">Copiar link</a>
+    <div class="left">
+      <a href="../">← Site</a>
+      <span class="badge" title="Pré-visualização — ainda não está no index principal">Preview</span>
+    </div>
+    <div class="right">
+      <a href="#" class="share" id="copyLink" title="Copiar link de pré-visualização">Copiar link</a>
+    </div>
   </div>
 
   <iframe
     id="viewer"
     src="../3d/viewer.html?v=7&pad=1"
-    title="OneDollarBoard 3D Pad — explorar a placa"
+    title="Preview — OneDollarBoard Pad"
     allow="autoplay; fullscreen"
     allowfullscreen
   ></iframe>
@@ -115,7 +137,7 @@
         clearTimeout(toastTimer);
         toastTimer = setTimeout(function () {
           toast.classList.remove('show');
-        }, 1800);
+        }, 2000);
       }
 
       btn.addEventListener('click', function (e) {
@@ -123,7 +145,7 @@
         var url = window.location.href.split('#')[0];
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(url).then(function () {
-            showToast('Link copiado: ' + url);
+            showToast('Preview: ' + url);
           }).catch(function () {
             window.prompt('Copie o link de pré-visualização:', url);
           });
