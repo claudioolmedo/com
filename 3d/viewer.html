@@ -855,7 +855,7 @@ function onCanvasPointerMove(e) {
     let dAngle = m.angle - pinchGesture.angle;
     while (dAngle > Math.PI) dAngle -= Math.PI * 2;
     while (dAngle < -Math.PI) dAngle += Math.PI * 2;
-    if (Math.abs(dAngle) > 0.0005) orbitRoll(dAngle);
+    if (Math.abs(dAngle) > 0.0005) orbitRoll(-dAngle);
 
     pinchGesture = m;
     return;
