@@ -6,14 +6,25 @@
 <html lang="en">
 
 <head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y8NH272CT5"></script>
+  <!-- Google Analytics: load only after first user interaction (avoids Safari Advanced Privacy banner on open) -->
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-Y8NH272CT5');
+    function loadAnalytics() {
+      if (window.__gaLoaded) return;
+      window.__gaLoaded = true;
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-Y8NH272CT5';
+      s.onload = function () {
+        gtag('js', new Date());
+        gtag('config', 'G-Y8NH272CT5', { anonymize_ip: true });
+      };
+      document.head.appendChild(s);
+    }
+    ['scroll', 'touchstart', 'click', 'keydown'].forEach(function (evt) {
+      window.addEventListener(evt, loadAnalytics, { once: true, passive: true });
+    });
   </script>
   <title>Claudio Olmedo | Creator of the One Dollar Computer</title>
   <meta charset="UTF-8">
@@ -75,9 +86,8 @@
   <link rel="icon" sizes="192x192" href="images/favicon/icon-192x192.png">
 
   <!-- CSS -->
-  <!--  GOOGLE FONT -->
-  <link href='https://fonts.googleapis.com/css?family=Josefin+Sans:400,300,300italic%7COpen+Sans:400,300,700'
-    rel='stylesheet' type='text/css'>
+  <!-- Local web fonts (avoids Google Fonts third-party requests that trigger Safari privacy banners) -->
+  <link href="css/site-fonts.css" rel="stylesheet" type="text/css">
 
   <!-- REVOSLIDER CSS SETTINGS -->
 
@@ -609,9 +619,10 @@
           <div class="row">
             <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
               <div class="viewer-container">
-                <iframe id="viewer-iframe" src="3d/viewer.html?v=5"
+                <iframe id="viewer-iframe" data-src="3d/viewer.html?v=6"
+                  src="about:blank"
                   style="width: 100%; height: 100%; border: none; display: block; opacity: 0; transition: opacity 0.8s ease;"
-                  allow="autoplay" title="OneDollarBoard 3D Viewer"></iframe>
+                  allow="autoplay" title="OneDollarBoard 3D Viewer" loading="lazy"></iframe>
               </div>
               <p class="viewer-hint font-open-sans">
                 No celular, use o <strong>gimbal</strong> no canto para girar a placa · + / − para zoom · ↺ para resetar
@@ -715,8 +726,7 @@
   <!-- GOOGLE MAP 
     !!! To setup Google Maps, please, see the documentation !!! -->
   <!-- Google Maps API - Uncomment and add your API key when needed
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOUR-API-KEY-HERE"></script>
-    <script type="text/javascript" src="js/gmap3.min.js"></script>
+  <!-- Local Google Maps scripts removed (placeholder API key triggered third-party Google requests) -->
     -->
 
   <!-- MAIN SCRIPT -->
@@ -806,37 +816,62 @@
       }
     });
 
-    // 3D Viewer auto-start rotation and fade-in
+    // 3D Viewer: lazy-load when near viewport (avoids WebGL work on first paint),
+    // then auto-start rotation and fade-in
     document.addEventListener('DOMContentLoaded', function () {
-      var checkCount = 0;
-      var checkViewerLoaded = setInterval(function () {
-        checkCount++;
-        var iframe = document.getElementById('viewer-iframe');
-        if (iframe && iframe.contentWindow) {
-          try {
-            var api = iframe.contentWindow.viewerAPI;
-            if (api) {
+      var iframe = document.getElementById('viewer-iframe');
+      if (!iframe) return;
+
+      function startViewerWatch() {
+        var checkCount = 0;
+        var checkViewerLoaded = setInterval(function () {
+          checkCount++;
+          if (iframe && iframe.contentWindow) {
+            try {
+              var api = iframe.contentWindow.viewerAPI;
+              if (api) {
+                clearInterval(checkViewerLoaded);
+                api.onLoad(function () {
+                  api.toggleSpin(true);
+                  setTimeout(function () {
+                    iframe.style.opacity = '1';
+                  }, 500);
+                });
+              }
+            } catch (e) {
               clearInterval(checkViewerLoaded);
-              api.onLoad(function () {
-                api.toggleSpin(true);
-                // Fade in the iframe after a short delay to ensure loader has faded out inside
-                setTimeout(function () {
-                  iframe.style.opacity = '1';
-                }, 500);
-              });
+              iframe.style.opacity = '1';
             }
-          } catch (e) {
-            // Ignore cross-origin error on local file:// protocol and show visualizer immediately
-            clearInterval(checkViewerLoaded);
-            if (iframe) iframe.style.opacity = '1';
           }
-        }
-        if (checkCount > 50) {
-          clearInterval(checkViewerLoaded);
-          // Fallback: fade in anyway in case of load timeout
-          if (iframe) iframe.style.opacity = '1';
-        }
-      }, 200);
+          if (checkCount > 75) {
+            clearInterval(checkViewerLoaded);
+            iframe.style.opacity = '1';
+          }
+        }, 200);
+      }
+
+      function loadViewer() {
+        if (iframe.dataset.loaded === '1') return;
+        var src = iframe.getAttribute('data-src');
+        if (!src) return;
+        iframe.dataset.loaded = '1';
+        iframe.src = src;
+        startViewerWatch();
+      }
+
+      if ('IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              loadViewer();
+              observer.disconnect();
+            }
+          });
+        }, { rootMargin: '200px 0px' });
+        observer.observe(iframe.parentElement || iframe);
+      } else {
+        loadViewer();
+      }
     });
   </script>
   <!-- JS end -->
