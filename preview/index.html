@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Preview — OneDollarBoard Pad</title>
+  <meta name="description" content="Área de pré-visualização. Confirme aqui antes de publicar no site principal.">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="canonical" href="https://claudioolmedo.com/preview/">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #0d1117;
+      color: #e6edf3;
+      font-family: "Segoe UI", system-ui, sans-serif;
+    }
+    #viewer {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+      background: #0d1117;
+    }
+    #chrome {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 16px;
+      padding-top: max(12px, env(safe-area-inset-top));
+      background: linear-gradient(180deg, rgba(13,17,23,.92), rgba(13,17,23,0));
+      pointer-events: none;
+    }
+    #chrome .left,
+    #chrome .right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      pointer-events: auto;
+    }
+    #chrome a,
+    #chrome .badge {
+      text-decoration: none;
+      color: #e6edf3;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .3px;
+      padding: 8px 14px;
+      border-radius: 4px;
+      border: 1px solid #30363d;
+      background: rgba(22,27,34,.88);
+      backdrop-filter: blur(8px);
+      transition: border-color .15s, color .15s, background .15s;
+    }
+    #chrome a:hover,
+    #chrome a:focus-visible {
+      border-color: rgba(255,191,0,.55);
+      color: #ffbf00;
+      outline: none;
+    }
+    #chrome .badge {
+      color: #ffbf00;
+      border-color: rgba(255,191,0,.45);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      cursor: default;
+    }
+    #chrome .share {
+      color: #ffbf00;
+      border-color: rgba(255,191,0,.4);
+    }
+    #toast {
+      position: fixed;
+      left: 50%;
+      bottom: max(24px, env(safe-area-inset-bottom));
+      transform: translateX(-50%) translateY(20px);
+      z-index: 40;
+      padding: 10px 16px;
+      border-radius: 8px;
+      background: rgba(22,27,34,.95);
+      border: 1px solid #30363d;
+      color: #e6edf3;
+      font-size: 13px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s, transform .2s;
+      max-width: calc(100vw - 32px);
+      text-align: center;
+    }
+    #toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <div id="chrome">
+    <div class="left">
+      <a href="../">← Site</a>
+      <span class="badge" title="Pré-visualização — ainda não está no index principal">Preview</span>
+    </div>
+    <div class="right">
+      <a href="#" class="share" id="copyLink" title="Copiar link de pré-visualização">Copiar link</a>
+    </div>
+  </div>
+
+  <iframe
+    id="viewer"
+    src="../3d/viewer.html?v=7&pad=1"
+    title="Preview — OneDollarBoard Pad"
+    allow="autoplay; fullscreen"
+    allowfullscreen
+  ></iframe>
+
+  <div id="toast" role="status" aria-live="polite">Link copiado</div>
+
+  <script>
+    (function () {
+      var btn = document.getElementById('copyLink');
+      var toast = document.getElementById('toast');
+      var toastTimer;
+
+      function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () {
+          toast.classList.remove('show');
+        }, 2000);
+      }
+
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        var url = window.location.href.split('#')[0];
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(function () {
+            showToast('Preview: ' + url);
+          }).catch(function () {
+            window.prompt('Copie o link de pré-visualização:', url);
+          });
+        } else {
+          window.prompt('Copie o link de pré-visualização:', url);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
