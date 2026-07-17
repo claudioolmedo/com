@@ -167,13 +167,13 @@
   }
   .gimbal-orbit-row {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     gap: 6px;
   }
   .orbit-arrow {
-    width: 72px;
-    height: 36px;
+    width: 40px;
+    height: 72px;
     border-radius: 10px;
     border: 1px solid rgba(255,191,0,.4);
     background: rgba(22,27,34,.92);
@@ -190,8 +190,8 @@
     padding: 0;
   }
   .orbit-arrow svg {
-    width: 36px;
-    height: 20px;
+    width: 22px;
+    height: 36px;
     display: block;
     pointer-events: none;
   }
@@ -382,8 +382,8 @@
       height: 124px;
     }
     .orbit-arrow {
-      width: 80px;
-      height: 40px;
+      width: 44px;
+      height: 80px;
     }
     .gimbal-btn,
     .mode-btn {
@@ -496,11 +496,11 @@
 
     <div id="gimbalBlock">
       <div class="gimbal-orbit-row">
-        <button type="button" class="orbit-arrow" id="btnOrbitUp" title="Rotate view up" aria-label="Rotate view up">
-          <svg viewBox="0 0 40 24" aria-hidden="true" focusable="false">
+        <button type="button" class="orbit-arrow" id="btnOrbitCCW" title="Rotate sheet counter-clockwise" aria-label="Rotate sheet counter-clockwise">
+          <svg viewBox="0 0 24 40" aria-hidden="true" focusable="false">
             <path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
-              d="M6 16c2.2-5.5 7-9 14-9s11.8 3.5 14 9"/>
-            <path fill="currentColor" d="M4.2 16l3.6-5.2 1.2 5.2H4.2z"/>
+              d="M16 6c-5.5 2.2-9 7-9 14s3.5 11.8 9 14"/>
+            <path fill="currentColor" d="M16 4.2l-5.2 3.6 5.2 1.2V4.2z"/>
           </svg>
         </button>
         <div class="gimbal-pad" id="gimbalPad" role="application" aria-label="Rotation gimbal">
@@ -513,11 +513,11 @@
           <div class="gimbal-arrow right">▶</div>
           <div class="gimbal-knob" id="gimbalKnob"></div>
         </div>
-        <button type="button" class="orbit-arrow" id="btnOrbitDown" title="Rotate view down" aria-label="Rotate view down">
-          <svg viewBox="0 0 40 24" aria-hidden="true" focusable="false">
+        <button type="button" class="orbit-arrow" id="btnOrbitCW" title="Rotate sheet clockwise" aria-label="Rotate sheet clockwise">
+          <svg viewBox="0 0 24 40" aria-hidden="true" focusable="false">
             <path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
-              d="M6 8c2.2 5.5 7 9 14 9s11.8-3.5 14-9"/>
-            <path fill="currentColor" d="M4.2 8l3.6 5.2L9 8H4.2z"/>
+              d="M8 6c5.5 2.2 9 7 9 14s-3.5 11.8-9 14"/>
+            <path fill="currentColor" d="M8 4.2l5.2 3.6L8 9V4.2z"/>
           </svg>
         </button>
       </div>
@@ -702,6 +702,14 @@ function orbitBy(deltaTheta, deltaPhi) {
   }
 }
 
+/** Roll around the view axis — like spinning a sheet of paper facing you. */
+function orbitRoll(angle) {
+  if (!modelRoot || !angle) return;
+  // Axis from board toward camera (out of the screen)
+  _rotAxis.copy(camera.position).sub(controls.target).normalize();
+  rotateRootAroundPoint(controls.target, _rotAxis, angle);
+}
+
 function dollyBy(factor) {
   offsetVec.copy(camera.position).sub(controls.target);
   const dist = offsetVec.length();
@@ -835,12 +843,12 @@ btnGimbal.addEventListener('click', (e) => {
   applyViewMode('rotate');
 });
 
-// Fusion-style orbit arrows on the vertical (pitch) axis: tap = 90° snap, hold = keep turning
+// Fusion-style sheet roll arrows: spin like turning a sheet of paper (view-axis roll)
 const ORBIT_SNAP = Math.PI / 2;
 let orbitAnim = null;
 let orbitHoldTimer = null;
 
-function animateOrbitPitch(totalAngle, durationMs = 280) {
+function animateOrbitRoll(totalAngle, durationMs = 280) {
   if (!modelRoot || !totalAngle) return;
   if (orbitAnim) cancelAnimationFrame(orbitAnim.raf);
   stopAutoRotateIfNeeded();
@@ -850,7 +858,7 @@ function animateOrbitPitch(totalAngle, durationMs = 280) {
     const t = Math.min(1, (now - start) / durationMs);
     const eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
     const target = totalAngle * eased;
-    orbitBy(0, target - applied);
+    orbitRoll(target - applied);
     applied = target;
     if (t < 1) {
       orbitAnim = { raf: requestAnimationFrame(tick) };
@@ -862,15 +870,14 @@ function animateOrbitPitch(totalAngle, durationMs = 280) {
 }
 
 function bindOrbitArrow(btn, sign) {
-  const nudge = () => orbitBy(0, sign * 0.12);
+  const nudge = () => orbitRoll(sign * 0.12);
   const start = (e) => {
     e.preventDefault();
     e.stopPropagation();
     if (viewMode !== 'rotate') return;
     stopAutoRotateIfNeeded();
-    animateOrbitPitch(sign * ORBIT_SNAP);
+    animateOrbitRoll(sign * ORBIT_SNAP);
     clearInterval(orbitHoldTimer);
-    // After the snap, holding keeps turning (Fusion-like assist)
     orbitHoldTimer = setInterval(() => {
       if (orbitAnim) return;
       nudge();
@@ -882,8 +889,8 @@ function bindOrbitArrow(btn, sign) {
   btn.addEventListener('pointerleave', stop);
   btn.addEventListener('pointercancel', stop);
 }
-bindOrbitArrow($('btnOrbitUp'), -1);
-bindOrbitArrow($('btnOrbitDown'), 1);
+bindOrbitArrow($('btnOrbitCCW'), 1);
+bindOrbitArrow($('btnOrbitCW'), -1);
 
 let zoomHoldTimer = null;
 function bindZoomHold(btn, factor) {
@@ -1566,6 +1573,7 @@ window.viewerAPI = {
 
   resetView,
   orbitBy,
+  orbitRoll,
   dollyBy,
 
   onLoad: (callback) => {
