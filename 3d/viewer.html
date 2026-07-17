@@ -634,11 +634,11 @@ function orbitBy(deltaTheta, deltaPhi) {
   const pivot = controls.target;
   if (deltaTheta) {
     _rotAxis.set(0, 1, 0);
-    rotateRootAroundPoint(pivot, _rotAxis, -deltaTheta);
+    rotateRootAroundPoint(pivot, _rotAxis, deltaTheta);
   }
   if (deltaPhi) {
     _rotAxis.setFromMatrixColumn(camera.matrixWorld, 0).normalize();
-    rotateRootAroundPoint(pivot, _rotAxis, -deltaPhi);
+    rotateRootAroundPoint(pivot, _rotAxis, deltaPhi);
   }
 }
 
