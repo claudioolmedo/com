@@ -133,10 +133,10 @@
   .slider input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
   #topbar, #panel, #hint { display: none !important; }
 
-  /* ---------- Mobile gimbal / hand pads ---------- */
-  #gimbal,
-  #pan {
+  /* ---------- Simple mode dock: Girar (gimbal) / Mover (mãozinha) ---------- */
+  #dock {
     position: fixed;
+    right: 16px;
     bottom: 18px;
     z-index: 25;
     display: flex;
@@ -150,15 +150,22 @@
     user-select: none;
     touch-action: none;
   }
-  #gimbal { right: 16px; }
-  #pan { left: 16px; }
-  #gimbal.visible,
-  #pan.visible {
+  #dock.visible {
     opacity: 1;
     pointer-events: auto;
   }
-  .gimbal-pad,
-  .pan-pad {
+  #dock.mode-move #gimbalBlock { display: none; }
+  #dock.mode-move #btnHand { display: none; }
+  #dock.mode-rotate #btnGimbal { display: none; }
+  #dock.mode-rotate #moveHint { display: none; }
+
+  #gimbalBlock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .gimbal-pad {
     position: relative;
     width: 112px;
     height: 112px;
@@ -171,57 +178,35 @@
       0 8px 28px rgba(0,0,0,.45),
       inset 0 0 0 1px rgba(255,255,255,.04);
     backdrop-filter: blur(10px);
-    overflow: visible;
   }
-  .pan-pad {
-    border-color: rgba(139,148,158,.45);
-    background:
-      radial-gradient(circle at 50% 50%, rgba(191,212,255,.08) 0%, transparent 55%),
-      radial-gradient(circle at 50% 50%, rgba(22,27,34,.92) 0%, rgba(13,17,23,.95) 100%);
-  }
-  .gimbal-ring,
-  .pan-ring {
+  .gimbal-ring {
     position: absolute;
     inset: 10px;
     border-radius: 50%;
     border: 1px dashed rgba(139,148,158,.45);
     pointer-events: none;
   }
-  .gimbal-ring-inner,
-  .pan-ring-inner {
+  .gimbal-ring-inner {
     position: absolute;
     inset: 28px;
     border-radius: 50%;
     border: 1px solid rgba(255,191,0,.22);
     pointer-events: none;
   }
-  .pan-ring-inner {
-    border-color: rgba(191,212,255,.28);
-  }
-  .gimbal-cross,
-  .pan-cross {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-  }
+  .gimbal-cross { position: absolute; inset: 0; pointer-events: none; }
   .gimbal-cross::before,
-  .gimbal-cross::after,
-  .pan-cross::before,
-  .pan-cross::after {
+  .gimbal-cross::after {
     content: "";
     position: absolute;
     background: rgba(139,148,158,.28);
   }
-  .gimbal-cross::before,
-  .pan-cross::before {
+  .gimbal-cross::before {
     left: 50%; top: 14px; bottom: 14px; width: 1px; transform: translateX(-50%);
   }
-  .gimbal-cross::after,
-  .pan-cross::after {
+  .gimbal-cross::after {
     top: 50%; left: 14px; right: 14px; height: 1px; transform: translateY(-50%);
   }
-  .gimbal-knob,
-  .pan-knob {
+  .gimbal-knob {
     position: absolute;
     left: 50%; top: 50%;
     width: 36px; height: 36px;
@@ -234,36 +219,12 @@
     border: 2px solid rgba(27,19,0,.35);
     transition: transform .08s linear, box-shadow .15s;
     will-change: transform;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #1b1300;
-  }
-  .pan-knob {
-    background: linear-gradient(145deg, #d7e6ff, #8fb0e8);
-    border-color: rgba(20,30,50,.35);
-    box-shadow:
-      0 2px 10px rgba(120,160,220,.4),
-      inset 0 1px 0 rgba(255,255,255,.45);
-    color: #1a2740;
-  }
-  .pan-knob svg {
-    width: 18px;
-    height: 18px;
-    display: block;
-    pointer-events: none;
   }
   .gimbal-pad.active .gimbal-knob {
     box-shadow:
       0 0 0 4px rgba(255,191,0,.18),
       0 4px 16px rgba(255,160,0,.55),
       inset 0 1px 0 rgba(255,255,255,.4);
-  }
-  .pan-pad.active .pan-knob {
-    box-shadow:
-      0 0 0 4px rgba(143,176,232,.22),
-      0 4px 16px rgba(120,160,220,.5),
-      inset 0 1px 0 rgba(255,255,255,.5);
   }
   .gimbal-arrow {
     position: absolute;
@@ -277,12 +238,15 @@
   .gimbal-arrow.down { bottom: 4px; left: 50%; transform: translateX(-50%); }
   .gimbal-arrow.left { left: 4px; top: 50%; transform: translateY(-50%); }
   .gimbal-arrow.right { right: 4px; top: 50%; transform: translateY(-50%); }
-  .gimbal-tools {
+
+  .dock-tools {
     display: flex;
     gap: 8px;
+    align-items: center;
   }
-  .gimbal-btn {
-    width: 40px; height: 40px;
+  .gimbal-btn,
+  .mode-btn {
+    width: 44px; height: 44px;
     border-radius: 50%;
     border: 1px solid #30363d;
     background: rgba(22,27,34,.92);
@@ -297,49 +261,100 @@
     transition: background .15s, border-color .15s, color .15s, transform .1s;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
+    padding: 0;
   }
   .gimbal-btn:hover,
-  .gimbal-btn:active {
+  .gimbal-btn:active,
+  .mode-btn:hover,
+  .mode-btn:active {
     background: rgba(255,191,0,.18);
     border-color: rgba(255,191,0,.55);
     color: #ffbf00;
     transform: scale(1.05);
   }
-  .gimbal-label,
-  .pan-label {
+  .mode-btn svg {
+    width: 22px;
+    height: 22px;
+    display: block;
+    pointer-events: none;
+  }
+  #btnHand {
+    width: 52px;
+    height: 52px;
+    border-color: rgba(143,176,232,.55);
+    background: linear-gradient(145deg, rgba(215,230,255,.95), rgba(143,176,232,.9));
+    color: #1a2740;
+    box-shadow: 0 4px 16px rgba(120,160,220,.35);
+  }
+  #btnHand:hover,
+  #btnHand:active {
+    background: linear-gradient(145deg, #e8f0ff, #9dbceb);
+    border-color: rgba(143,176,232,.8);
+    color: #122038;
+  }
+  #btnGimbal {
+    width: 52px;
+    height: 52px;
+    border-color: rgba(255,191,0,.55);
+    background: linear-gradient(145deg, #ffd24a, #ff8a00);
+    color: #1b1300;
+    box-shadow: 0 4px 16px rgba(255,160,0,.35);
+  }
+  #btnGimbal:hover,
+  #btnGimbal:active {
+    background: linear-gradient(145deg, #ffe07a, #ff9a20);
+    border-color: rgba(255,191,0,.8);
+    color: #1b1300;
+  }
+  .dock-label {
     font-size: 10px;
     letter-spacing: .6px;
     text-transform: uppercase;
     color: #8b949e;
     text-align: center;
-    margin-top: -2px;
+  }
+  #moveHint {
+    font-size: 12px;
+    color: #c9d1d9;
+    background: rgba(22,27,34,.88);
+    border: 1px solid #30363d;
+    border-radius: 4px;
+    padding: 8px 12px;
+    backdrop-filter: blur(8px);
+    text-align: center;
+    max-width: 160px;
+    line-height: 1.35;
+  }
+  #moveHint strong { color: #8fb0e8; }
+  body.mode-move #app canvas {
+    cursor: grab;
+  }
+  body.mode-move #app canvas:active {
+    cursor: grabbing;
   }
   @media (max-width: 767px) {
-    #gimbal {
+    #dock {
       right: 12px;
       bottom: 14px;
     }
-    #pan {
-      left: 12px;
-      bottom: 14px;
-    }
-    .gimbal-pad,
-    .pan-pad {
+    .gimbal-pad {
       width: 124px;
       height: 124px;
     }
-    .gimbal-btn {
-      width: 44px;
-      height: 44px;
+    .gimbal-btn,
+    .mode-btn {
+      width: 46px;
+      height: 46px;
+    }
+    #btnHand,
+    #btnGimbal {
+      width: 54px;
+      height: 54px;
     }
   }
   @media (min-width: 768px) {
-    #gimbal {
+    #dock {
       right: 20px;
-      bottom: 22px;
-    }
-    #pan {
-      left: 20px;
       bottom: 22px;
     }
   }
@@ -431,35 +446,35 @@
 
   <div id="hint"><b>Mouse:</b> girar &nbsp;•&nbsp; <b>Scroll:</b> zoom &nbsp;•&nbsp; <b>Botão direito:</b> mover</div>
 
-  <!-- Hand pan pad: move without rotating -->
-  <div id="pan" aria-label="Controle para mover a vista sem rotacionar">
-    <div class="pan-pad" id="panPad" role="application" aria-label="Mãozinha para mover">
-      <div class="pan-ring"></div>
-      <div class="pan-ring-inner"></div>
-      <div class="pan-cross"></div>
-      <div class="pan-knob" id="panKnob" title="Mover">
+  <!-- Dock: modo Girar (gimbal) ou Mover (mãozinha no 3D) -->
+  <div id="dock" class="mode-rotate" aria-label="Controles do visualizador 3D">
+    <div id="moveHint">Modo mover ativo — <strong>arraste na placa</strong></div>
+
+    <div id="gimbalBlock">
+      <div class="gimbal-pad" id="gimbalPad" role="application" aria-label="Gimbal de rotação">
+        <div class="gimbal-ring"></div>
+        <div class="gimbal-ring-inner"></div>
+        <div class="gimbal-cross"></div>
+        <div class="gimbal-arrow up">▲</div>
+        <div class="gimbal-arrow down">▼</div>
+        <div class="gimbal-arrow left">◀</div>
+        <div class="gimbal-arrow right">▶</div>
+        <div class="gimbal-knob" id="gimbalKnob"></div>
+      </div>
+      <div class="dock-label">Girar</div>
+    </div>
+
+    <div class="dock-tools">
+      <button type="button" class="mode-btn" id="btnHand" title="Mover sem girar" aria-label="Ativar mãozinha para mover">
         <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
           <path fill="currentColor" d="M9.5 2.75a1.25 1.25 0 0 1 2.5 0v7.5h.25V4.5a1.25 1.25 0 1 1 2.5 0v5.75h.25V5.75a1.25 1.25 0 1 1 2.5 0v5.75h.25V8.5a1.25 1.25 0 1 1 2.5 0v7.25c0 3.45-2.55 6-6 6h-.5c-2.9 0-5.25-2.1-5.25-5.25V9.5a1.25 1.25 0 1 1 2.5 0v1.25V2.75z"/>
         </svg>
-      </div>
-    </div>
-    <div class="pan-label">Mover</div>
-  </div>
-
-  <!-- Mobile / touch gimbal -->
-  <div id="gimbal" aria-label="Controle para girar o modelo 3D">
-    <div class="gimbal-pad" id="gimbalPad" role="application" aria-label="Gimbal de rotação">
-      <div class="gimbal-ring"></div>
-      <div class="gimbal-ring-inner"></div>
-      <div class="gimbal-cross"></div>
-      <div class="gimbal-arrow up">▲</div>
-      <div class="gimbal-arrow down">▼</div>
-      <div class="gimbal-arrow left">◀</div>
-      <div class="gimbal-arrow right">▶</div>
-      <div class="gimbal-knob" id="gimbalKnob"></div>
-    </div>
-    <div class="gimbal-label">Girar</div>
-    <div class="gimbal-tools">
+      </button>
+      <button type="button" class="mode-btn" id="btnGimbal" title="Voltar a girar" aria-label="Ativar gimbal para girar">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path fill="currentColor" d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46A7.93 7.93 0 0 0 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74A7.93 7.93 0 0 0 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/>
+        </svg>
+      </button>
       <button type="button" class="gimbal-btn" id="gimbalZoomIn" title="Aproximar" aria-label="Aproximar">+</button>
       <button type="button" class="gimbal-btn" id="gimbalZoomOut" title="Afastar" aria-label="Afastar">−</button>
       <button type="button" class="gimbal-btn" id="gimbalReset" title="Resetar vista" aria-label="Resetar vista">↺</button>
@@ -530,6 +545,11 @@ controls.dampingFactor = 0.08;
 controls.minDistance = 0.5;
 controls.maxDistance = 40;
 controls.enablePan = true;
+controls.mouseButtons = {
+  LEFT: THREE.MOUSE.ROTATE,
+  MIDDLE: THREE.MOUSE.DOLLY,
+  RIGHT: THREE.MOUSE.PAN,
+};
 controls.touches = {
   ONE: THREE.TOUCH.ROTATE,
   TWO: THREE.TOUCH.DOLLY_PAN,
@@ -541,13 +561,13 @@ let defaultTarget = null;
 const spherical = new THREE.Spherical();
 const offsetVec = new THREE.Vector3();
 
-// ---------- Gimbal (rotate) + Hand pad (pan without rotating) ----------
-const gimbalEl = $('gimbal');
+// ---------- Mode dock: Girar (gimbal) <-> Mover (mãozinha no canvas) ----------
+const dockEl = $('dock');
 const gimbalPad = $('gimbalPad');
 const gimbalKnob = $('gimbalKnob');
-const panEl = $('pan');
-const panPad = $('panPad');
-const panKnob = $('panKnob');
+const btnHand = $('btnHand');
+const btnGimbal = $('btnGimbal');
+let viewMode = 'rotate'; // 'rotate' | 'move'
 const gimbalState = {
   active: false,
   pointerId: null,
@@ -555,31 +575,10 @@ const gimbalState = {
   ny: 0,
   maxTravel: 34,
   rotateSpeed: 2.4,
-  wasAutoRotate: false,
 };
-const panState = {
-  active: false,
-  pointerId: null,
-  nx: 0,
-  ny: 0,
-  maxTravel: 34,
-  panSpeed: 0.85,
-};
-const panLeft = new THREE.Vector3();
-const panUp = new THREE.Vector3();
-
-function setKnobEl(el, nx, ny, maxTravel) {
-  const x = nx * maxTravel;
-  const y = ny * maxTravel;
-  el.style.transform = `translate(${x}px, ${y}px)`;
-}
 
 function setKnob(nx, ny) {
-  setKnobEl(gimbalKnob, nx, ny, gimbalState.maxTravel);
-}
-
-function setPanKnob(nx, ny) {
-  setKnobEl(panKnob, nx, ny, panState.maxTravel);
+  gimbalKnob.style.transform = `translate(${nx * gimbalState.maxTravel}px, ${ny * gimbalState.maxTravel}px)`;
 }
 
 function resetKnob() {
@@ -589,15 +588,8 @@ function resetKnob() {
   gimbalPad.classList.remove('active');
 }
 
-function resetPanKnob() {
-  panState.nx = 0;
-  panState.ny = 0;
-  setPanKnob(0, 0);
-  panPad.classList.remove('active');
-}
-
-function readPadOffsetFrom(el, clientX, clientY) {
-  const rect = el.getBoundingClientRect();
+function readPadOffset(clientX, clientY) {
+  const rect = gimbalPad.getBoundingClientRect();
   const cx = rect.left + rect.width / 2;
   const cy = rect.top + rect.height / 2;
   let dx = clientX - cx;
@@ -611,10 +603,6 @@ function readPadOffsetFrom(el, clientX, clientY) {
   return { nx: dx / max, ny: dy / max };
 }
 
-function readPadOffset(clientX, clientY) {
-  return readPadOffsetFrom(gimbalPad, clientX, clientY);
-}
-
 function orbitBy(deltaTheta, deltaPhi) {
   offsetVec.copy(camera.position).sub(controls.target);
   spherical.setFromVector3(offsetVec);
@@ -624,25 +612,6 @@ function orbitBy(deltaTheta, deltaPhi) {
   spherical.makeSafe();
   offsetVec.setFromSpherical(spherical);
   camera.position.copy(controls.target).add(offsetVec);
-  controls.update();
-}
-
-/** Screen-space pan: moves camera + target together (no rotation). */
-function panBy(nx, ny, dt) {
-  offsetVec.copy(camera.position).sub(controls.target);
-  let targetDistance = offsetVec.length();
-  targetDistance *= Math.tan((camera.fov / 2) * Math.PI / 180);
-
-  const scale = panState.panSpeed * targetDistance * dt;
-
-  panLeft.setFromMatrixColumn(camera.matrix, 0);
-  panLeft.multiplyScalar(-nx * scale);
-
-  panUp.setFromMatrixColumn(camera.matrix, 1);
-  panUp.multiplyScalar(ny * scale);
-
-  camera.position.add(panLeft).add(panUp);
-  controls.target.add(panLeft).add(panUp);
   controls.update();
 }
 
@@ -666,7 +635,24 @@ function stopAutoRotateIfNeeded() {
   if (controls.autoRotate) $('tSpin').click();
 }
 
+function applyViewMode(mode) {
+  viewMode = mode;
+  const isMove = mode === 'move';
+  dockEl.classList.toggle('mode-move', isMove);
+  dockEl.classList.toggle('mode-rotate', !isMove);
+  document.body.classList.toggle('mode-move', isMove);
+
+  // One finger / left drag: pan in move mode, rotate otherwise
+  controls.mouseButtons.LEFT = isMove ? THREE.MOUSE.PAN : THREE.MOUSE.ROTATE;
+  controls.touches.ONE = isMove ? THREE.TOUCH.PAN : THREE.TOUCH.ROTATE;
+  controls.enableRotate = !isMove;
+
+  if (!isMove) resetKnob();
+  else stopAutoRotateIfNeeded();
+}
+
 function onGimbalPointerDown(e) {
+  if (viewMode !== 'rotate') return;
   e.preventDefault();
   e.stopPropagation();
   gimbalState.active = true;
@@ -697,37 +683,6 @@ function onGimbalPointerUp(e) {
   resetKnob();
 }
 
-function onPanPointerDown(e) {
-  e.preventDefault();
-  e.stopPropagation();
-  panState.active = true;
-  panState.pointerId = e.pointerId;
-  stopAutoRotateIfNeeded();
-  panPad.classList.add('active');
-  panPad.setPointerCapture?.(e.pointerId);
-  const o = readPadOffsetFrom(panPad, e.clientX, e.clientY);
-  panState.nx = o.nx;
-  panState.ny = o.ny;
-  setPanKnob(o.nx, o.ny);
-}
-
-function onPanPointerMove(e) {
-  if (!panState.active || e.pointerId !== panState.pointerId) return;
-  e.preventDefault();
-  const o = readPadOffsetFrom(panPad, e.clientX, e.clientY);
-  panState.nx = o.nx;
-  panState.ny = o.ny;
-  setPanKnob(o.nx, o.ny);
-}
-
-function onPanPointerUp(e) {
-  if (e.pointerId !== panState.pointerId) return;
-  e.preventDefault();
-  panState.active = false;
-  panState.pointerId = null;
-  resetPanKnob();
-}
-
 gimbalPad.addEventListener('pointerdown', onGimbalPointerDown);
 gimbalPad.addEventListener('pointermove', onGimbalPointerMove);
 gimbalPad.addEventListener('pointerup', onGimbalPointerUp);
@@ -735,12 +690,14 @@ gimbalPad.addEventListener('pointercancel', onGimbalPointerUp);
 gimbalPad.addEventListener('touchstart', (e) => e.preventDefault(), { passive: false });
 gimbalPad.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
 
-panPad.addEventListener('pointerdown', onPanPointerDown);
-panPad.addEventListener('pointermove', onPanPointerMove);
-panPad.addEventListener('pointerup', onPanPointerUp);
-panPad.addEventListener('pointercancel', onPanPointerUp);
-panPad.addEventListener('touchstart', (e) => e.preventDefault(), { passive: false });
-panPad.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
+btnHand.addEventListener('click', (e) => {
+  e.preventDefault();
+  applyViewMode('move');
+});
+btnGimbal.addEventListener('click', (e) => {
+  e.preventDefault();
+  applyViewMode('rotate');
+});
 
 let zoomHoldTimer = null;
 function bindZoomHold(btn, factor) {
@@ -765,27 +722,17 @@ $('gimbalReset').addEventListener('click', (e) => {
 });
 
 function showGimbal() {
-  gimbalEl.classList.add('visible');
-  panEl.classList.add('visible');
+  dockEl.classList.add('visible');
+  applyViewMode('rotate');
 }
 
 function updateGimbal(dt) {
-  if (gimbalState.active) {
-    const dead = 0.08;
-    const nx = Math.abs(gimbalState.nx) < dead ? 0 : gimbalState.nx;
-    const ny = Math.abs(gimbalState.ny) < dead ? 0 : gimbalState.ny;
-    if (nx || ny) {
-      orbitBy(nx * gimbalState.rotateSpeed * dt, ny * gimbalState.rotateSpeed * dt);
-    }
-  }
-  if (panState.active) {
-    const dead = 0.08;
-    const nx = Math.abs(panState.nx) < dead ? 0 : panState.nx;
-    const ny = Math.abs(panState.ny) < dead ? 0 : panState.ny;
-    if (nx || ny) {
-      panBy(nx, ny, dt);
-    }
-  }
+  if (viewMode !== 'rotate' || !gimbalState.active) return;
+  const dead = 0.08;
+  const nx = Math.abs(gimbalState.nx) < dead ? 0 : gimbalState.nx;
+  const ny = Math.abs(gimbalState.ny) < dead ? 0 : gimbalState.ny;
+  if (!nx && !ny) return;
+  orbitBy(nx * gimbalState.rotateSpeed * dt, ny * gimbalState.rotateSpeed * dt);
 }
 
 // ---------- Lights ----------
