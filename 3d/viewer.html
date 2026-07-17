@@ -133,6 +133,59 @@
   .slider input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
   #topbar, #panel, #hint { display: none !important; }
 
+  /* ---------- Fullscreen toggle (top-right) ---------- */
+  #btnFullscreen {
+    position: fixed;
+    top: 14px;
+    right: 14px;
+    z-index: 30;
+    width: 44px;
+    height: 44px;
+    border-radius: 4px;
+    border: 1px solid #30363d;
+    background: rgba(22,27,34,.92);
+    color: #e6edf3;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .45s ease, background .15s, border-color .15s, color .15s;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 14px rgba(0,0,0,.35);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    padding: 0;
+  }
+  #btnFullscreen.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  #btnFullscreen:hover,
+  #btnFullscreen:active {
+    background: rgba(255,191,0,.18);
+    border-color: rgba(255,191,0,.55);
+    color: #ffbf00;
+  }
+  #btnFullscreen svg {
+    width: 22px;
+    height: 22px;
+    display: block;
+    pointer-events: none;
+  }
+  #btnFullscreen .icon-exit { display: none; }
+  #btnFullscreen.is-fullscreen .icon-enter { display: none; }
+  #btnFullscreen.is-fullscreen .icon-exit { display: block; }
+  @media (max-width: 767px) {
+    #btnFullscreen {
+      top: 12px;
+      right: 12px;
+      width: 46px;
+      height: 46px;
+    }
+  }
+
   /* ---------- Simple mode dock: Rotate (gimbal) / Move (hand on canvas) ---------- */
   #dock {
     position: fixed;
@@ -490,6 +543,17 @@
 
   <div id="hint"><b>Mouse:</b> rotate &nbsp;•&nbsp; <b>Scroll:</b> zoom &nbsp;•&nbsp; <b>Right-click:</b> pan</div>
 
+  <button type="button" id="btnFullscreen" title="Full screen" aria-label="Enter full screen">
+    <svg class="icon-enter" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/>
+    </svg>
+    <svg class="icon-exit" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        d="M3 8h5V3M16 3v5h5M3 16h5v5M16 21v-5h5"/>
+    </svg>
+  </button>
+
   <!-- Dock: Rotate (gimbal) or Move (hand on 3D) -->
   <div id="dock" class="mode-rotate" aria-label="3D viewer controls">
     <div id="moveHint">Move mode on — <strong>drag on the board</strong><br><span style="opacity:.85">Pinch to zoom · twist two fingers to rotate</span></div>
@@ -635,6 +699,7 @@ const gimbalPad = $('gimbalPad');
 const gimbalKnob = $('gimbalKnob');
 const btnHand = $('btnHand');
 const btnGimbal = $('btnGimbal');
+const btnFullscreen = $('btnFullscreen');
 let viewMode = 'rotate'; // 'rotate' | 'move'
 const gimbalState = {
   active: false,
@@ -965,8 +1030,70 @@ $('gimbalReset').addEventListener('click', (e) => {
 
 function showGimbal() {
   dockEl.classList.add('visible');
+  btnFullscreen.classList.add('visible');
   applyViewMode('rotate');
 }
+
+// ---------- Fullscreen toggle ----------
+function getFullscreenElement() {
+  return document.fullscreenElement
+    || document.webkitFullscreenElement
+    || document.msFullscreenElement
+    || null;
+}
+
+function isFullscreen() {
+  return !!getFullscreenElement() || document.body.classList.contains('pseudo-fullscreen');
+}
+
+function syncFullscreenButton() {
+  const on = isFullscreen();
+  btnFullscreen.classList.toggle('is-fullscreen', on);
+  btnFullscreen.title = on ? 'Exit full screen' : 'Full screen';
+  btnFullscreen.setAttribute('aria-label', on ? 'Exit full screen' : 'Enter full screen');
+}
+
+async function enterFullscreen() {
+  const el = document.documentElement;
+  try {
+    if (el.requestFullscreen) await el.requestFullscreen();
+    else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+    else if (el.msRequestFullscreen) el.msRequestFullscreen();
+    else document.body.classList.add('pseudo-fullscreen');
+  } catch (_) {
+    document.body.classList.add('pseudo-fullscreen');
+  }
+  syncFullscreenButton();
+  window.dispatchEvent(new Event('resize'));
+}
+
+async function exitFullscreen() {
+  try {
+    if (getFullscreenElement()) {
+      if (document.exitFullscreen) await document.exitFullscreen();
+      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+      else if (document.msExitFullscreen) document.msExitFullscreen();
+    }
+  } catch (_) {}
+  document.body.classList.remove('pseudo-fullscreen');
+  syncFullscreenButton();
+  window.dispatchEvent(new Event('resize'));
+}
+
+btnFullscreen.addEventListener('click', (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  if (isFullscreen()) exitFullscreen();
+  else enterFullscreen();
+});
+
+['fullscreenchange', 'webkitfullscreenchange', 'MSFullscreenChange'].forEach((evt) => {
+  document.addEventListener(evt, () => {
+    if (!getFullscreenElement()) document.body.classList.remove('pseudo-fullscreen');
+    syncFullscreenButton();
+    window.dispatchEvent(new Event('resize'));
+  });
+});
 
 function updateGimbal(dt) {
   if (viewMode !== 'rotate' || !gimbalState.active) return;
