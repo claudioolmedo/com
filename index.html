@@ -469,12 +469,31 @@
     }
 
     @media (max-width: 778px) {
+      /* Mobile: only the sticky bar (works); hide hero CTA to avoid two buttons */
+      #slide-898-layer-4,
+      .preorder-hero-wrap {
+        display: none !important;
+      }
+
       .preorder-sticky {
         display: block;
       }
 
+      .preorder-sticky.is-visible {
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+
       .social-icons-fixed {
         bottom: 88px;
+      }
+
+      .local-scroll-cont {
+        bottom: 76px;
+      }
+
+      body {
+        padding-bottom: 76px;
       }
 
       .preorder-section {
@@ -1159,7 +1178,7 @@
     (function () {
       var sticky = document.getElementById('preorder-sticky');
       var footer = document.getElementById('footer1');
-      var about = document.getElementById('about');
+      var projectCta = document.querySelector('[data-preorder-cta="project"]');
 
       function trackPreorder(placement) {
         if (typeof gtag === 'function') {
@@ -1177,23 +1196,28 @@
         trackPreorder(link.getAttribute('data-preorder-cta'));
       });
 
-      if (!sticky || !about) return;
+      if (!sticky) return;
 
       var ticking = false;
+      function isOnScreen(el, margin) {
+        if (!el) return false;
+        var rect = el.getBoundingClientRect();
+        var m = margin || 40;
+        return rect.top < window.innerHeight - m && rect.bottom > m;
+      }
+
       function updateSticky() {
         ticking = false;
+        // Desktop: never show sticky (hero/section/footer CTAs remain)
         if (window.innerWidth > 778) {
           sticky.classList.remove('is-visible');
           sticky.setAttribute('aria-hidden', 'true');
           return;
         }
-        var pastHero = window.scrollY > (about.offsetTop - 80);
-        var nearFooter = false;
-        if (footer) {
-          var footerTop = footer.getBoundingClientRect().top;
-          nearFooter = footerTop < window.innerHeight - 40;
-        }
-        var show = pastHero && !nearFooter;
+        // Mobile: sticky is the primary Pre-Order CTA; hide it when another
+        // on-page Pre-Order button is already visible (avoid two at once)
+        var otherCtaVisible = isOnScreen(projectCta) || isOnScreen(footer);
+        var show = !otherCtaVisible;
         sticky.classList.toggle('is-visible', show);
         sticky.setAttribute('aria-hidden', show ? 'false' : 'true');
       }
