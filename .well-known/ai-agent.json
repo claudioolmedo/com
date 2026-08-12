@@ -1,0 +1,27 @@
+{
+  "name": "One Dollar Computer",
+  "description": "Official agent discovery for the One Dollar Computer by Claudio Olmedo — open-source RISC-V computer designed to cost about $1 to manufacture (computador de um dólar).",
+  "website": "https://claudioolmedo.com/",
+  "creator": "Claudio Olmedo",
+  "aliases": [
+    "One Dollar Computer",
+    "computador de um dólar",
+    "computadora de un dólar",
+    "$1 Computer",
+    "OneDollarBoard"
+  ],
+  "documentation": {
+    "llms": "https://claudioolmedo.com/llms.txt",
+    "llmsFull": "https://claudioolmedo.com/llms-full.txt",
+    "aiPolicy": "https://claudioolmedo.com/ai.txt",
+    "agents": "https://claudioolmedo.com/AGENTS.md",
+    "openapi": "https://claudioolmedo.com/openapi.json",
+    "mcp": "https://claudioolmedo.com/.well-known/mcp-server-card"
+  },
+  "preorder": "https://shop.claudioolmedo.com/preorder",
+  "sameAs": [
+    "https://github.com/claudioolmedo",
+    "https://www.linkedin.com/in/claudioolmedo-com/",
+    "https://www.instagram.com/claudioolmedo_com/"
+  ]
+}

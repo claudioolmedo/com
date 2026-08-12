@@ -1,0 +1,15 @@
+/* TEAM */
+Creator: Claudio Olmedo
+Site: https://claudioolmedo.com
+Project: One Dollar Computer (computador de um dólar)
+Contact: https://www.linkedin.com/in/claudioolmedo-com/
+
+/* SITE */
+Standards: HTML5, CSS3, JavaScript
+Components: One Dollar Computer open-source educational board, 3D viewer, pre-order shop
+Software: Static site on GitHub Pages
+
+/* AI */
+Docs: https://claudioolmedo.com/llms.txt
+Full: https://claudioolmedo.com/llms-full.txt
+Policy: https://claudioolmedo.com/ai.txt

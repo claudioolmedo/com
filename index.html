@@ -26,65 +26,187 @@
       window.addEventListener(evt, loadAnalytics, { once: true, passive: true });
     });
   </script>
-  <title>Claudio Olmedo | Creator of the One Dollar Computer</title>
+  <title>One Dollar Computer by Claudio Olmedo | Computador de um Dólar</title>
   <meta charset="UTF-8">
   <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
-  <meta name="robots" content="index, follow">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <meta name="keywords"
-    content="One Dollar Computer, Claudio Olmedo, affordable computer, talent discovery, accessible technology, open source hardware, education technology">
+    content="One Dollar Computer, computador de um dólar, computadora de un dólar, $1 computer, OneDollarBoard, Claudio Olmedo, RISC-V, open source hardware, affordable computer, talent discovery, education technology">
   <meta name="description"
-    content="Everyone has talent waiting to be discovered. The One Dollar Computer removes the barriers — so anyone can learn, create, and build a better world.">
+    content="One Dollar Computer (computador de um dólar) by Claudio Olmedo — an open-source RISC-V computer designed to cost about $1 to manufacture so anyone can learn technology and discover their talent. Official site &amp; pre-order.">
   <meta name="author" content="Claudio Olmedo">
+  <meta name="creator" content="Claudio Olmedo">
+  <meta name="application-name" content="One Dollar Computer">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#2a2b2f">
-  <link rel="canonical" href="https://claudioolmedo.com">
+  <link rel="canonical" href="https://claudioolmedo.com/">
+  <link rel="alternate" type="text/plain" href="https://claudioolmedo.com/llms.txt" title="LLM brief — One Dollar Computer">
+  <link rel="alternate" type="text/plain" href="https://claudioolmedo.com/llms-full.txt" title="Full LLM brief — One Dollar Computer">
+  <link rel="describedby" href="https://claudioolmedo.com/llms-full.txt">
+  <link rel="api" href="https://claudioolmedo.com/openapi.json" type="application/json" title="One Dollar Computer OpenAPI">
   <meta property="og:image" content="https://claudioolmedo.com/images/revo-slider/face.jpg">
-  <meta property="og:title" content="The One Dollar Computer — by Claudio Olmedo">
+  <meta property="og:title" content="One Dollar Computer — by Claudio Olmedo">
   <meta property="og:description"
-    content="A simple computer built to cost just one dollar — because everyone deserves the chance to discover their talent.">
-  <meta property="og:url" content="https://claudioolmedo.com">
+    content="Official site of the One Dollar Computer (computador de um dólar): open-source RISC-V board designed to cost about $1 to manufacture.">
+  <meta property="og:url" content="https://claudioolmedo.com/">
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="One Dollar Computer">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="pt_BR">
+  <meta property="og:locale:alternate" content="es_ES">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="One Dollar Computer — by Claudio Olmedo">
+  <meta name="twitter:description"
+    content="Open-source computer designed to cost about $1 to manufacture. Official project by Claudio Olmedo.">
+  <meta name="twitter:image" content="https://claudioolmedo.com/images/revo-slider/face.jpg">
 
-  <!-- SCHEMA.ORG STRUCTURED DATA -->
+  <!-- SCHEMA.ORG STRUCTURED DATA — One Dollar Computer canonical entity -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Claudio Olmedo",
-      "url": "https://claudioolmedo.com",
-      "jobTitle": "Creator of the One Dollar Computer project",
-      "sameAs": [
-        "https://www.linkedin.com/in/claudioolmedo-com/",
-        "https://www.instagram.com/claudioolmedo_com/"
-      ],
-      "knowsAbout": ["RISC-V", "Open Hardware", "PCB Design", "Robotics Education", "Low-cost Manufacturing"]
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://claudioolmedo.com/#website",
+          "url": "https://claudioolmedo.com/",
+          "name": "One Dollar Computer",
+          "alternateName": [
+            "Computador de um Dólar",
+            "Computadora de un Dólar",
+            "$1 Computer",
+            "OneDollarBoard",
+            "Claudio Olmedo"
+          ],
+          "description": "Official website of the One Dollar Computer by Claudio Olmedo — an open-source RISC-V computer designed to cost about one dollar to manufacture.",
+          "inLanguage": ["en", "pt", "es"],
+          "publisher": { "@id": "https://claudioolmedo.com/#person" },
+          "about": { "@id": "https://claudioolmedo.com/#product" }
+        },
+        {
+          "@type": "Person",
+          "@id": "https://claudioolmedo.com/#person",
+          "name": "Claudio Olmedo",
+          "url": "https://claudioolmedo.com/",
+          "jobTitle": "Creator of the One Dollar Computer",
+          "description": "Creator of the One Dollar Computer (computador de um dólar) — open-source hardware for accessible technology education and talent discovery.",
+          "image": "https://claudioolmedo.com/images/revo-slider/face.jpg",
+          "sameAs": [
+            "https://www.linkedin.com/in/claudioolmedo-com/",
+            "https://www.instagram.com/claudioolmedo_com/",
+            "https://github.com/claudioolmedo"
+          ],
+          "knowsAbout": [
+            "One Dollar Computer",
+            "RISC-V",
+            "Open Hardware",
+            "PCB Design",
+            "Robotics Education",
+            "Low-cost Manufacturing",
+            "Talent Discovery"
+          ],
+          "makesOffer": { "@id": "https://claudioolmedo.com/#offer" }
+        },
+        {
+          "@type": ["Product", "SoftwareApplication"],
+          "@id": "https://claudioolmedo.com/#product",
+          "name": "One Dollar Computer",
+          "alternateName": [
+            "Computador de um Dólar",
+            "Computadora de un Dólar",
+            "$1 Computer",
+            "One Dollar Computer board",
+            "OneDollarBoard"
+          ],
+          "description": "A simple open-source RISC-V computer designed by Claudio Olmedo to cost about one US dollar to manufacture, making technology education and talent discovery accessible worldwide.",
+          "url": "https://claudioolmedo.com/",
+          "image": [
+            "https://claudioolmedo.com/images/one_dollar_computer_main_board.jpg",
+            "https://claudioolmedo.com/images/revo-slider/face.jpg"
+          ],
+          "category": "Educational Computer Hardware",
+          "brand": {
+            "@type": "Brand",
+            "name": "One Dollar Computer",
+            "alternateName": ["Computador de um Dólar", "OneDollarBoard"],
+            "url": "https://claudioolmedo.com/"
+          },
+          "manufacturer": { "@id": "https://claudioolmedo.com/#person" },
+          "creator": { "@id": "https://claudioolmedo.com/#person" },
+          "keywords": "One Dollar Computer, computador de um dólar, RISC-V, open hardware, $1 computer, Claudio Olmedo",
+          "applicationCategory": "EducationalApplication",
+          "operatingSystem": "WebHID / browser-compatible",
+          "offers": { "@id": "https://claudioolmedo.com/#offer" },
+          "isAccessibleForFree": false,
+          "additionalProperty": [
+            {
+              "@type": "PropertyValue",
+              "name": "Manufacturing cost target",
+              "value": "Approximately 1 USD"
+            },
+            {
+              "@type": "PropertyValue",
+              "name": "Architecture",
+              "value": "RISC-V"
+            },
+            {
+              "@type": "PropertyValue",
+              "name": "License stance",
+              "value": "Open source hardware designs"
+            }
+          ]
+        },
+        {
+          "@type": "Offer",
+          "@id": "https://claudioolmedo.com/#offer",
+          "name": "Pre-Order — One Dollar Computer board",
+          "url": "https://shop.claudioolmedo.com/preorder",
+          "priceCurrency": "USD",
+          "price": "1.00",
+          "availability": "https://schema.org/PreOrder",
+          "itemOffered": { "@id": "https://claudioolmedo.com/#product" },
+          "seller": { "@id": "https://claudioolmedo.com/#person" }
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://claudioolmedo.com/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "What is the One Dollar Computer?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "The One Dollar Computer (computador de um dólar) is an open-source RISC-V computer designed by Claudio Olmedo to cost about one US dollar to manufacture, so anyone can learn technology and discover their talent."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Who created the One Dollar Computer?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Claudio Olmedo created the One Dollar Computer. The official website is https://claudioolmedo.com."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How can I get or pre-order a One Dollar Computer?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Pre-order the board for $1 at https://shop.claudioolmedo.com/preorder. Shipping is calculated at checkout. Boards ship after the manufacturing run (road to 3,000 units) completes."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is the One Dollar Computer open source?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Designs are open source so anyone can build, improve, or manufacture them. See https://github.com/claudioolmedo and https://claudioolmedo.com."
+              }
+            }
+          ]
+        }
+      ]
     }
-    </script>
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Product",
-      "name": "One Dollar Computer",
-      "description": "A simple computer built to cost just one dollar",
-      "url": "https://claudioolmedo.com",
-      "brand": {
-        "@type": "Brand",
-        "name": "One Dollar Computer"
-      },
-      "manufacturer": {
-        "@type": "Person",
-        "name": "Claudio Olmedo"
-      },
-      "offers": {
-        "@type": "Offer",
-        "url": "https://shop.claudioolmedo.com/preorder",
-        "priceCurrency": "USD",
-        "price": "1.00",
-        "availability": "https://schema.org/PreOrder",
-        "name": "Pre-Order — One Dollar Computer board"
-      }
-    }
-    </script>
+  </script>
 
   <!-- FAVICONS -->
   <link rel="shortcut icon" href="images/favicon/favicon.png">
@@ -96,6 +218,13 @@
   <!-- CSS -->
   <!-- Local web fonts (avoids Google Fonts third-party requests that trigger Safari privacy banners) -->
   <link href="css/site-fonts.css" rel="stylesheet" type="text/css">
+
+  <!-- Prefetch 3D viewer assets during page load so the board is ready when scrolled into view -->
+  <link rel="prefetch" href="3d/viewer.html?v=21">
+  <link rel="prefetch" href="3d/OneDollarBoard.com.1.004_pcb.glb">
+  <link rel="prefetch" href="3d/OneDollarBoard.com.1.004_components.glb">
+  <link rel="prefetch" href="3d/OneDollarBoard.com.1.004_top.png">
+  <link rel="prefetch" href="3d/OneDollarBoard.com.1.004_button.png">
 
   <!-- REVOSLIDER CSS SETTINGS -->
 
@@ -884,10 +1013,9 @@
           <div class="row">
             <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
               <div class="viewer-container">
-                <iframe id="viewer-iframe" data-src="3d/viewer.html?v=20"
-                  src="about:blank"
+                <iframe id="viewer-iframe" src="3d/viewer.html?v=21"
                   style="width: 100%; height: 100%; border: none; display: block; opacity: 0; transition: opacity 0.8s ease;"
-                  allow="autoplay; fullscreen" allowfullscreen webkitallowfullscreen playsinline title="OneDollarBoard 3D Viewer" loading="lazy"></iframe>
+                  allow="autoplay; fullscreen" allowfullscreen webkitallowfullscreen playsinline title="OneDollarBoard 3D Viewer" loading="eager"></iframe>
               </div>
             </div>
           </div>
@@ -1087,62 +1215,38 @@
       }
     });
 
-    // 3D Viewer: lazy-load when near viewport (avoids WebGL work on first paint),
-    // then auto-start rotation and fade-in
+    // 3D Viewer: loads with the page (iframe src + prefetch) so it is ready on scroll;
+    // fade-in and spin when the model finishes loading
     document.addEventListener('DOMContentLoaded', function () {
       var iframe = document.getElementById('viewer-iframe');
       if (!iframe) return;
 
-      function startViewerWatch() {
-        var checkCount = 0;
-        var checkViewerLoaded = setInterval(function () {
-          checkCount++;
-          if (iframe && iframe.contentWindow) {
-            try {
-              var api = iframe.contentWindow.viewerAPI;
-              if (api) {
-                clearInterval(checkViewerLoaded);
-                api.onLoad(function () {
-                  api.toggleSpin(true);
-                  setTimeout(function () {
-                    iframe.style.opacity = '1';
-                  }, 500);
-                });
-              }
-            } catch (e) {
+      var checkCount = 0;
+      var checkViewerLoaded = setInterval(function () {
+        checkCount++;
+        if (iframe && iframe.contentWindow) {
+          try {
+            var api = iframe.contentWindow.viewerAPI;
+            if (api) {
               clearInterval(checkViewerLoaded);
-              iframe.style.opacity = '1';
+              api.onLoad(function () {
+                api.toggleSpin(true);
+                setTimeout(function () {
+                  iframe.style.opacity = '1';
+                }, 500);
+              });
             }
-          }
-          if (checkCount > 75) {
+          } catch (e) {
             clearInterval(checkViewerLoaded);
             iframe.style.opacity = '1';
           }
-        }, 200);
-      }
-
-      function loadViewer() {
-        if (iframe.dataset.loaded === '1') return;
-        var src = iframe.getAttribute('data-src');
-        if (!src) return;
-        iframe.dataset.loaded = '1';
-        iframe.src = src;
-        startViewerWatch();
-      }
-
-      if ('IntersectionObserver' in window) {
-        var observer = new IntersectionObserver(function (entries) {
-          entries.forEach(function (entry) {
-            if (entry.isIntersecting) {
-              loadViewer();
-              observer.disconnect();
-            }
-          });
-        }, { rootMargin: '200px 0px' });
-        observer.observe(iframe.parentElement || iframe);
-      } else {
-        loadViewer();
-      }
+        }
+        // ~30s max wait (models can take a while on slow links)
+        if (checkCount > 150) {
+          clearInterval(checkViewerLoaded);
+          iframe.style.opacity = '1';
+        }
+      }, 200);
 
       // Safari fullscreen fallback: expand iframe when the viewer asks via postMessage
       function setViewerFullscreen(active) {

@@ -1,20 +1,37 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/server-card.json",
   "name": "one-dollar-computer-mcp",
-  "version": "1.0.0",
-  "description": "Exposes status, documentation, and active build milestones for the One Dollar Computer project.",
+  "version": "1.1.0",
+  "description": "Official agent entry point for the One Dollar Computer by Claudio Olmedo — an open-source RISC-V computer designed to cost about $1 to manufacture (computador de um dólar). Exposes project vision, documentation, and active build milestones.",
   "protocol_version": "2024-11-05",
   "serverUrl": "https://shop.claudioolmedo.com/api",
   "repository": "https://github.com/claudioolmedo/shop",
   "websiteUrl": "https://claudioolmedo.com",
+  "documentationUrl": "https://claudioolmedo.com/llms-full.txt",
+  "icons": [
+    {
+      "src": "https://claudioolmedo.com/images/favicon/icon-192x192.png",
+      "sizes": "192x192",
+      "mimeType": "image/png"
+    }
+  ],
+  "keywords": [
+    "One Dollar Computer",
+    "computador de um dólar",
+    "Claudio Olmedo",
+    "RISC-V",
+    "open hardware",
+    "OneDollarBoard",
+    "$1 computer"
+  ],
   "tools": [
     {
       "name": "get_active_milestones",
-      "description": "Retrieve the list of active engineering and deployment milestones currently open for allocation."
+      "description": "Retrieve active engineering and deployment milestones for the One Dollar Computer manufacturing / allocation build."
     },
     {
       "name": "get_project_vision",
-      "description": "Exposes the core philosophical and design principles behind the One Dollar Computer."
+      "description": "Return the canonical vision: Claudio Olmedo’s One Dollar Computer — open-source $1-to-manufacture educational computer (RISC-V, talent discovery, global access)."
     }
   ]
 }

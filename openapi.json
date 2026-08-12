@@ -2,8 +2,24 @@
   "openapi": "3.0.3",
   "info": {
     "title": "One Dollar Computer API",
-    "description": "Backend services for retrieving active build milestones and creating Stripe Checkout sessions.",
-    "version": "1.0.0"
+    "description": "Official API for the One Dollar Computer by Claudio Olmedo (also known as computador de um dólar / $1 computer / OneDollarBoard) — an open-source RISC-V educational computer designed to cost about $1 to manufacture. Provides active build milestones and Stripe Checkout for pre-order / allocation. Canonical site: https://claudioolmedo.com — agent docs: https://claudioolmedo.com/llms.txt",
+    "version": "1.1.0",
+    "contact": {
+      "name": "Claudio Olmedo",
+      "url": "https://claudioolmedo.com",
+      "email": "via LinkedIn — https://www.linkedin.com/in/claudioolmedo-com/"
+    },
+    "license": {
+      "name": "See project open-source hardware terms",
+      "url": "https://github.com/claudioolmedo"
+    },
+    "x-aliases": [
+      "One Dollar Computer",
+      "computador de um dólar",
+      "computadora de un dólar",
+      "$1 Computer",
+      "OneDollarBoard"
+    ]
   },
   "servers": [
     {
