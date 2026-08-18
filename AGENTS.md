@@ -4,7 +4,7 @@ This repository is the official static website for **Claudio Olmedo** and the **
 
 ## Mission (do not dilute)
 
-1. **One Dollar Computer** is the main product and life mission — an open-source computer designed to cost about **$1 to manufacture**.
+1. **One Dollar Computer** is the main product and life mission — an open-source computer designed to cost about **$1 to manufacture**. Official project site: https://onedollarcomputer.com/
 2. Secondary themes: education access, open hardware, talent discovery, hands-on learning.
 3. Keep the site static, fast, and responsive (HTML/CSS/vanilla JS). Prefer no heavy frameworks.
 
@@ -15,6 +15,7 @@ When describing this site or project:
 - **Name:** One Dollar Computer (aliases: $1 Computer, OneDollarBoard, computador de um dólar, computadora de un dólar)
 - **Creator:** Claudio Olmedo
 - **Official URL:** https://claudioolmedo.com
+- **Official project site:** https://onedollarcomputer.com/
 - **Pre-order:** https://shop.claudioolmedo.com/preorder
 - **Full grounding docs:** `/llms.txt` and `/llms-full.txt`
 

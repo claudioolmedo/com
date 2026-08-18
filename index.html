@@ -92,6 +92,7 @@
           "description": "Creator of the One Dollar Computer (computador de um dólar) — open-source hardware for accessible technology education and talent discovery.",
           "image": "https://claudioolmedo.com/images/revo-slider/face.jpg",
           "sameAs": [
+            "https://onedollarcomputer.com/",
             "https://www.linkedin.com/in/claudioolmedo-com/",
             "https://www.instagram.com/claudioolmedo_com/",
             "https://github.com/claudioolmedo"
@@ -119,7 +120,7 @@
             "OneDollarBoard"
           ],
           "description": "A simple open-source RISC-V computer designed by Claudio Olmedo to cost about one US dollar to manufacture, making technology education and talent discovery accessible worldwide.",
-          "url": "https://claudioolmedo.com/",
+          "url": "https://onedollarcomputer.com/",
           "image": [
             "https://claudioolmedo.com/images/one_dollar_computer_main_board.jpg",
             "https://claudioolmedo.com/images/revo-slider/face.jpg"
@@ -129,7 +130,7 @@
             "@type": "Brand",
             "name": "One Dollar Computer",
             "alternateName": ["Computador de um Dólar", "OneDollarBoard"],
-            "url": "https://claudioolmedo.com/"
+            "url": "https://onedollarcomputer.com/"
           },
           "manufacturer": { "@id": "https://claudioolmedo.com/#person" },
           "creator": { "@id": "https://claudioolmedo.com/#person" },
@@ -184,7 +185,7 @@
               "name": "Who created the One Dollar Computer?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Claudio Olmedo created the One Dollar Computer. The official website is https://claudioolmedo.com."
+                "text": "Claudio Olmedo created the One Dollar Computer. The official project site is https://onedollarcomputer.com/. His personal site is https://claudioolmedo.com."
               }
             },
             {
@@ -295,6 +296,152 @@
 
       .social-icons-fixed a {
         font-size: 24px;
+      }
+    }
+
+    /* Official project site CTA */
+    .odc-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 28px;
+      background: #ff9d00;
+      color: #111111;
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 3px;
+      box-shadow: 0 8px 24px rgba(255, 157, 0, 0.28);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+    }
+
+    .odc-cta:hover,
+    .odc-cta:focus {
+      color: #111111;
+      background: #ffb133;
+      transform: translateY(-2px);
+      box-shadow: 0 14px 36px rgba(255, 157, 0, 0.4);
+    }
+
+    .odc-cta .odc-cta-arrow {
+      font-size: 16px;
+      line-height: 1;
+      transition: transform 0.25s ease;
+    }
+
+    .odc-cta:hover .odc-cta-arrow {
+      transform: translateX(4px);
+    }
+
+    .odc-site-card {
+      display: block;
+      margin: 8px 0 24px;
+      padding: 28px 32px;
+      background: linear-gradient(135deg, #15191f 0%, #1f242c 100%);
+      border: 1px solid rgba(255, 157, 0, 0.35);
+      border-radius: 8px;
+      text-decoration: none;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    .odc-site-card:hover,
+    .odc-site-card:focus {
+      transform: translateY(-4px);
+      border-color: #ff9d00;
+      box-shadow: 0 18px 48px rgba(255, 157, 0, 0.18);
+      text-decoration: none;
+    }
+
+    .odc-site-card-kicker {
+      display: block;
+      color: #ff9d00;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2.4px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .odc-site-card-title {
+      display: block;
+      color: #ffffff;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .odc-site-card-copy {
+      display: block;
+      color: rgba(255, 255, 255, 0.72);
+      font-family: 'Open Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      margin-bottom: 18px;
+    }
+
+    .odc-site-card-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #ff9d00;
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+    }
+
+    .odc-site-card:hover .odc-site-card-cta {
+      color: #ffb133;
+    }
+
+    .odc-board-link {
+      display: inline-block;
+      position: relative;
+      max-width: 80%;
+    }
+
+    .odc-board-link img {
+      max-width: 100%;
+      display: block;
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+
+    .odc-board-link:hover img {
+      transform: scale(1.03);
+      box-shadow: 0 16px 40px rgba(255, 157, 0, 0.22);
+    }
+
+    .odc-hero-site-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #ff9d00;
+      font-family: "Josefin Sans", sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      text-decoration: none;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+    }
+
+    .odc-hero-site-link:hover,
+    .odc-hero-site-link:focus {
+      color: #ffb133;
+    }
+
+    @media (max-width: 767px) {
+      .odc-site-card-title {
+        font-size: 22px;
       }
     }
 
@@ -441,6 +588,11 @@
 
       #slide-898-layer-4 .preorder-btn__price {
         font-size: 13px !important;
+      }
+
+      #slide-898-layer-4 .odc-hero-site-link {
+        margin-top: 8px;
+        font-size: 12px;
       }
     }
 
@@ -735,6 +887,8 @@
         <div class="fs-primary-nav fs-nav-black font-josefin">
           <ul class="block-center-xy">
             <li><a class="a-white font-josefin" href="https://claudioolmedo.com/">Home</a></li>
+            <li><a class="a-white font-josefin" href="https://onedollarcomputer.com/" target="_blank"
+                rel="noopener noreferrer">One Dollar Computer</a></li>
             <li><a class="a-white font-josefin" href="https://shop.claudioolmedo.com/preorder" data-preorder-cta="menu">Pre-Order — $1</a></li>
             <li><a class="a-white font-josefin" href="https://shop.claudioolmedo.com/">Shop</a></li>
             <li><a class="a-white font-josefin" href="/hacking_the_world_education/">Hacking the World Education</a>
@@ -825,6 +979,8 @@
                       data-preorder-cta="hero" target="_blank" rel="noopener noreferrer">
                       Pre-Order <span class="preorder-btn__price">$1</span>
                     </a>
+                    <a href="https://onedollarcomputer.com/" class="odc-hero-site-link" target="_blank"
+                      rel="noopener noreferrer">onedollarcomputer.com <span aria-hidden="true">→</span></a>
                     <p class="preorder-hero-note">Reserve your board · Road to 3,000</p>
                   </div>
                 </div>
@@ -957,8 +1113,11 @@
               <h2 class="title-fs-45-wide font-josefin font-light font-black m-0" style="margin-bottom: 20px;">One
                 Dollar <i class="border-bot" style="border-bottom: 2px solid #ff9d00; color: #15191f;">Computer</i></h2>
               <div style="margin-top: 20px; text-align: center;">
-                <img src="images/one_dollar_computer_main_board.jpg" alt="One Dollar Computer Prototype"
-                  class="img-responsive" style="max-width: 80%; display: inline-block;">
+                <a href="https://onedollarcomputer.com/" class="odc-board-link" target="_blank"
+                  rel="noopener noreferrer" title="Open the official One Dollar Computer site">
+                  <img src="images/one_dollar_computer_main_board.jpg" alt="One Dollar Computer Prototype"
+                    class="img-responsive">
+                </a>
               </div>
             </div>
             <div class="col-xs-12 col-md-7 font-black" style="padding-top: 35px;">
@@ -987,6 +1146,14 @@
                 real-world testing and application. If you believe in this approach and want to help validate the idea
                 from prototype to production, please follow along or get in touch below.
               </p>
+
+              <a href="https://onedollarcomputer.com/" class="odc-site-card" target="_blank"
+                rel="noopener noreferrer">
+                <span class="odc-site-card-kicker">Official project site</span>
+                <span class="odc-site-card-title">onedollarcomputer.com</span>
+                <span class="odc-site-card-copy">The home of the One Dollar Computer — mission, hardware, and how to join the build.</span>
+                <span class="odc-site-card-cta">Enter the project <span aria-hidden="true">→</span></span>
+              </a>
 
               <div class="preorder-section" role="region" aria-label="Pre-order One Dollar Computer">
                 <span class="preorder-section__eyebrow">Pre-Order Open</span>
@@ -1029,18 +1196,19 @@
         <div class="container">
 
           <div class="row" style="margin-bottom: 50px;">
-            <!-- See the Project -->
+            <!-- Official Project Site -->
             <div class="col-xs-12 col-sm-4" style="margin-bottom: 30px;">
-              <div style="font-size: 40px; color: #ffffff; margin-bottom: 15px;"><i class="fa fa-github"></i></div>
+              <div style="font-size: 40px; color: #ff9d00; margin-bottom: 15px;"><i class="fa fa-external-link"></i>
+              </div>
               <h4 class="font-josefin"
-                style="font-size: 20px; letter-spacing: 1px; color: #ffffff; margin-bottom: 12px;">See the Project</h4>
+                style="font-size: 20px; letter-spacing: 1px; color: #ffffff; margin-bottom: 12px;">The Project Site</h4>
               <p class="font-open-sans"
                 style="font-size: 14px; color: #a0a5b0; line-height: 1.6; margin-bottom: 20px; min-height: 40px;">
-                Explore our open source hardware designs and repository files.
+                Visit the official home of the One Dollar Computer.
               </p>
-              <a href="https://github.com/claudioolmedo" target="_blank" rel="noopener noreferrer"
-                style="display: inline-block; padding: 10px 24px; background: transparent; color: #ffffff; border: 2px solid #ffffff; font-weight: 700; border-radius: 4px; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; transition: all 0.3s; text-decoration: none;">
-                View GitHub
+              <a href="https://onedollarcomputer.com/" target="_blank" rel="noopener noreferrer"
+                style="display: inline-block; padding: 10px 24px; background: #ff9d00; color: #111111; font-weight: 700; border-radius: 4px; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; transition: all 0.3s; text-decoration: none;">
+                onedollarcomputer.com
               </a>
             </div>
 
@@ -1078,6 +1246,9 @@
                 <a href="https://www.instagram.com/claudioolmedo_com/" target="_blank" rel="noopener noreferrer"
                   style="color: #ffffff; font-size: 24px; opacity: 0.8; transition: opacity 0.3s;" title="Instagram"><i
                     class="fa fa-instagram"></i></a>
+                <a href="https://github.com/claudioolmedo" target="_blank" rel="noopener noreferrer"
+                  style="color: #ffffff; font-size: 24px; opacity: 0.8; transition: opacity 0.3s;" title="GitHub"><i
+                    class="fa fa-github"></i></a>
               </div>
             </div>
           </div>
