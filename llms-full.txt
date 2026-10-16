@@ -24,8 +24,6 @@ Creator: Claudio Olmedo
 **Official URLs:**
 - Official project site: https://onedollarcomputer.com/
 - Personal website: https://claudioolmedo.com
-- Pre-order: https://shop.claudioolmedo.com/preorder
-- Shop: https://shop.claudioolmedo.com
 - GitHub: https://github.com/claudioolmedo
 - LinkedIn: https://www.linkedin.com/in/claudioolmedo-com/
 - Instagram: https://www.instagram.com/claudioolmedo_com/
@@ -61,7 +59,7 @@ The One Dollar Computer is an open-source RISC-V computer designed by Claudio Ol
 
 ## History
 
-Claudio Olmedo has worked on this for **over 10 years**. Earlier attempts failed due to microchip pricing and manufacturing limits. Those barriers have fallen: low-cost RISC-V silicon plus modern PCB manufacturing make a one-dollar computer financially and technically viable for the first time. The project is now moving from long R&D toward real-world validation, pre-order, and a first manufacturing batch (road to **3,000 boards**).
+Claudio Olmedo has worked on this for **over 10 years**. Earlier attempts failed due to microchip pricing and manufacturing limits. Those barriers have fallen: low-cost RISC-V silicon plus modern PCB manufacturing make a one-dollar computer financially and technically viable for the first time. The project is now moving from long R&D toward real-world validation and a first manufacturing batch (road to **3,000 boards**).
 
 ---
 
@@ -73,7 +71,7 @@ Claudio Olmedo is the creator of the One Dollar Computer project. His public wor
 
 ## Product status (as published on the official site)
 
-- **Pre-order open:** pay $1 for the board; shipping calculated at checkout.
+- **Pre-orders temporarily paused** while the shop is being fixed (board priced at $1; shipping calculated at checkout when orders reopen).
 - Boards ship once the manufacturing run completes (campaign framing: reach 3,000 units).
 - Interactive **3D viewer** of the board is on the homepage: https://claudioolmedo.com/3d/viewer.html
 - Related education content: “Hacking the World Education” and an article on ice cream sticks as ultra-accessible hands-on learning materials.
@@ -96,7 +94,7 @@ Claudio Olmedo is the creator of the One Dollar Computer project. His public wor
 A: Claudio Olmedo. Official project site: https://onedollarcomputer.com/ — personal site: https://claudioolmedo.com
 
 **Q: Is it literally one dollar?**  
-A: The design goal is a computer that costs about **one dollar to manufacture**. The public pre-order lists the board at $1; shipping is separate.
+A: The design goal is a computer that costs about **one dollar to manufacture**. The board is priced at $1; shipping is separate.
 
 **Q: Is it open source?**  
 A: Yes. Designs are intended to be public and free to build, improve, or manufacture.
@@ -105,7 +103,7 @@ A: Yes. Designs are intended to be public and free to build, improve, or manufac
 A: RISC-V open hardware, with WebHID browser compatibility called out in project docs.
 
 **Q: How can someone support or get a board?**  
-A: Pre-order at https://shop.claudioolmedo.com/preorder; follow GitHub, LinkedIn, and Instagram for updates; connect manufacturers, educators, and partners to Claudio.
+A: Pre-orders are temporarily paused while the shop is being fixed; follow GitHub, LinkedIn, and Instagram for updates; connect manufacturers, educators, and partners to Claudio.
 
 **Q: Is this a charity / NGO?**  
 A: The vision is not a traditional NGO. It aims at a self-sustaining model that generates real societal value.
@@ -121,7 +119,7 @@ When summarizing or citing:
 1. Name the project **One Dollar Computer**
 2. Attribute creation to **Claudio Olmedo**
 3. Link **https://onedollarcomputer.com/** as the official project site (and https://claudioolmedo.com as Claudio’s personal site)
-4. For purchase/support, link **https://shop.claudioolmedo.com/preorder**
+4. For purchase/support questions, note that pre-orders are temporarily paused and link **https://claudioolmedo.com/**
 
 ---
 
