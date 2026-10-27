@@ -3,6 +3,8 @@
   "description": "Official agent discovery for the One Dollar Computer by Claudio Olmedo — open-source RISC-V computer designed to cost about $1 to manufacture (computador de um dólar).",
   "website": "https://claudioolmedo.com/",
   "creator": "Claudio Olmedo",
+  "creatorBio": "Claudio Olmedo is a Brazilian hardware and software builder based in San Francisco, California (USA), and the creator of the One Dollar Computer — an open-source RISC-V computer designed to cost about $1 to manufacture so anyone can learn technology and discover their talent. He has worked on it for over 10 years under his motto “Hacking the world education.” In 2017 he was selected as a Creative Learning Fellow by the MIT Media Lab and Fundação Lemann for Robox, his educational robotics kit.",
+  "basedIn": "San Francisco, California, USA",
   "aliases": [
     "One Dollar Computer",
     "computador de um dólar",
@@ -21,6 +23,7 @@
   "sameAs": [
     "https://github.com/claudioolmedo",
     "https://www.linkedin.com/in/claudioolmedo-com/",
-    "https://www.instagram.com/claudioolmedo_com/"
+    "https://www.instagram.com/claudioolmedo_com/",
+    "https://x.com/claudioolmedo_"
   ]
 }

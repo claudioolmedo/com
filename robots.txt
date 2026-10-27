@@ -55,6 +55,61 @@ Allow: /
 User-agent: FacebookBot
 Allow: /
 
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Meta-ExternalFetcher
+Allow: /
+
+User-agent: Meta-WebIndexer
+Allow: /
+
+User-agent: MistralAI-User
+Allow: /
+
+User-agent: MistralAI-Index
+Allow: /
+
+User-agent: MistralAI-Training
+Allow: /
+
+User-agent: DuckAssistBot
+Allow: /
+
+User-agent: YouBot
+Allow: /
+
+User-agent: AI2Bot
+Allow: /
+
+User-agent: GoogleOther
+Allow: /
+
+User-agent: Amzn-SearchBot
+Allow: /
+
+User-agent: DeepSeekBot
+Allow: /
+
+# xAI (Grok) publishes no official crawler token; these observed tokens are welcomed explicitly
+User-agent: GrokBot
+Allow: /
+
+User-agent: xAI-Bot
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
 User-agent: *
 Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /

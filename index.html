@@ -60,6 +60,7 @@
   <meta name="twitter:description"
     content="Open-source computer designed to cost about $1 to manufacture. Official project by Claudio Olmedo.">
   <meta name="twitter:image" content="https://claudioolmedo.com/images/revo-slider/face.jpg">
+  <meta name="twitter:creator" content="@claudioolmedo_">
 
   <!-- SCHEMA.ORG STRUCTURED DATA — One Dollar Computer canonical entity -->
   <script type="application/ld+json">
@@ -88,14 +89,15 @@
           "@id": "https://claudioolmedo.com/#person",
           "name": "Claudio Olmedo",
           "url": "https://claudioolmedo.com/",
-          "jobTitle": "Creator of the One Dollar Computer",
-          "description": "Creator of the One Dollar Computer (computador de um dólar) — open-source hardware for accessible technology education and talent discovery.",
+          "jobTitle": ["Creator of the One Dollar Computer", "Hardware and Software Builder"],
+          "description": "Claudio Olmedo is a Brazilian hardware and software builder based in San Francisco, California (USA), and the creator of the One Dollar Computer — an open-source RISC-V computer designed to cost about $1 to manufacture so anyone can learn technology and discover their talent. He has worked on it for over 10 years under his motto “Hacking the world education.” In 2017 he was selected as a Creative Learning Fellow by the MIT Media Lab and Fundação Lemann for Robox, his educational robotics kit.",
           "image": "https://claudioolmedo.com/images/revo-slider/face.jpg",
           "sameAs": [
             "https://onedollarcomputer.com/",
             "https://www.linkedin.com/in/claudioolmedo-com/",
             "https://www.instagram.com/claudioolmedo_com/",
-            "https://github.com/claudioolmedo"
+            "https://github.com/claudioolmedo",
+            "https://x.com/claudioolmedo_"
           ],
           "knowsAbout": [
             "One Dollar Computer",
@@ -104,9 +106,32 @@
             "PCB Design",
             "Robotics Education",
             "Low-cost Manufacturing",
-            "Talent Discovery"
+            "Talent Discovery",
+            "Embedded Systems",
+            "Electronics Design",
+            "Educational Robotics",
+            "Physical AI",
+            "AI Agents"
           ],
-          "makesOffer": { "@id": "https://claudioolmedo.com/#offer" }
+          "homeLocation": {
+            "@type": "Place",
+            "address": { "@type": "PostalAddress", "addressLocality": "San Francisco", "addressRegion": "CA", "addressCountry": "US" }
+          },
+          "knowsLanguage": ["Portuguese", "English"],
+          "award": "Creative Learning Fellow — MIT Media Lab & Fundação Lemann (2017), for the Robox educational robotics kit",
+          "memberOf": { "@type": "Organization", "name": "MIT Media Lab Creative Learning Fellowship" },
+          "founderOf": { "@id": "https://claudioolmedo.com/#organization" }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://claudioolmedo.com/#organization",
+          "name": "One Dollar Computer",
+          "url": "https://onedollarcomputer.com/",
+          "founder": { "@id": "https://claudioolmedo.com/#person" },
+          "sameAs": [
+            "https://github.com/OneDollarComputer",
+            "https://claudioolmedo.com/"
+          ]
         },
         {
           "@type": ["Product", "SoftwareApplication"],
@@ -137,7 +162,6 @@
           "keywords": "One Dollar Computer, computador de um dólar, RISC-V, open hardware, $1 computer, Claudio Olmedo",
           "applicationCategory": "EducationalApplication",
           "operatingSystem": "WebHID / browser-compatible",
-          "offers": { "@id": "https://claudioolmedo.com/#offer" },
           "isAccessibleForFree": false,
           "additionalProperty": [
             {
@@ -161,6 +185,14 @@
           "@type": "FAQPage",
           "@id": "https://claudioolmedo.com/#faq",
           "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Who is Claudio Olmedo?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Claudio Olmedo is a Brazilian hardware and software builder based in San Francisco, California (USA), and the creator of the One Dollar Computer — an open-source RISC-V computer designed to cost about $1 to manufacture so anyone can learn technology and discover their talent. He has worked on it for over 10 years under his motto “Hacking the world education.” In 2017 he was selected as a Creative Learning Fellow by the MIT Media Lab and Fundação Lemann for Robox, his educational robotics kit. He is not the Chilean motivational speaker of the same name."
+              }
+            },
             {
               "@type": "Question",
               "name": "What is the One Dollar Computer?",
@@ -991,6 +1023,8 @@
               Computer project. For over 10 years, he has worked on this goal, facing setbacks and technical challenges
               along the way. Today, with components getting cheaper and more accessible, the project is finally becoming
               viable. His focus is on bringing people together to help make this vision happen.
+              Based in San Francisco, he was selected in 2017 as a Creative Learning Fellow by the MIT Media Lab and
+              Fundação Lemann for Robox, his educational robotics kit.
               <br><br>
               <i>"Talented engineers are everywhere — often undiscovered. For over a decade, I have worked to remove the
                 cost barrier to technology. Now that the technology is ready, we can make it happen together."</i>
